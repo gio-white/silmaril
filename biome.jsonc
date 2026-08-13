@@ -32,7 +32,14 @@
     "rules": {
       "preset": "recommended",
       "a11y": {
-        "preset": "recommended"
+        "preset": "recommended",
+        // role="list" on a <ul> is redundant in the abstract, which is what
+        // this rule checks. It is not redundant in practice: Safari removes
+        // list semantics from a <ul> as soon as `list-style: none` is applied,
+        // so VoiceOver stops announcing "list, 6 items". Every styled list on
+        // this site sets list-style: none, so the explicit role is restoring
+        // real semantics rather than repeating them.
+        "noRedundantRoles": "off"
       }
     }
   },

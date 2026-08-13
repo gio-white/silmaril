@@ -1,0 +1,159 @@
+---
+import Section from '../components/Section.astro';
+import TagList from '../components/TagList.astro';
+import { getFeaturedProjects, getProjects, hasCaseStudy } from '../lib/content';
+
+/**
+ * Home passes a limit; /projects does not. The "see all" link appears only
+ * when the list is actually truncated, so the site reads as a self-contained
+ * one-pager while there are few projects and promotes itself as they
+ * accumulate.
+ */
+interface Props {
+  limit?: number;
+  as?: 'h1' | 'h2';
+}
+
+const { limit, as } = Astro.props;
+
+const all = limit ? await getFeaturedProjects() : await getProjects();
+const total = (await getProjects()).length;
+const shown = limit ? all.slice(0, limit) : all;
+const truncated = shown.length < total;
+---
+
+<Section
+  id="projects"
+  label="Selected work"
+  title="Projects"
+  as={as}
+  viewAll={truncated ? { href: '/projects', text: `All ${total} projects` } : undefined}
+>
+  <ul class="projects" role="list">
+    {
+      shown.map((project) => {
+        const detail = hasCaseStudy(project) ? `/projects/${project.id}` : undefined;
+        return (
+          <li class="project" data-reveal>
+            <article class="project__body">
+              <h3 class="project__title">
+                {detail ? (
+                  <a href={detail} class="project__link">
+                    {project.data.title}
+                  </a>
+                ) : (
+                  project.data.title
+                )}
+              </h3>
+              <p class="project__summary">{project.data.summary}</p>
+
+              <dl class="project__detail">
+                <dt>Problem</dt>
+                <dd>{project.data.problem}</dd>
+                <dt>Approach</dt>
+                <dd>{project.data.approach}</dd>
+                <dt>Outcome</dt>
+                <dd class="project__outcome">{project.data.outcome}</dd>
+              </dl>
+
+              <TagList items={project.data.stack} label={`${project.data.title} stack`} />
+            </article>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Section>
+
+<style>
+  .projects {
+    display: grid;
+    gap: var(--space-l);
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 48rem) {
+    .projects {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-xl);
+    }
+  }
+
+  .project {
+    display: grid;
+    padding-block-start: var(--space-s);
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .project__body {
+    display: grid;
+    gap: var(--space-2xs);
+    align-content: start;
+  }
+
+  .project__title {
+    font-size: var(--text-lg);
+  }
+
+  /* The whole card is not a link: the stack tags and the outcome are worth
+   * selecting as text, and a giant link target makes that awkward. */
+  .project__link {
+    text-decoration: none;
+    background-image: linear-gradient(var(--color-accent), var(--color-accent));
+    background-size: 0% var(--border-hair);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size var(--duration-base) var(--ease-out);
+  }
+
+  .project__link:hover {
+    color: var(--color-accent);
+    background-size: 100% var(--border-hair);
+  }
+
+  .project__summary {
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .project__detail {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3xs) var(--space-s);
+    margin: var(--space-2xs) 0 var(--space-xs);
+    font-size: var(--text-sm);
+  }
+
+  .project__detail dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    padding-block-start: 0.25em;
+  }
+
+  .project__detail dd {
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .project__outcome {
+    color: var(--color-text);
+    font-weight: var(--weight-medium);
+  }
+
+  /* Stacked labels on narrow screens: a two-column definition list squeezes
+   * the value column to nothing at 360px. */
+  @media (max-width: 30rem) {
+    .project__detail {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .project__detail dd {
+      margin-block-end: var(--space-2xs);
+    }
+  }
+</style>

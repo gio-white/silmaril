@@ -1,0 +1,107 @@
+---
+/**
+ * Semantic wrapper for a page section.
+ *
+ * Owns the heading, the mono label and the optional "see all" link so that
+ * every section is announced the same way and none of them can forget
+ * aria-labelledby.
+ *
+ * `viewAll` is deliberately passed as an already-resolved value rather than
+ * computed here: the caller knows whether its collection was truncated, and
+ * that decision should never be hardcoded.
+ */
+interface Props {
+  id: string;
+  label: string;
+  title: string;
+  /** Rendered only when present — i.e. only when the list was truncated. */
+  viewAll?: { href: string; text: string };
+  /** Heading level. Dedicated pages use h1 for their subject. */
+  as?: 'h1' | 'h2';
+}
+
+const { id, label, title, viewAll, as: Heading = 'h2' } = Astro.props;
+const headingId = `${id}-heading`;
+---
+
+<section class="section" id={id} aria-labelledby={headingId}>
+  <header class="section__head">
+    <p class="label section__label">{label}</p>
+    <div class="section__title-row">
+      <Heading id={headingId} class="section__title">{title}</Heading>
+      {
+        viewAll && (
+          <a class="section__view-all" href={viewAll.href}>
+            {viewAll.text}
+            <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+              <path d="M3 8h10M9 4l4 4-4 4" />
+            </svg>
+          </a>
+        )
+      }
+    </div>
+  </header>
+
+  <slot />
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-section);
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  /* The first section on a page sits against the header already. */
+  .section:first-of-type {
+    border-block-start: none;
+    padding-block-start: var(--space-xl);
+  }
+
+  .section__head {
+    margin-block-end: var(--space-l);
+  }
+
+  .section__label {
+    margin-block-end: var(--space-2xs);
+  }
+
+  .section__title-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-s);
+  }
+
+  .section__title {
+    margin: 0;
+  }
+
+  .section__view-all {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-accent);
+    white-space: nowrap;
+  }
+
+  .section__view-all svg {
+    inline-size: 14px;
+    block-size: 14px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform var(--duration-fast) var(--ease-out);
+  }
+
+  .section__view-all:hover svg {
+    transform: translateX(2px);
+  }
+</style>

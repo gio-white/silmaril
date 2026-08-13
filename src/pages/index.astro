@@ -1,20 +1,39 @@
 ---
+import AxisGutter from '../components/AxisGutter.astro';
+import { axisHomeItems } from '../data/nav';
+import { profile } from '../data/profile';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../sections/01-Hero.astro';
+import About from '../sections/02-About.astro';
+import Projects from '../sections/03-Projects.astro';
+import Experience from '../sections/04-Experience.astro';
+import Skills from '../sections/05-Skills.astro';
+import Certifications from '../sections/06-Certifications.astro';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * The self-contained home page. Every section appears here in condensed form,
+ * so this URL alone answers "who is this person" — which matters, because it
+ * is the one that gets pasted into applications and messages.
+ *
+ * The limits below are what make the dedicated pages appear. Each section
+ * renders its own "see all" link only when its collection is longer than the
+ * limit given here, so the site behaves as a one-pager while content is thin
+ * and grows into a multi-page site on its own.
+ */
 ---
 
 <BaseLayout
-  title="Personal site"
-  description="Placeholder — replaced once the content collections land."
+  title={`${profile.name} — ${profile.role}`}
+  description={profile.positioning}
 >
-  <div style="max-inline-size: var(--width-content); margin-inline: auto; padding: var(--space-section) var(--gutter);">
-    <p class="label">Scaffold check</p>
-    <h1>Type scale and theme tokens</h1>
-    <p class="prose">
-      Temporary page. It exists so the design system can be verified in a browser before the
-      content model and sections are built, and it is replaced in the next commit.
-    </p>
-    <p class="tabular" style="margin-block-start: var(--space-m); color: var(--color-text-muted);">
-      2019—2024 · 2.4 TB/day · 99.95%
-    </p>
-  </div>
+  <AxisGutter slot="axis" items={axisHomeItems} mode="scroll" />
+
+  <Hero />
+  <About />
+  <Projects limit={3} />
+  <Experience limit={2} />
+  <Skills limit={4} />
+  <Certifications limit={3} />
+  <Contact />
 </BaseLayout>

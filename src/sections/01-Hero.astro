@@ -1,0 +1,141 @@
+---
+import { profile } from '../data/profile';
+
+/**
+ * The 3D scene slot is empty for now — Scene3D lands in a later commit. The
+ * hero is built so it is complete without it: the scene decorates a section
+ * that already works, which is also exactly what a visitor on a phone or with
+ * reduced motion will see.
+ */
+---
+
+<section class="hero" aria-labelledby="hero-heading">
+  <div class="hero__scene" aria-hidden="true">
+    <slot name="scene" />
+  </div>
+
+  <div class="hero__content">
+    <p class="label hero__role">{profile.role}</p>
+    <h1 class="hero__name" id="hero-heading">{profile.name}</h1>
+    <p class="hero__positioning">{profile.positioning}</p>
+
+    <div class="hero__actions">
+      <a class="button button--primary" href={`mailto:${profile.email}`}>Get in touch</a>
+      <a class="button" href={profile.cvPath} download>
+        Download CV
+        <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+          <path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M2.5 13.5h11" />
+        </svg>
+      </a>
+    </div>
+
+    <p class="hero__meta">
+      <span>{profile.location}</span>
+      <span aria-hidden="true">·</span>
+      <span>{profile.availability}</span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    display: grid;
+    align-content: center;
+    min-block-size: min(78svh, 44rem);
+    padding-block: var(--space-2xl) var(--space-xl);
+  }
+
+  .hero__scene {
+    position: absolute;
+    inset: 0;
+    z-index: var(--z-canvas);
+    pointer-events: none;
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: var(--z-content);
+  }
+
+  .hero__role {
+    margin-block-end: var(--space-xs);
+  }
+
+  .hero__name {
+    font-size: var(--text-display);
+    line-height: 0.95;
+    margin-block-end: var(--space-m);
+  }
+
+  .hero__positioning {
+    max-inline-size: 44ch;
+    font-size: var(--text-md);
+    line-height: var(--leading-relaxed);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-l);
+  }
+
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2xs);
+    margin-block-start: var(--space-l);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+  }
+
+  /* Buttons are square-cornered and hairline-bordered to match the drafting
+   * register — no shadows, no gradients. */
+  .button {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    padding: var(--space-2xs) var(--space-s);
+    border: var(--border-hair) solid var(--color-rule-strong);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text);
+    transition:
+      border-color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out),
+      color var(--duration-fast) var(--ease-out);
+  }
+
+  .button svg {
+    inline-size: 14px;
+    block-size: 14px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .button:hover {
+    border-color: var(--color-text);
+  }
+
+  .button--primary {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  .button--primary:hover {
+    background-color: var(--color-text);
+    border-color: var(--color-text);
+  }
+</style>

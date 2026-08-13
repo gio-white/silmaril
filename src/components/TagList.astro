@@ -1,0 +1,46 @@
+---
+/**
+ * A row of technology tags.
+ *
+ * A real <ul>: this is a list of things, and a screen reader announcing "list,
+ * 6 items" is genuinely useful here.
+ */
+interface Props {
+  items: string[];
+  label?: string;
+}
+
+const { items, label } = Astro.props;
+---
+
+{
+  items.length > 0 && (
+    <ul class="tags" aria-label={label}>
+      {items.map((item) => (
+        <li class="tags__item">{item}</li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-2xs);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .tags__item {
+    padding: 2px var(--space-2xs);
+    border: var(--border-hair) solid var(--color-rule);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    white-space: nowrap;
+  }
+</style>

@@ -1,0 +1,134 @@
+---
+/**
+ * The signature element: a chart axis running down the left edge, with the
+ * content plotted against it.
+ *
+ * Two modes, one visual language:
+ *   scroll — ticks are the sections of a long page; the current one fills as
+ *            you scroll (see scripts/axis.ts).
+ *   site   — ticks are the pages; the current one is marked server-side.
+ *
+ * Desktop only. Below 64rem there is no horizontal room for an axis, so it is
+ * removed entirely rather than shrunk into something illegible — the sticky
+ * header carries navigation at that size.
+ */
+export interface AxisItem {
+  /** Section id for scroll mode, or href for site mode. */
+  target: string;
+  label: string;
+}
+
+interface Props {
+  items: AxisItem[];
+  mode: 'scroll' | 'site';
+  /** Site mode only: the href of the page currently being viewed. */
+  current?: string;
+}
+
+const { items, mode, current } = Astro.props;
+---
+
+<nav class="axis" data-axis={mode} aria-label={mode === 'site' ? 'Site sections' : 'On this page'}>
+  <ol class="axis__list">
+    {
+      items.map((item) => {
+        const href = mode === 'scroll' ? `#${item.target}` : item.target;
+        const isCurrent = mode === 'site' && item.target === current;
+        return (
+          <li class="axis__row">
+            <a
+              class:list={['axis__tick', { 'is-current': isCurrent }]}
+              href={href}
+              data-axis-tick={mode === 'scroll' ? item.target : undefined}
+              aria-current={isCurrent ? 'page' : undefined}
+            >
+              <span class="axis__mark" aria-hidden="true" />
+              <span class="axis__label">{item.label}</span>
+            </a>
+          </li>
+        );
+      })
+    }
+  </ol>
+</nav>
+
+{
+  mode === 'scroll' && (
+    <script>
+      import { initAxis } from '../scripts/axis';
+
+      initAxis();
+    </script>
+  )
+}
+
+<style>
+  .axis {
+    display: none;
+  }
+
+  @media (min-width: 64rem) {
+    .axis {
+      display: block;
+      position: sticky;
+      inset-block-start: 6rem;
+      align-self: start;
+      /* The rule itself. Everything else hangs off it. */
+      border-inline-start: var(--border-hair) solid var(--color-rule);
+      padding-inline-start: var(--space-s);
+    }
+  }
+
+  .axis__list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: var(--space-xs);
+  }
+
+  .axis__tick {
+    display: grid;
+    grid-template-columns: 1.25rem 1fr;
+    align-items: center;
+    gap: var(--space-2xs);
+    text-decoration: none;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    transition: color var(--duration-fast) var(--ease-out);
+  }
+
+  /* The tick mark: a short rule that lengthens and takes the accent when
+   * current. Length as well as colour, so the state is not carried by hue
+   * alone. */
+  .axis__mark {
+    display: block;
+    block-size: var(--border-hair);
+    inline-size: 0.5rem;
+    background-color: var(--color-rule-strong);
+    transition:
+      inline-size var(--duration-base) var(--ease-out),
+      background-color var(--duration-base) var(--ease-out);
+  }
+
+  .axis__tick:hover {
+    color: var(--color-text);
+  }
+
+  .axis__tick:hover .axis__mark {
+    inline-size: 0.875rem;
+    background-color: var(--color-text-muted);
+  }
+
+  .axis__tick.is-current {
+    color: var(--color-accent);
+  }
+
+  .axis__tick.is-current .axis__mark {
+    inline-size: 1.25rem;
+    background-color: var(--color-accent);
+  }
+</style>

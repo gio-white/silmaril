@@ -1,0 +1,181 @@
+---
+import Section from '../components/Section.astro';
+import TagList from '../components/TagList.astro';
+import { formatRange, getEducation, getRoles } from '../lib/content';
+
+/**
+ * Work history and education on one timeline. Education is a subheading here
+ * rather than a separate page, which is why the route is /experience and not
+ * /work — it is the more general word.
+ */
+interface Props {
+  limit?: number;
+  as?: 'h1' | 'h2';
+  /** Education is only shown on the dedicated page; home stays tight. */
+  showEducation?: boolean;
+}
+
+const { limit, as, showEducation = false } = Astro.props;
+
+const allRoles = await getRoles();
+const roles = limit ? allRoles.slice(0, limit) : allRoles;
+const truncated = roles.length < allRoles.length;
+const education = showEducation ? await getEducation() : [];
+---
+
+<Section
+  id="experience"
+  label="Experience"
+  title="Where I've worked"
+  as={as}
+  viewAll={truncated ? { href: '/experience', text: 'Full history' } : undefined}
+>
+  <ol class="timeline" role="list">
+    {
+      roles.map((entry) => (
+        <li class="entry" data-reveal>
+          <div class="entry__when tabular">
+            <time datetime={entry.data.start}>{formatRange(entry.data.start, entry.data.end)}</time>
+            {entry.data.location && <span class="entry__location">{entry.data.location}</span>}
+          </div>
+
+          <div class="entry__what">
+            <h3 class="entry__role">{entry.data.role}</h3>
+            <p class="entry__company">
+              {entry.data.company}
+              {entry.data.companyNote && (
+                <span class="entry__company-note"> — {entry.data.companyNote}</span>
+              )}
+            </p>
+
+            <ul class="entry__highlights">
+              {entry.data.highlights.map((highlight) => (
+                <li>{highlight}</li>
+              ))}
+            </ul>
+
+            <TagList items={entry.data.stack} label={`${entry.data.company} stack`} />
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+
+  {
+    education.length > 0 && (
+      <div class="education">
+        <h3 class="education__heading label">Education</h3>
+        <ol class="timeline" role="list">
+          {education.map((entry) => (
+            <li class="entry" data-reveal>
+              <div class="entry__when tabular">
+                <time datetime={entry.data.start}>
+                  {entry.data.start} — {entry.data.end}
+                </time>
+              </div>
+              <div class="entry__what">
+                <h4 class="entry__role">
+                  {entry.data.qualification}, {entry.data.field}
+                </h4>
+                <p class="entry__company">{entry.data.institution}</p>
+                {entry.data.note && <p class="entry__note">{entry.data.note}</p>}
+              </div>
+            </li>
+          ))}
+        </ol>
+      </div>
+    )
+  }
+</Section>
+
+<style>
+  .timeline {
+    display: grid;
+    gap: var(--space-xl);
+    margin: 0;
+    padding: 0;
+  }
+
+  .entry {
+    display: grid;
+    gap: var(--space-2xs);
+    padding-block-start: var(--space-s);
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  /* Dates move into their own column once there is room. Below that they sit
+   * above the role, which keeps the reading order identical either way. */
+  @media (min-width: 48rem) {
+    .entry {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      gap: var(--space-l);
+    }
+  }
+
+  .entry__when {
+    display: grid;
+    gap: 2px;
+    align-content: start;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-text-muted);
+    text-transform: uppercase;
+  }
+
+  .entry__location {
+    color: var(--color-text-muted);
+  }
+
+  .entry__role {
+    font-size: var(--text-lg);
+  }
+
+  .entry__company {
+    margin-block-end: var(--space-2xs);
+    color: var(--color-text-muted);
+  }
+
+  .entry__company-note {
+    font-size: var(--text-sm);
+  }
+
+  .entry__highlights {
+    display: grid;
+    gap: var(--space-2xs);
+    margin: 0 0 var(--space-s);
+    padding: 0;
+    list-style: none;
+    max-inline-size: var(--width-prose);
+  }
+
+  /* Custom marker: a hairline dash in the accent, matching the axis ticks
+   * rather than a default bullet. */
+  .entry__highlights li {
+    position: relative;
+    padding-inline-start: var(--space-m);
+    text-wrap: pretty;
+  }
+
+  .entry__highlights li::before {
+    content: '';
+    position: absolute;
+    inset-inline-start: 0;
+    inset-block-start: 0.7em;
+    inline-size: var(--space-xs);
+    block-size: var(--border-hair);
+    background-color: var(--color-accent);
+  }
+
+  .entry__note {
+    color: var(--color-text-muted);
+    font-size: var(--text-sm);
+  }
+
+  .education {
+    margin-block-start: var(--space-2xl);
+  }
+
+  .education__heading {
+    margin-block-end: var(--space-m);
+  }
+</style>

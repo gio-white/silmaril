@@ -1,0 +1,19 @@
+---
+import AxisGutter from '../../components/AxisGutter.astro';
+import { axisSiteItems } from '../../data/nav';
+import { profile } from '../../data/profile';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Projects from '../../sections/03-Projects.astro';
+import Contact from '../../sections/07-Contact.astro';
+---
+
+<BaseLayout
+  title={`Projects — ${profile.name}`}
+  description={`Selected data engineering work by ${profile.name}: pipelines, warehouse modelling and data quality.`}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" current="/projects" />
+
+  <!-- Same component as the home page, with no limit. -->
+  <Projects as="h1" />
+  <Contact />
+</BaseLayout>

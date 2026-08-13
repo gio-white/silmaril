@@ -7,6 +7,43 @@ Newest first.
 
 ---
 
+## Content model, sections and pages
+
+The site now renders real structure. Six routes: home, `/projects`, `/projects/<slug>`,
+`/experience` and `/skills`.
+
+**The limit pattern is live and verified.** Each section takes an optional `limit`; home passes
+one, the dedicated page does not, and the "see all" link renders only when the collection is
+actually longer than the limit. Confirmed in the built output: home shows 3 of 4 projects with an
+"All 4 projects" link, `/projects` shows 4 with no link, home shows 2 experience entries and
+`/experience` shows 5 including education. Nothing about which sections deserve a page is
+hardcoded — the site reshapes itself as content accumulates.
+
+**Project detail pages are earned, not assumed.** `getStaticPaths` filters on whether the markdown
+body is non-empty, so the two placeholder projects with case studies got pages and the two without
+did not. That is what stops thin entries generating empty pages.
+
+**The axis gutter has both modes.** On home its ticks are sections and the current one fills via a
+~600 byte IntersectionObserver — the one thing here that genuinely needs JavaScript, because
+marking a tick elsewhere in the DOM from a section's scroll position needs `timeline-scope`, which
+is still incomplete even where scroll-driven animation has shipped. On dedicated pages the ticks
+are the pages and the current one is marked server-side. The tick indicates state by *length* as
+well as colour, so it is not carrying meaning by hue alone.
+
+**Zod imported directly rather than from `astro:content`.** Astro 7 ships Zod 4 and marks its
+re-exported `z` deprecated, which produced 40 hints in `astro check`. Importing `zod` explicitly
+and using `z.url()` instead of the deprecated `z.string().url()` clears them.
+
+**`noRedundantRoles` disabled** with the reasoning recorded in `biome.jsonc`: `role="list"` on a
+`<ul>` is redundant in the abstract, but Safari removes list semantics as soon as
+`list-style: none` is applied, and every styled list here does that. The role is restoring
+semantics, not repeating them.
+
+Placeholder content is deliberately awkward — long company names, bullets that wrap to four lines
+— so the layout is stress-tested rather than tuned to convenient text.
+
+Measured: home is 8.3 kB gzip HTML against an 18 kB budget, shared CSS 3.9 kB against 12 kB.
+
 ## Design system: tokens, self-hosted fonts, base layout, theme toggle
 
 The visual foundation. Nothing here renders content yet; that lands next.

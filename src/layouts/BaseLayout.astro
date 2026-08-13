@@ -1,6 +1,8 @@
 ---
 import archivoLatin from '../assets/fonts/archivo-latin.woff2';
 import publicSansLatin from '../assets/fonts/public-sans-latin.woff2';
+import Nav from '../components/Nav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
 import '../styles/global.css';
 
@@ -15,6 +17,7 @@ const { title, description, image = '/og.png' } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
+const hasAxis = Astro.slots.has('axis');
 ---
 
 <!doctype html>
@@ -45,7 +48,13 @@ const ogImage = new URL(image, Astro.site);
     <!-- Only the two above-the-fold faces are preloaded. Mono and the latin-ext
          subsets load on demand. -->
     <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin="anonymous" />
-    <link rel="preload" href={publicSansLatin} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link
+      rel="preload"
+      href={publicSansLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
 
     <!--
       The only blocking script on the site, and it earns it: without setting
@@ -75,14 +84,19 @@ const ogImage = new URL(image, Astro.site);
 
     <header class="site-header">
       <div class="site-header__inner">
-        <a href="/" class="site-header__home">Home</a>
+        <Nav />
         <ThemeToggle />
       </div>
     </header>
 
-    <main id="main">
-      <slot />
-    </main>
+    <div class:list={['shell', { 'shell--axis': hasAxis }]}>
+      {hasAxis && <div class="shell__axis"><slot name="axis" /></div>}
+      <main id="main" class="shell__main">
+        <slot />
+      </main>
+    </div>
+
+    <SiteFooter />
 
     <style>
       .skip-link {
@@ -113,25 +127,35 @@ const ogImage = new URL(image, Astro.site);
 
       .site-header__inner {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
-        gap: var(--space-s);
+        gap: var(--space-2xs) var(--space-s);
         max-inline-size: var(--width-content);
         margin-inline: auto;
         padding: var(--space-2xs) var(--gutter);
       }
 
-      .site-header__home {
-        font-family: var(--font-mono);
-        font-size: var(--text-xs);
-        letter-spacing: var(--tracking-widest);
-        text-transform: uppercase;
-        text-decoration: none;
-        color: var(--color-text-muted);
+      .shell {
+        max-inline-size: var(--width-content);
+        margin-inline: auto;
+        padding-inline: var(--gutter);
       }
 
-      .site-header__home:hover {
-        color: var(--color-text);
+      /* The axis takes its own column only where there is horizontal room for
+       * it. Below 64rem --axis-width is 0 and the gutter hides itself, so the
+       * single-column rule here is what actually applies. */
+      @media (min-width: 64rem) {
+        .shell--axis {
+          display: grid;
+          grid-template-columns: var(--axis-width) minmax(0, 1fr);
+          gap: var(--space-xl);
+          align-items: start;
+        }
+      }
+
+      .shell__main {
+        min-inline-size: 0;
       }
     </style>
   </body>

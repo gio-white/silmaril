@@ -1,0 +1,120 @@
+---
+import Section from '../components/Section.astro';
+import { profile } from '../data/profile';
+
+/**
+ * Closes every page, so #contact always resolves without navigating. This is
+ * the third of four contact touchpoints (hero CTA, header, here, footer) —
+ * each at a different weight, which is what stops the repetition reading as
+ * repetition.
+ *
+ * No contact form. A form needs a backend, gets spam, and is a worse
+ * experience than a mail client that already knows who you are.
+ */
+const links = [
+  { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
+  { label: 'GitHub', value: profile.github.replace(/^https?:\/\//, ''), href: profile.github },
+  { label: 'LinkedIn', value: profile.linkedin.replace(/^https?:\/\//, ''), href: profile.linkedin },
+  { label: 'CV', value: 'Download PDF', href: profile.cvPath },
+];
+---
+
+<Section id="contact" label="Contact" title="Get in touch">
+  <div class="contact">
+    <div class="contact__intro" data-reveal>
+      <p class="contact__lead">
+        {profile.availability}. Based in {profile.location}, working {profile.timezone}.
+      </p>
+      <a class="contact__email" href={`mailto:${profile.email}`}>{profile.email}</a>
+    </div>
+
+    <dl class="contact__links" data-reveal>
+      {
+        links.map((link) => (
+          <div class="contact__row">
+            <dt class="contact__label">{link.label}</dt>
+            <dd class="contact__value">
+              <a href={link.href} rel="noopener noreferrer">
+                {link.value}
+              </a>
+            </dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</Section>
+
+<style>
+  .contact {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 48rem) {
+    .contact {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+  }
+
+  .contact__lead {
+    max-inline-size: 38ch;
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  /* The email is the single most important thing on the page, so it is set at
+   * display size rather than hidden inside a button. */
+  .contact__email {
+    display: inline-block;
+    margin-block-start: var(--space-s);
+    font-family: var(--font-display);
+    font-size: var(--text-xl);
+    font-weight: var(--weight-semibold);
+    letter-spacing: var(--tracking-tight);
+    text-decoration: none;
+    color: var(--color-accent);
+    overflow-wrap: anywhere;
+    background-image: linear-gradient(currentcolor, currentcolor);
+    background-size: 100% var(--border-hair);
+    background-repeat: no-repeat;
+    background-position: 0 100%;
+    transition: background-size var(--duration-base) var(--ease-out);
+  }
+
+  .contact__email:hover {
+    background-size: 0% var(--border-hair);
+  }
+
+  .contact__links {
+    display: grid;
+    margin: 0;
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .contact__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-block: var(--space-2xs);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  .contact__label {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .contact__value {
+    margin: 0;
+    font-size: var(--text-sm);
+    text-align: end;
+    overflow-wrap: anywhere;
+  }
+</style>

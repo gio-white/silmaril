@@ -1,0 +1,61 @@
+---
+import { profile } from '../data/profile';
+
+/**
+ * The fourth and lightest contact touchpoint. Deliberately minimal: by the
+ * time someone reaches here they have already passed the hero CTA, the header
+ * link and the full contact section.
+ */
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <div class="footer__inner">
+    <p class="footer__meta">© {year} {profile.name}</p>
+    <ul class="footer__links" role="list">
+      <li><a href={`mailto:${profile.email}`}>Email</a></li>
+      <li><a href={profile.github} rel="noopener noreferrer">GitHub</a></li>
+      <li><a href={profile.linkedin} rel="noopener noreferrer">LinkedIn</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-block-start: var(--border-hair) solid var(--color-rule);
+    margin-block-start: var(--space-2xl);
+  }
+
+  .footer__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-s);
+    max-inline-size: var(--width-content);
+    margin-inline: auto;
+    padding: var(--space-m) var(--gutter);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin: 0;
+    padding: 0;
+  }
+
+  .footer__links a {
+    text-decoration: none;
+  }
+
+  .footer__links a:hover {
+    color: var(--color-text);
+    text-decoration: underline;
+  }
+</style>

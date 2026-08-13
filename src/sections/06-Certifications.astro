@@ -1,0 +1,120 @@
+---
+import Section from '../components/Section.astro';
+import { formatMonth, getCertifications } from '../lib/content';
+
+/**
+ * Text list rather than a logo grid. Issuer logos would turn this into an
+ * image grid with brand-usage rules to respect and five more requests to
+ * make; if the owner wants them, that is a deliberate design change rather
+ * than a default.
+ *
+ * Expiry is shown rather than hidden. A lapsed certification that silently
+ * looks current is worse than one honestly marked expired.
+ */
+interface Props {
+  limit?: number;
+  as?: 'h1' | 'h2';
+  /** Certifications share /skills rather than owning a route. */
+  standalone?: boolean;
+}
+
+const { limit, as, standalone = false } = Astro.props;
+
+const all = await getCertifications();
+const shown = limit ? all.slice(0, limit) : all;
+const truncated = shown.length < all.length;
+
+const now = new Date().toISOString().slice(0, 7);
+---
+
+<Section
+  id="certifications"
+  label="Credentials"
+  title="Certifications"
+  as={as}
+  viewAll={truncated && !standalone ? { href: '/skills', text: `All ${all.length}` } : undefined}
+>
+  <ul class="certs" role="list">
+    {
+      shown.map((cert) => {
+        const expired = cert.data.expires !== undefined && cert.data.expires < now;
+        return (
+          <li class="cert" data-reveal>
+            <div class="cert__main">
+              <h3 class="cert__name">
+                {cert.data.credentialUrl ? (
+                  <a href={cert.data.credentialUrl} rel="noopener noreferrer" class="link">
+                    {cert.data.name}
+                  </a>
+                ) : (
+                  cert.data.name
+                )}
+              </h3>
+              <p class="cert__issuer">{cert.data.issuer}</p>
+            </div>
+
+            <p class="cert__when tabular">
+              <time datetime={cert.data.earned}>{formatMonth(cert.data.earned)}</time>
+              {cert.data.expires && (
+                <span class:list={['cert__expiry', { 'is-expired': expired }]}>
+                  {expired ? 'Expired' : 'Expires'} {formatMonth(cert.data.expires)}
+                </span>
+              )}
+            </p>
+          </li>
+        );
+      })
+    }
+  </ul>
+</Section>
+
+<style>
+  .certs {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .cert {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-2xs) var(--space-s);
+    padding-block: var(--space-s);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  .cert__name {
+    font-size: var(--text-md);
+  }
+
+  .cert__issuer {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .cert__when {
+    display: grid;
+    gap: 2px;
+    justify-items: end;
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  /* "Expired" is a word, not a colour — the state is legible to anyone who
+   * cannot distinguish the accent. */
+  .cert__expiry.is-expired {
+    color: var(--color-accent);
+  }
+
+  @media (max-width: 30rem) {
+    .cert__when {
+      justify-items: start;
+    }
+  }
+</style>

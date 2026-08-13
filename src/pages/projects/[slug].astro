@@ -1,0 +1,192 @@
+---
+import { render } from 'astro:content';
+import AxisGutter from '../../components/AxisGutter.astro';
+import TagList from '../../components/TagList.astro';
+import { axisSiteItems } from '../../data/nav';
+import { profile } from '../../data/profile';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getProjects, hasCaseStudy } from '../../lib/content';
+import Contact from '../../sections/07-Contact.astro';
+
+/**
+ * A project earns a page only when it has a body. Projects without a write-up
+ * appear on the listing and link nowhere, which is what stops thin entries
+ * from generating empty pages.
+ */
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.filter(hasCaseStudy).map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const externalLinks = Object.entries(project.data.links).filter(([, href]) => Boolean(href)) as [
+  string,
+  string,
+][];
+---
+
+<BaseLayout
+  title={`${project.data.title} — ${profile.name}`}
+  description={project.data.summary}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" current="/projects" />
+
+  <article class="case">
+    <header class="case__head">
+      <p class="label">
+        <a href="/projects" class="case__back">Projects</a>
+      </p>
+      <h1 class="case__title">{project.data.title}</h1>
+      <p class="case__summary">{project.data.summary}</p>
+      <TagList items={project.data.stack} label="Stack" />
+    </header>
+
+    <dl class="case__facts">
+      <div><dt>Problem</dt><dd>{project.data.problem}</dd></div>
+      <div><dt>Approach</dt><dd>{project.data.approach}</dd></div>
+      <div><dt>Outcome</dt><dd>{project.data.outcome}</dd></div>
+    </dl>
+
+    {
+      externalLinks.length > 0 && (
+        <ul class="case__links" role="list">
+          {externalLinks.map(([label, href]) => (
+            <li>
+              <a href={href} rel="noopener noreferrer" class="link">
+                {label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="case__body prose">
+      <Content />
+    </div>
+  </article>
+
+  <Contact />
+</BaseLayout>
+
+<style>
+  .case {
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .case__head {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block-end: var(--space-xl);
+  }
+
+  .case__back {
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+
+  .case__back:hover {
+    text-decoration: underline;
+  }
+
+  .case__title {
+    font-size: var(--text-2xl);
+  }
+
+  .case__summary {
+    max-inline-size: 52ch;
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .case__facts {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--space-l);
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .case__facts > div {
+    display: grid;
+    gap: var(--space-3xs);
+    padding-block: var(--space-s);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  @media (min-width: 48rem) {
+    .case__facts > div {
+      grid-template-columns: 10rem minmax(0, 1fr);
+      gap: var(--space-l);
+    }
+  }
+
+  .case__facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .case__facts dd {
+    margin: 0;
+    max-inline-size: var(--width-prose);
+    text-wrap: pretty;
+  }
+
+  .case__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin: 0 0 var(--space-xl);
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  /* Markdown body. Headings and tables need explicit treatment because the
+   * global stylesheet only styles what the components use. */
+  .case__body :global(h2) {
+    margin-block: var(--space-xl) var(--space-s);
+    font-size: var(--text-xl);
+  }
+
+  .case__body :global(h3) {
+    margin-block: var(--space-l) var(--space-2xs);
+  }
+
+  .case__body :global(table) {
+    inline-size: 100%;
+    border-collapse: collapse;
+    margin-block: var(--space-m);
+    font-size: var(--text-sm);
+  }
+
+  .case__body :global(th),
+  .case__body :global(td) {
+    padding: var(--space-2xs) var(--space-s) var(--space-2xs) 0;
+    border-block-end: var(--border-hair) solid var(--color-rule);
+    text-align: start;
+  }
+
+  .case__body :global(th) {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    font-weight: var(--weight-normal);
+    color: var(--color-text-muted);
+  }
+
+  .case__body :global(td:not(:first-child)) {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

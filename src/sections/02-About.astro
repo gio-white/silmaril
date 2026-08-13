@@ -1,0 +1,71 @@
+---
+import Section from '../components/Section.astro';
+import { profile } from '../data/profile';
+---
+
+<Section id="about" label="About" title="What I work on">
+  <div class="about">
+    <div class="prose about__body" data-reveal>
+      {profile.about.map((paragraph) => <p>{paragraph}</p>)}
+    </div>
+
+    <!-- A definition list, because these genuinely are term/value pairs and a
+         screen reader benefits from the association. -->
+    <dl class="about__metrics" data-reveal>
+      {
+        profile.metrics.map((metric) => (
+          <div class="about__metric">
+            <dt class="about__metric-label">{metric.label}</dt>
+            <dd class="about__metric-value tabular">{metric.value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+</Section>
+
+<style>
+  .about {
+    display: grid;
+    gap: var(--space-xl);
+  }
+
+  @media (min-width: 48rem) {
+    .about {
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: var(--space-2xl);
+      align-items: start;
+    }
+  }
+
+  .about__metrics {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .about__metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-s);
+    padding-block: var(--space-2xs);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  .about__metric-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .about__metric-value {
+    margin: 0;
+    font-size: var(--text-lg);
+    font-weight: var(--weight-medium);
+    color: var(--color-accent);
+  }
+</style>
