@@ -7,6 +7,35 @@ Newest first.
 
 ---
 
+## Signal surface hero, scene loader, deploy headers
+
+The 3D hero is live, behind the same gates the architecture doc promised.
+
+**A reusable `Scene3D` wrapper owns every performance guardrail** — capability check, lazy
+import, poster fallback, pause-when-hidden, theme re-read — so a future Blender/three.js piece
+is a scene file rather than a fresh round of mistakes. The signal surface itself is one
+96×96 plane, one draw call, displacement in the vertex shader, grid and rust threshold band in
+the fragment shader. Colours are resolved from CSS custom properties through a DOM probe,
+because `light-dark()` tokens return the specified function string from `getPropertyValue`, not
+the used colour.
+
+**Posters are SVG, not captured AVIF.** A hairline grid compresses better as vectors (11 kB
+gzip, well under the 35 kB budget) and stays sharp at any DPR. Two posters, one per theme, so a
+dark-mode visitor never flashes a light frame. Below 48rem and under `prefers-reduced-motion`
+the poster is the whole hero and three.js is never fetched.
+
+**Cloudflare `_headers`** set a strict CSP (shaders are strings, so no `unsafe-eval`),
+`nosniff`, `DENY` framing, and year-long immutable cache on hashed `/_astro/` assets.
+
+## Axis gutter actually tracks the section you are reading
+
+The first IntersectionObserver version answered the wrong question — "is this section on
+screen". With tall sections several are, and near the top of the page none of them sit inside a
+tuned `rootMargin` band, so no tick ever lit up. It now reads bounding rects against a reading
+line at 35% of the viewport, rAF-throttled on a passive scroll listener, which is deterministic.
+The last section is forced active at the bottom of the page so a short contact block cannot
+leave the final tick permanently dark.
+
 ## Content model, sections and pages
 
 The site now renders real structure. Six routes: home, `/projects`, `/projects/<slug>`,

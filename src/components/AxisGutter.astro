@@ -52,15 +52,14 @@ const { items, mode, current } = Astro.props;
   </ol>
 </nav>
 
-{
-  mode === 'scroll' && (
-    <script>
-      import { initAxis } from '../scripts/axis';
+<!-- Unconditional: Astro hoists <script> at build time, so wrapping one in a
+     runtime condition is misleading - it ships either way. initAxis() exits
+     immediately when there is no scroll-mode axis on the page. -->
+<script>
+  import { initAxis } from '../scripts/axis';
 
-      initAxis();
-    </script>
-  )
-}
+  initAxis();
+</script>
 
 <style>
   .axis {

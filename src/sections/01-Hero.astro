@@ -1,20 +1,23 @@
 ---
+import posterDark from '../assets/posters/signal-surface-dark.svg?url';
+import posterLight from '../assets/posters/signal-surface-light.svg?url';
 import { profile } from '../data/profile';
+import Scene3D from '../three/Scene3D.astro';
 
 /**
- * The 3D scene slot is empty for now — Scene3D lands in a later commit. The
- * hero is built so it is complete without it: the scene decorates a section
- * that already works, which is also exactly what a visitor on a phone or with
- * reduced motion will see.
+ * The scene is a decoration, not a requirement. The hero is complete without
+ * WebGL — which is also exactly what a visitor on a phone or with reduced
+ * motion will see. A readability scrim on the left keeps the type on paper
+ * even when the canvas is live; it is a functional fade, not decoration.
  */
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
   <div class="hero__scene" aria-hidden="true">
-    <slot name="scene" />
+    <Scene3D name="signal-surface" posterLight={posterLight} posterDark={posterDark} />
   </div>
 
-  <div class="hero__content">
+  <div class="hero__content" data-reveal="fade">
     <p class="label hero__role">{profile.role}</p>
     <h1 class="hero__name" id="hero-heading">{profile.name}</h1>
     <p class="hero__positioning">{profile.positioning}</p>
@@ -51,6 +54,33 @@ import { profile } from '../data/profile';
     inset: 0;
     z-index: var(--z-canvas);
     pointer-events: none;
+  }
+
+  /* Keep the name and positioning on paper. The scene lives to the right;
+   * this scrim is what stops the grid running through the type. */
+  .hero__scene::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      var(--color-bg) 0%,
+      var(--color-bg) 28%,
+      color-mix(in oklab, var(--color-bg) 55%, transparent) 52%,
+      transparent 72%
+    );
+    pointer-events: none;
+  }
+
+  @media (max-width: 47.99rem) {
+    .hero__scene {
+      opacity: 0.28;
+    }
+
+    .hero__scene::after {
+      background: var(--color-bg);
+      opacity: 0.55;
+    }
   }
 
   .hero__content {
