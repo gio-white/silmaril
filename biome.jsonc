@@ -1,0 +1,96 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.5.8/schema.json",
+  "vcs": {
+    "enabled": true,
+    "clientKind": "git",
+    "useIgnoreFile": true
+  },
+  "files": {
+    "ignoreUnknown": true,
+    "includes": [
+      "**",
+      "!dist",
+      "!.astro",
+      "!node_modules",
+      // Third-party skill sources; not ours to format.
+      "!.cursor/skills",
+      // Hand-authored static assets. a11y rules objecting that a favicon has
+      // no <title> are noise.
+      "!public",
+      "!design-system",
+      "!pnpm-lock.yaml"
+    ]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineWidth": 100
+  },
+  "linter": {
+    "enabled": true,
+    "rules": {
+      "preset": "recommended",
+      "a11y": {
+        "preset": "recommended",
+        // role="list" on a <ul> is redundant in the abstract, which is what
+        // this rule checks. It is not redundant in practice: Safari removes
+        // list semantics from a <ul> as soon as `list-style: none` is applied,
+        // so VoiceOver stops announcing "list, 6 items". Every styled list on
+        // this site sets list-style: none, so the explicit role is restoring
+        // real semantics rather than repeating them.
+        "noRedundantRoles": "off"
+      }
+    }
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "always",
+      "trailingCommas": "all"
+    }
+  },
+  // Experimental, and 2.4.x had a regression that appended runaway newlines to
+  // .astro files on every fix pass. Verified idempotent on this repo with
+  // 2.5.8. Note the parser still rejects comment-only expressions, so use HTML
+  // comments in .astro templates rather than the JSX `{/* */}` form.
+  "html": {
+    "experimentalFullSupportEnabled": true
+  },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
+  "overrides": [
+    {
+      // tokens.css declares each themed token twice on purpose: a plain hex
+      // first, then the light-dark() version. Browsers without light-dark()
+      // keep the first and get the light theme instead of nothing. That is
+      // progressive enhancement, not a duplicate.
+      "includes": ["src/styles/tokens.css"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noDuplicateCustomProperties": "off"
+          }
+        }
+      }
+    },
+    {
+      // The prefers-reduced-motion kill switch has to beat every other
+      // declaration in the cascade, including inline styles from a scene.
+      // !important is correct here and nowhere else.
+      "includes": ["src/styles/motion.css"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noImportantStyles": "off"
+          }
+        }
+      }
+    }
+  ]
+}

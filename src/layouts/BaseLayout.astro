@@ -1,0 +1,168 @@
+---
+import archivoLatin from '../assets/fonts/archivo-latin.woff2';
+import publicSansLatin from '../assets/fonts/public-sans-latin.woff2';
+import Nav from '../components/Nav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ThemeToggle from '../components/ThemeToggle.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path-relative OG image; falls back to the site-wide card. */
+  image?: string;
+}
+
+const { title, description, image = '/og.svg' } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const ogImage = new URL(image, Astro.site);
+const hasAxis = Astro.slots.has('axis');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+
+    <!-- Overwritten at runtime by theme.ts so mobile browser chrome tracks the
+         active theme. The static value here is the light background. -->
+    <meta name="theme-color" content="#edf0f2" />
+
+    <!-- Open Graph is the point of prerendering: Slack, LinkedIn and WhatsApp
+         build the preview card without executing any JavaScript. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+    <!-- Only the two above-the-fold faces are preloaded. Mono and the latin-ext
+         subsets load on demand. -->
+    <link rel="preload" href={archivoLatin} as="font" type="font/woff2" crossorigin="anonymous" />
+    <link
+      rel="preload"
+      href={publicSansLatin}
+      as="font"
+      type="font/woff2"
+      crossorigin="anonymous"
+    />
+
+    <!--
+      The only blocking script on the site, and it earns it: without setting
+      the theme before first paint, every dark-mode visitor gets a white flash
+      on every navigation.
+
+      It also detects scroll-driven animation support here rather than later,
+      because the IntersectionObserver fallback hides elements before revealing
+      them - deciding that after paint would itself cause a flash.
+    -->
+    <script is:inline>
+      (() => {
+        const root = document.documentElement;
+        try {
+          const stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') root.dataset.theme = stored;
+        } catch {}
+        if (!(window.CSS && CSS.supports('animation-timeline: view()'))) {
+          root.dataset.revealJs = '';
+        }
+      })();
+    </script>
+  </head>
+
+  <body>
+    <a href="#main" class="skip-link">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <Nav />
+        <ThemeToggle />
+      </div>
+    </header>
+
+    <div class:list={['shell', { 'shell--axis': hasAxis }]}>
+      {hasAxis && <div class="shell__axis"><slot name="axis" /></div>}
+      <main id="main" class="shell__main">
+        <slot />
+      </main>
+    </div>
+
+    <SiteFooter />
+
+    <script>
+      import { initReveal } from '../scripts/reveal';
+
+      initReveal();
+    </script>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        z-index: var(--z-skip-link);
+        inset-block-start: var(--space-2xs);
+        inset-inline-start: var(--space-2xs);
+        padding: var(--space-2xs) var(--space-s);
+        background-color: var(--color-surface);
+        color: var(--color-text);
+        border: var(--border-hair) solid var(--color-accent);
+        border-radius: var(--radius-md);
+        transform: translateY(-200%);
+      }
+
+      .skip-link:focus-visible {
+        transform: none;
+      }
+
+      .site-header {
+        position: sticky;
+        inset-block-start: 0;
+        z-index: var(--z-header);
+        background-color: color-mix(in oklab, var(--color-bg) 88%, transparent);
+        backdrop-filter: blur(8px);
+        border-block-end: var(--border-hair) solid var(--color-rule);
+      }
+
+      .site-header__inner {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-2xs) var(--space-s);
+        max-inline-size: var(--width-content);
+        margin-inline: auto;
+        padding: var(--space-2xs) var(--gutter);
+      }
+
+      .shell {
+        max-inline-size: var(--width-content);
+        margin-inline: auto;
+        padding-inline: var(--gutter);
+      }
+
+      /* The axis takes its own column only where there is horizontal room for
+       * it. Below 64rem --axis-width is 0 and the gutter hides itself, so the
+       * single-column rule here is what actually applies. */
+      @media (min-width: 64rem) {
+        .shell--axis {
+          display: grid;
+          grid-template-columns: var(--axis-width) minmax(0, 1fr);
+          gap: var(--space-xl);
+          align-items: start;
+        }
+      }
+
+      .shell__main {
+        min-inline-size: 0;
+      }
+    </style>
+  </body>
+</html>

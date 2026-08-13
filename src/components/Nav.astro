@@ -1,0 +1,76 @@
+---
+import { contactItem, isActive, navItems } from '../data/nav';
+
+const pathname = Astro.url.pathname;
+---
+
+<nav class="nav" aria-label="Primary">
+  <ul class="nav__list" role="list">
+    {
+      navItems.map((item) => {
+        const active = isActive(item.href, pathname);
+        return (
+          <li>
+            <a
+              class:list={['nav__link', { 'is-active': active }]}
+              href={item.href}
+              aria-current={active ? 'page' : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })
+    }
+    <li>
+      <a class="nav__link nav__link--accent" href={contactItem.href}>{contactItem.label}</a>
+    </li>
+  </ul>
+</nav>
+
+<style>
+  .nav__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3xs) var(--space-s);
+    margin: 0;
+    padding: 0;
+  }
+
+  .nav__link {
+    display: inline-block;
+    padding-block: var(--space-3xs);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-text-muted);
+    border-block-end: var(--border-hair) solid transparent;
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      border-color var(--duration-fast) var(--ease-out);
+  }
+
+  .nav__link:hover {
+    color: var(--color-text);
+    border-block-end-color: var(--color-rule-strong);
+  }
+
+  /* Current page is marked by an underline as well as colour, and carries
+   * aria-current for anyone not seeing either. */
+  .nav__link.is-active {
+    color: var(--color-text);
+    border-block-end-color: var(--color-accent);
+  }
+
+  .nav__link--accent {
+    color: var(--color-accent);
+  }
+
+  .nav__link--accent:hover {
+    color: var(--color-accent);
+    border-block-end-color: var(--color-accent);
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+/**
+ * Generic 3D scene host.
+ *
+ * Always paints a static poster first — that is what LCP measures. The WebGL
+ * chunk is fetched only after first paint, only when the host is in view, and
+ * only if the device passes the gates in capabilities.ts. A live canvas then
+ * cross-fades over the poster. If any gate fails the poster stays, and the
+ * page is complete without it.
+ *
+ * Pass `name` matching a folder under src/three/scenes/. Two posters, one per
+ * theme, so a dark-mode visitor never flashes a light frame.
+ */
+interface Props {
+  name: string;
+  posterLight: string;
+  posterDark: string;
+}
+
+const { name, posterLight, posterDark } = Astro.props;
+---
+
+<div class="scene3d" data-scene={name}>
+  <img
+    class="scene3d__poster scene3d__poster--light"
+    src={posterLight}
+    width="1600"
+    height="900"
+    alt=""
+    decoding="async"
+  />
+  <img
+    class="scene3d__poster scene3d__poster--dark"
+    src={posterDark}
+    width="1600"
+    height="900"
+    alt=""
+    decoding="async"
+  />
+  <canvas class="scene3d__canvas" data-scene-canvas aria-hidden="true"></canvas>
+</div>
+
+<script>
+  import { initScenes } from './loader';
+
+  initScenes();
+</script>
+
+<style>
+  .scene3d {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .scene3d__poster,
+  .scene3d__canvas {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+  }
+
+  .scene3d__poster {
+    object-fit: cover;
+    object-position: right center;
+  }
+
+  .scene3d__poster--dark {
+    display: none;
+  }
+
+  :global(:root[data-theme="dark"]) .scene3d__poster--light {
+    display: none;
+  }
+
+  :global(:root[data-theme="dark"]) .scene3d__poster--dark {
+    display: block;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme="light"])) .scene3d__poster--light {
+      display: none;
+    }
+
+    :global(:root:not([data-theme="light"])) .scene3d__poster--dark {
+      display: block;
+    }
+  }
+
+  .scene3d__canvas {
+    opacity: 0;
+    transition: opacity var(--duration-slow) var(--ease-out);
+  }
+
+  /* The loader sets data-scene-live once the module has mounted. The canvas
+   * then covers the poster; the poster stays underneath if the context is lost. */
+  .scene3d[data-scene-live] .scene3d__canvas {
+    opacity: 1;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .scene3d__canvas {
+      display: none;
+    }
+  }
+
+  /* Phones keep the poster and never see a canvas. The loader also refuses
+   * to fetch three.js below 48rem, so this is defence in depth. */
+  @media (max-width: 47.99rem) {
+    .scene3d__canvas {
+      display: none;
+    }
+  }
+</style>

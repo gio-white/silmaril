@@ -1,0 +1,123 @@
+/*
+ * Minimal reset. Only rules that earn their place — this is not normalize.css.
+ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  /* Anchor links land below the sticky header rather than under it. */
+  scroll-padding-top: var(--space-2xl);
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Smooth scrolling is a preference, not a default — see motion.css for the
+ * reduced-motion counterpart. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  min-height: 100svh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Images must carry intrinsic dimensions; this keeps them from distorting
+ * once width/height attributes are set, which they always should be. */
+img,
+video {
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+li {
+  overflow-wrap: break-word;
+}
+
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+  padding: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+/* Focus is never removed, only replaced. A keyboard user must always be able
+ * to see where they are. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+::selection {
+  background-color: var(--color-accent);
+  color: var(--color-bg);
+}
+
+/* Coarse pointers get the 44px minimum target regardless of visual size. */
+@media (pointer: coarse) {
+  a,
+  button,
+  [role="button"] {
+    min-height: 44px;
+  }
+
+  /* Inline links inside prose are exempt: forcing 44px there would wreck
+   * line spacing, and the surrounding text provides a large hit area. */
+  p a,
+  li a {
+    min-height: 0;
+  }
+}

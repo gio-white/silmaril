@@ -1,0 +1,24 @@
+# PLACEHOLDER — see docs/content-intake.md
+# Deliberately awkward: a long company name, a long title, and highlights that
+# wrap to several lines. Real CV text is uneven; the layout should survive it.
+company: Nordwind Logistics International
+companyNote: Cross-border freight, ~1,800 staff
+role: Senior Data Engineer
+start: 2023-04
+location: Milan (hybrid)
+stack:
+  - Python
+  - Airflow
+  - dbt
+  - Snowflake
+  - Kafka
+  - Terraform
+highlights:
+  - Rebuilt the nightly settlement pipeline as incremental dbt models, cutting the critical-path
+    run from 4h 10m to 38 minutes and removing the standing 06:00 escalation that the finance team
+    had been living with for two years.
+  - Cut warehouse spend 38% (roughly €11k/month) by moving 60+ unclustered tables onto sort keys
+    that matched how they were actually queried, then killing nine dashboards nobody had opened in
+    six months.
+  - Introduced contract tests between ingestion and the reporting layer, which took schema-drift
+    incidents from 11 in the preceding year to 1.

@@ -1,0 +1,73 @@
+---
+import Section from '../components/Section.astro';
+import TagList from '../components/TagList.astro';
+import { getSkills } from '../lib/content';
+
+/**
+ * No proficiency bars, star ratings or percentages. They are a cliché, and
+ * they are not honest — nobody can defend "Python 87%".
+ */
+interface Props {
+  limit?: number;
+  as?: 'h1' | 'h2';
+}
+
+const { limit, as } = Astro.props;
+
+const all = await getSkills();
+const groups = limit ? all.slice(0, limit) : all;
+const truncated = groups.length < all.length;
+---
+
+<Section
+  id="skills"
+  label="Stack"
+  title="What I work with"
+  as={as}
+  viewAll={truncated ? { href: '/skills', text: 'Full stack' } : undefined}
+>
+  <dl class="skills">
+    {
+      groups.map((group) => (
+        <div class="skills__group" data-reveal>
+          <dt class="skills__label label">{group.data.group}</dt>
+          <dd class="skills__items">
+            <TagList items={group.data.items} label={group.data.group} />
+          </dd>
+        </div>
+      ))
+    }
+  </dl>
+</Section>
+
+<style>
+  .skills {
+    display: grid;
+    gap: 0;
+    margin: 0;
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .skills__group {
+    display: grid;
+    gap: var(--space-2xs);
+    padding-block: var(--space-s);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  @media (min-width: 48rem) {
+    .skills__group {
+      grid-template-columns: 12rem minmax(0, 1fr);
+      gap: var(--space-l);
+      align-items: baseline;
+    }
+  }
+
+  .skills__label {
+    margin: 0;
+  }
+
+  .skills__items {
+    margin: 0;
+  }
+</style>
