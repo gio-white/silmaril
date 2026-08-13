@@ -10,7 +10,7 @@ alwaysApply: true
 | Concern | Choice | Notes |
 | --- | --- | --- |
 | Framework | Astro 7, static output | Every route prerenders to HTML. No SSR, no adapter. |
-| UI islands | React 19 via `@astrojs/react` | Only for components that genuinely need runtime state. |
+| UI islands | **None installed** | Nothing has needed runtime component state. Add with `pnpm astro add react` only when something genuinely does. |
 | Language | TypeScript, `astro/tsconfigs/strict` | |
 | Styling | Plain CSS + CSS Modules, tokens as custom properties | No Tailwind. No CSS-in-JS. |
 | 3D | `three`, imported directly | No React Three Fiber. |
@@ -40,6 +40,10 @@ pnpm check            # biome + astro check — the gate below
   `design-system.mdc` is the constraint. If a library is the answer, say what CSS or a few
   lines of TypeScript could not do first.
 - **Never add Tailwind or shadcn/ui.** Rejected deliberately; see `docs/decisions.md`.
+- **Never reach for a UI framework component for something HTML already does.** The theme
+  toggle is three radio inputs; as a React island it would have cost ~45 kB gzip to render
+  them. Check whether semantic HTML plus a few lines of TypeScript is enough first — it
+  usually is on a content site.
 - **Never add `client:load`** unless the component must be interactive before paint. Prefer
   `client:visible` or `client:idle`, and prefer no directive at all.
 - **Never use `outline: none`** without an equivalent `:focus-visible` replacement.

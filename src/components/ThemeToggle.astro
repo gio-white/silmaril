@@ -1,0 +1,118 @@
+---
+/**
+ * Three-state theme control: light / system / dark.
+ *
+ * Built from real radio inputs rather than a JavaScript widget. Native radios
+ * give correct roles, arrow-key navigation and screen-reader announcements for
+ * free, and — importantly — the markup is meaningful before any script runs.
+ *
+ * Deliberately not a React island: React would cost ~45kB gzip to render three
+ * radio buttons, against a 6kB critical-path JS budget for the whole site.
+ */
+---
+
+<fieldset class="theme-toggle">
+  <legend class="visually-hidden">Colour theme</legend>
+
+  <label class="theme-toggle__option">
+    <input type="radio" name="theme-choice" value="light" class="visually-hidden" />
+    <span class="theme-toggle__face">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <circle cx="12" cy="12" r="4.25"></circle>
+        <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"></path>
+      </svg>
+      <span class="visually-hidden">Light</span>
+    </span>
+  </label>
+
+  <label class="theme-toggle__option">
+    <input type="radio" name="theme-choice" value="system" class="visually-hidden" checked />
+    <span class="theme-toggle__face">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="2.75" y="4.25" width="18.5" height="12.5" rx="1.5"></rect>
+        <path d="M8.5 20.25h7M12 16.75v3.5"></path>
+      </svg>
+      <span class="visually-hidden">Match system</span>
+    </span>
+  </label>
+
+  <label class="theme-toggle__option">
+    <input type="radio" name="theme-choice" value="dark" class="visually-hidden" />
+    <span class="theme-toggle__face">
+      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4Z"></path>
+      </svg>
+      <span class="visually-hidden">Dark</span>
+    </span>
+  </label>
+</fieldset>
+
+<script>
+  import { initThemeToggle } from '../scripts/theme';
+
+  initThemeToggle();
+</script>
+
+<style>
+  .theme-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0;
+    margin: 0;
+    padding: 2px;
+    border: var(--border-hair) solid var(--color-rule);
+    border-radius: var(--radius-md);
+  }
+
+  .theme-toggle__option {
+    display: inline-flex;
+    cursor: pointer;
+  }
+
+  .theme-toggle__face {
+    display: grid;
+    place-items: center;
+    inline-size: 1.75rem;
+    block-size: 1.75rem;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .theme-toggle__face svg {
+    inline-size: 15px;
+    block-size: 15px;
+    fill: none;
+    stroke: currentcolor;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .theme-toggle__option:hover .theme-toggle__face {
+    color: var(--color-text);
+  }
+
+  /* Selected state is carried by background *and* by the checked radio itself,
+   * which assistive technology reads — colour is never the only signal. */
+  .theme-toggle__option:has(input:checked) .theme-toggle__face {
+    color: var(--color-accent);
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+
+  .theme-toggle__option:has(input:focus-visible) .theme-toggle__face {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+
+  /* The control is small by design, so on touch devices the whole option gets
+   * a 44px target without changing how it looks. */
+  @media (pointer: coarse) {
+    .theme-toggle__face {
+      inline-size: 2.5rem;
+      block-size: 2.5rem;
+    }
+  }
+</style>

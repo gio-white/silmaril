@@ -85,15 +85,18 @@ stylesheets live in `src/styles/`.
 
 ## JavaScript policy
 
-The site ships almost none. Three things justify it:
+The site ships almost none, and there is **no UI framework installed**. Three things justify the
+JavaScript that does ship:
 
-1. **Theme toggle** — a React island, plus a ~300 byte blocking script in `<head>` that sets the
-   theme before first paint so dark-mode users never see a white flash.
-2. **Scroll-spy** — plain TypeScript, drives the axis gutter where CSS scroll-driven animations
-   are unsupported.
+1. **Theme toggle** — three native radio inputs plus ~440 bytes of module script. A ~230 byte
+   blocking script in `<head>` applies the stored theme before first paint, so dark-mode
+   visitors never see a white flash.
+2. **Scroll-spy** — plain TypeScript, drives the axis gutter and the reveal fallback where CSS
+   scroll-driven animations are unsupported.
 3. **The 3D hero** — dynamically imported, gated, never on the critical path.
 
-Everything else is HTML and CSS.
+Measured at the scaffold stage: **668 bytes gzipped, both scripts inlined**, and no JavaScript
+files emitted at all. Everything else is HTML and CSS.
 
 ## 3D scenes
 

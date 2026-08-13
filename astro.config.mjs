@@ -1,5 +1,4 @@
 // @ts-check
-import react from '@astrojs/react';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
@@ -8,7 +7,11 @@ export default defineConfig({
   // absolute URLs in Open Graph tags, which is what social unfurls read.
   site: 'https://example.com',
 
-  integrations: [react()],
+  // No UI framework integration. Nothing on this site needs runtime component
+  // state, and registering React emitted a 191kB orphan chunk into dist that
+  // no page referenced. `pnpm astro add react` restores it in one command if a
+  // genuinely interactive island ever appears.
+  integrations: [],
 
   build: {
     // Small stylesheets get inlined into the HTML, saving a round trip on a

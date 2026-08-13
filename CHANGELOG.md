@@ -7,6 +7,34 @@ Newest first.
 
 ---
 
+## Design system: tokens, self-hosted fonts, base layout, theme toggle
+
+The visual foundation. Nothing here renders content yet; that lands next.
+
+**Fonts are instanced, not shipped whole.** Fontsource's Archivo carries the full variable design
+space — 88 kB for the latin subset alone, more than the entire 85 kB font budget. Since only one
+width is ever used, `scripts/build-fonts.py` pins `wdth` to 112.5 (SemiExpanded) and narrows
+`wght` to 400–700, taking it to 31.5 kB. Keeping the width as an axis over 100–125 would have cost
+57 kB, so it is pinned rather than ranged; the expanded cut is the entire reason for choosing
+Archivo, so the width is kept and the flexibility is not. Public Sans is narrowed the same way.
+Critical path totals **69.6 kB against the 85 kB budget**, with latin-ext declared behind its own
+`unicode-range` so most visitors never fetch it.
+
+**Theming uses `light-dark()` rather than a class swap.** The toggle only sets `color-scheme` via
+a `data-theme` attribute and every token resolves itself — which also fixes native scrollbars,
+form controls and caret colour, none of which a class-swap approach reaches. Each token declares a
+plain fallback first, so browsers without `light-dark()` get the light theme rather than nothing.
+
+**Motion defaults to the finished state.** Scroll-driven animations sit inside `@supports` with
+elements visible by default, so Firefox — which has not shipped the feature — sees a complete
+static page. The opposite default would leave Firefox users staring at invisible content waiting
+for an animation that never runs.
+
+**React removed entirely.** See `docs/decisions.md`. In short: the theme toggle is three native
+radio inputs, which need no framework and are more accessible without one; and registering the
+integration emitted a 191 kB orphan chunk into `dist/` that no page referenced. Measured after
+removal: 668 bytes of gzipped JavaScript, both scripts inlined, no JS files emitted.
+
 ## TypeScript pinned to 6.x for `astro check`
 
 `pnpm check` needs `@astrojs/check`, which needs TypeScript's programmatic compiler API.

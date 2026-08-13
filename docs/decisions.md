@@ -115,6 +115,32 @@ The `ui-ux-pro-max` skill was run as its workflow requires. Findings:
 
 ---
 
+## React removed — no UI framework at all
+
+**Decided:** no framework integration. `pnpm astro add react` restores it in one command if
+something genuinely needs runtime component state.
+
+The plan called for React islands, with the theme toggle as the first one. Building it revealed
+that was the wrong call twice over.
+
+First, the toggle does not need a framework. It is three mutually exclusive options, which is
+exactly what native radio inputs are for — and they bring correct roles, arrow-key navigation and
+screen-reader announcements with no code, while remaining meaningful before any script runs. As a
+React island it would have cost roughly 45 kB gzip to render three radios, against a 6 kB
+critical-path budget for the entire site.
+
+Second, with no island using it, registering `@astrojs/react` still emitted a 191 kB React chunk
+into `dist/`. Nothing referenced it, so it never reached the critical path, but it was dead weight
+being deployed on every build.
+
+Measured result after removal: **668 bytes of gzipped JavaScript, both scripts inlined, zero JS
+files emitted.**
+
+The general lesson, now written into `stack.mdc`: on a content site, check whether semantic HTML
+plus a few lines of TypeScript is enough before reaching for a component.
+
+---
+
 ## Node everywhere, no Bun
 
 **Decided:** Node `>=22.19.0`.

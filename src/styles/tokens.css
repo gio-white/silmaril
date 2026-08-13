@@ -1,0 +1,175 @@
+/*
+ * Design tokens. The single source of colour, size, rhythm and timing.
+ *
+ * Never write a raw hex, px size or duration in a component — add it here first.
+ *
+ * Theming uses light-dark(). The toggle only sets `color-scheme` (via a
+ * data-theme attribute), and every token resolves itself. That also fixes
+ * native scrollbars, form controls and caret colour for free, which a
+ * class-swap approach does not. Each token declares a plain fallback first so
+ * browsers without light-dark() still get the light theme rather than nothing.
+ */
+
+:root {
+  /* Default: follow the operating system. The toggle overrides this. */
+  color-scheme: light dark;
+
+  /* ---------------------------------------------------------------------
+   * Primitives
+   *
+   * Contrast ratios are measured against that theme's paper and all pass
+   * WCAG AA for body text. Do not change one of these without re-measuring.
+   * ------------------------------------------------------------------- */
+
+  --c-paper: #edf0f2;
+  --c-paper: light-dark(#edf0f2, #101519);
+
+  --c-surface: #ffffff;
+  --c-surface: light-dark(#ffffff, #181d22);
+
+  /* 16.2:1 light / 15.2:1 dark */
+  --c-ink: #101418;
+  --c-ink: light-dark(#101418, #e6eaed);
+
+  /* 5.13:1 light / 6.98:1 dark */
+  --c-slate: #5b6670;
+  --c-slate: light-dark(#5b6670, #96a1ab);
+
+  /* 5.23:1 light / 4.97:1 dark. The accent: emphasis and thresholds. */
+  --c-rust: #b23a16;
+  --c-rust: light-dark(#b23a16, #d9603a);
+
+  /* 5.56:1 light / 7.29:1 dark. Positive and healthy states only. */
+  --c-teal: #0e6b63;
+  --c-teal: light-dark(#0e6b63, #4fb3a6);
+
+  /* Canvas only — fails text contrast by design. Never use for type. */
+  --c-rust-bright: #e4572e;
+
+  /* Hairlines. Deliberately not slate-at-opacity: a fixed value keeps rules
+   * visible in both themes, which opacity does not reliably do. */
+  --c-rule: #d3dade;
+  --c-rule: light-dark(#d3dade, #262e35);
+
+  --c-rule-strong: #b6c0c7;
+  --c-rule-strong: light-dark(#b6c0c7, #38424b);
+
+  /* ---------------------------------------------------------------------
+   * Semantic aliases — components use these, never the primitives above.
+   * ------------------------------------------------------------------- */
+
+  --color-bg: var(--c-paper);
+  --color-surface: var(--c-surface);
+  --color-text: var(--c-ink);
+  --color-text-muted: var(--c-slate);
+  --color-accent: var(--c-rust);
+  --color-positive: var(--c-teal);
+  --color-rule: var(--c-rule);
+  --color-rule-strong: var(--c-rule-strong);
+  --color-focus: var(--c-rust);
+
+  /* ---------------------------------------------------------------------
+   * Type
+   * ------------------------------------------------------------------- */
+
+  --font-display: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Public Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", monospace;
+
+  /* Fluid scale. Most sizing is continuous so it does not step at
+   * breakpoints; breakpoints are reserved for real layout changes. */
+  --text-2xs: 0.6875rem;
+  --text-xs: 0.75rem;
+  --text-sm: 0.8125rem;
+  --text-base: clamp(1rem, 0.97rem + 0.15vw, 1.0625rem);
+  --text-md: clamp(1.0625rem, 1.01rem + 0.28vw, 1.1875rem);
+  --text-lg: clamp(1.25rem, 1.16rem + 0.45vw, 1.5rem);
+  --text-xl: clamp(1.5rem, 1.32rem + 0.9vw, 2rem);
+  --text-2xl: clamp(1.875rem, 1.55rem + 1.6vw, 2.75rem);
+  --text-3xl: clamp(2.25rem, 1.6rem + 3.2vw, 4rem);
+  --text-display: clamp(2.75rem, 1.5rem + 6vw, 6rem);
+
+  --leading-tight: 1.05;
+  --leading-snug: 1.25;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+  --tracking-widest: 0.14em;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+
+  /* ---------------------------------------------------------------------
+   * Space — 4px rhythm
+   * ------------------------------------------------------------------- */
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-s: 1rem;
+  --space-m: 1.5rem;
+  --space-l: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+  --space-3xl: 6rem;
+
+  /* Vertical rhythm between page sections, fluid. */
+  --space-section: clamp(3.5rem, 9vw, 7rem);
+
+  /* ---------------------------------------------------------------------
+   * Layout
+   * ------------------------------------------------------------------- */
+
+  --width-content: 72rem;
+  --width-prose: 68ch;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  /* Space reserved for the axis gutter. Zero until it appears at 64rem. */
+  --axis-width: 0rem;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --border-hair: 1px;
+
+  /* ---------------------------------------------------------------------
+   * Motion
+   *
+   * Entering uses ease-out; exits are faster than entrances. Nothing here
+   * exceeds 300ms — longer reads as sluggish rather than considered.
+   * ------------------------------------------------------------------- */
+
+  --duration-instant: 80ms;
+  --duration-fast: 120ms;
+  --duration-base: 180ms;
+  --duration-slow: 280ms;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --z-canvas: 0;
+  --z-content: 1;
+  --z-axis: 5;
+  --z-header: 10;
+  --z-skip-link: 100;
+}
+
+/* Explicit overrides from the theme toggle. Setting color-scheme is all that
+ * is needed — every light-dark() token above follows automatically. */
+:root[data-theme="light"] {
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --axis-width: 9rem;
+  }
+}
