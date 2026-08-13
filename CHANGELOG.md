@@ -7,6 +7,44 @@ Newest first.
 
 ---
 
+## Motion, posters, share card, and the budget gate
+
+The remaining design work that was still sitting as "implemented in spirit".
+
+**Reveals are one element per section, not one per card.** The design-system rule is
+one or two animated elements per view; putting `data-reveal` on every project, role and
+cert made a page of staggered cards. The section header now carries the reveal, which is
+the thing a reader is actually looking at as they arrive.
+
+**The axis gutter now has its mobile form.** Below 64rem the labelled ticks have no
+horizontal room, so they become a 2px rust progress rail on the inline-start edge —
+CSS `animation-timeline: scroll()` with a compositor-only `scaleY` fallback. Phone
+landscape unpins the sticky header, because a sticky bar plus a 78svh hero was eating
+the whole screen.
+
+**Posters are AVIF, with WebP fallback.** The SVG remains the authored source (a
+hairline grid is a vector drawing) and `pnpm rasterize` emits the rasters the page
+serves. Quality is 40 at 1600×900 so each theme stays under the 35 kB budget (~30 kB).
+The light poster is preloaded; it is the LCP image.
+
+**The share card is a designed PNG.** Slack, LinkedIn and WhatsApp ignore SVG unfurls,
+so `public/og.png` is a 1200×630 raster of the same axis-and-type composition, with
+matching `twitter:image` tags.
+
+**Light `--slate` is now `#4F5963` (6.24:1).** The original `#5B6670` is 5.13:1 on paper
+in the abstract, but 12px antialiased labels sampled at 4.23:1 in Lighthouse, which
+fails AA. The extra headroom is for subpixel smoothing, not decoration.
+
+**Size budgets run at the end of `pnpm build`.** A regression that used to be a
+changelog note is now a failed build. `wrangler.toml` is the repo-side Cloudflare
+Pages config; the custom domain still has to be pointed in the dashboard.
+
+The skill's generated spec is persisted at `design-system/personal-site/MASTER.md`,
+with `OVERRIDES.md` recording where the implemented tokens diverge (palette, body
+face, no Google Fonts). `tokens.css` remains the source of truth for what ships.
+
+---
+
 ## Signal surface hero, scene loader, deploy headers
 
 The 3D hero is live, behind the same gates the architecture doc promised.

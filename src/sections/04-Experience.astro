@@ -33,7 +33,7 @@ const education = showEducation ? await getEducation() : [];
   <ol class="timeline" role="list">
     {
       roles.map((entry) => (
-        <li class="entry" data-reveal>
+        <li class="entry">
           <div class="entry__when tabular">
             <time datetime={entry.data.start}>{formatRange(entry.data.start, entry.data.end)}</time>
             {entry.data.location && <span class="entry__location">{entry.data.location}</span>}
@@ -67,7 +67,7 @@ const education = showEducation ? await getEducation() : [];
         <h3 class="education__heading label">Education</h3>
         <ol class="timeline" role="list">
           {education.map((entry) => (
-            <li class="entry" data-reveal>
+            <li class="entry">
               <div class="entry__when tabular">
                 <time datetime={entry.data.start}>
                   {entry.data.start} — {entry.data.end}

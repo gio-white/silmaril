@@ -109,12 +109,14 @@ mistakes.
 
 Gates a scene must pass before any WebGL code is fetched: viewport ≥48rem, `prefers-reduced-motion:
 no-preference`, no `saveData`, `hardwareConcurrency >= 4`, and WebGL available. Failing any of
-them leaves the static AVIF poster in place, which is a real rendered frame and looks deliberate.
+them leaves the static AVIF poster in place (WebP fallback), which is a raster of the same
+displaced grid and looks deliberate.
 
 Asset rules: glTF only, Draco or meshopt compressed, 300 kB maximum per asset.
 
 ## Deployment
 
-Cloudflare Pages, free tier. Build command `pnpm build`, output directory `dist`. `public/_headers`
-sets immutable caching on hashed assets and the security headers. No environment variables and no
-secrets are required to build.
+Cloudflare Pages, free tier. Build command `pnpm build` (which also runs the size-budget check),
+output directory `dist`. Config lives in `wrangler.toml` and `public/_headers`. No environment
+variables and no secrets are required to build. Custom domain is set in the Cloudflare dashboard
+once the Pages project exists — it cannot be claimed from the repo.

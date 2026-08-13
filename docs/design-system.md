@@ -1,7 +1,11 @@
 # Design system
 
 The enforceable version of this lives in [`.cursor/rules/design-system.mdc`](../.cursor/rules/design-system.mdc)
-and the values live in `src/styles/tokens.css`. This document explains the reasoning.
+and the values live in `src/styles/tokens.css`. The `ui-ux-pro-max` skill's generated
+recommendation is in [`design-system/personal-site/MASTER.md`](../design-system/personal-site/MASTER.md);
+what we actually ship, where the two disagree, is in
+[`design-system/personal-site/OVERRIDES.md`](../design-system/personal-site/OVERRIDES.md).
+This document explains the reasoning.
 
 ## The idea
 
@@ -23,8 +27,10 @@ Two designed palettes, not one palette inverted. Every ratio below was computed 
 theme's background and passes WCAG AA for body text.
 
 **Light** — `--paper` `#EDF0F2`, a pale cool blue-grey that reads as drafting paper rather than
-cream. `--ink` `#101418` at 16.2:1. `--slate` `#5B6670` at 5.13:1 for secondary text and
-hairlines. `--rust` `#B23A16` at 5.23:1. `--teal` `#0E6B63` at 5.56:1. `--surface` `#FFFFFF`.
+cream. `--ink` `#101418` at 16.2:1. `--slate` `#4F5963` at 6.24:1 for secondary text and
+hairlines — darker than a theoretical-AA `#5B6670` because 12px antialiased labels sampled
+below 4.5:1 in Lighthouse. `--rust` `#B23A16` at 5.23:1. `--teal` `#0E6B63` at 5.56:1.
+`--surface` `#FFFFFF`.
 
 **Dark** — `--paper` `#101519`, a deep desaturated blue-black. `--ink` `#E6EAED` at 15.2:1.
 `--slate` `#96A1AB` at 6.98:1. `--rust` `#D9603A` at 4.97:1, deliberately muted rather than
@@ -69,8 +75,9 @@ CSS scroll-driven animation.
 
 On the home page the ticks are sections. On a dedicated page there is no multi-section scroll to
 track, so it becomes a site-level axis whose ticks are the pages, keeping the identity coherent
-across the site. Below 64rem it collapses to a thin progress rail, because it needs horizontal
-room to work.
+across the site. Below 64rem the labelled axis has no horizontal room, so it becomes a 2px
+scroll-progress rail on the inline-start edge — same rust fill, no labels. The sticky header
+carries named navigation at that size.
 
 ## Motion
 

@@ -21,14 +21,14 @@ const links = [
 
 <Section id="contact" label="Contact" title="Get in touch">
   <div class="contact">
-    <div class="contact__intro" data-reveal>
+    <div class="contact__intro">
       <p class="contact__lead">
         {profile.availability}. Based in {profile.location}, working {profile.timezone}.
       </p>
       <a class="contact__email" href={`mailto:${profile.email}`}>{profile.email}</a>
     </div>
 
-    <dl class="contact__links" data-reveal>
+    <dl class="contact__links">
       {
         links.map((link) => (
           <div class="contact__row">

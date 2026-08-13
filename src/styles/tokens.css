@@ -31,9 +31,11 @@
   --c-ink: #101418;
   --c-ink: light-dark(#101418, #e6eaed);
 
-  /* 5.13:1 light / 6.98:1 dark */
-  --c-slate: #5b6670;
-  --c-slate: light-dark(#5b6670, #96a1ab);
+  /* 6.24:1 light / 6.98:1 dark. Darker than the original #5B6670 because
+   * 12px labels with antialiased rendering sampled at 4.23:1 in Lighthouse,
+   * which fails AA. The extra headroom is for subpixel smoothing. */
+  --c-slate: #4f5963;
+  --c-slate: light-dark(#4f5963, #96a1ab);
 
   /* 5.23:1 light / 4.97:1 dark. The accent: emphasis and thresholds. */
   --c-rust: #b23a16;
@@ -171,5 +173,11 @@
 @media (min-width: 64rem) {
   :root {
     --axis-width: 9rem;
+  }
+}
+
+@media (min-width: 90rem) {
+  :root {
+    --gutter: 3rem;
   }
 }

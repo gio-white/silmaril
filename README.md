@@ -22,6 +22,7 @@ pnpm dev
 | `pnpm lint` | Biome, no writes |
 | `pnpm format` | Biome with `--write` |
 | `pnpm check` | Biome + `astro check` — must pass before any change is done |
+| `pnpm check:budgets` | Gzip/size budgets against `dist/` (also runs at the end of `pnpm build`) |
 
 pnpm is enforced. `npm install` and `yarn` are rejected by a preinstall guard.
 
@@ -45,5 +46,6 @@ Agent rules live in `.cursor/rules/`.
 
 ## Deployment
 
-Cloudflare Pages, free tier. Build command `pnpm build`, output directory `dist`. No environment
-variables required.
+Cloudflare Pages, free tier. Build command `pnpm build`, output directory `dist`. Repo-side config
+is `wrangler.toml` plus `public/_headers`. No environment variables required. Point a custom domain
+at the Pages project in the Cloudflare dashboard when you have one.
