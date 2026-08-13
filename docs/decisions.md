@@ -203,3 +203,7 @@ precisely what the brief rules out.
 The site is reached through links the owner sends, so the preview card and load speed are the
 parts that pay. The deferred items are purely additive and cost nothing to retrofit. URL shapes
 are fixed now because renaming routes later costs redirects.
+
+The share card is a **PNG**, not SVG. Slack, LinkedIn and WhatsApp routinely ignore SVG unfurls,
+so `public/og.png` (1200×630) is a raster of the same axis-and-type composition. `twitter:image`
+points at the same file.

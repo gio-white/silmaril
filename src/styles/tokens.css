@@ -173,3 +173,9 @@
     --axis-width: 9rem;
   }
 }
+
+@media (min-width: 90rem) {
+  :root {
+    --gutter: 3rem;
+  }
+}

@@ -74,5 +74,7 @@ that scene number two inherits the guardrails instead of relitigating them.
 Hard rules for any 3D asset:
 
 - glTF only, Draco or meshopt compressed, **300 kB per asset maximum**.
-- Never on the critical path. Always behind a static poster.
+- Never on the critical path. Always behind a static AVIF poster (WebP fallback).
 - Never loads under `prefers-reduced-motion: reduce`, or below the 48rem viewport gate.
+- Authored posters are SVG in `src/assets/posters/`; `pnpm rasterize` emits the AVIF/WebP
+  the page actually serves.

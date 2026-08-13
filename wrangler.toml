@@ -1,0 +1,10 @@
+# Cloudflare Pages. The dashboard can override these; this file is the
+# repo-side source of truth for `wrangler pages` and for anyone wiring the
+# project later.
+#
+# Custom domain is set in the Cloudflare dashboard once the Pages project
+# exists — it cannot be claimed from the repo.
+
+name = "silmaril"
+compatibility_date = "2026-08-13"
+pages_build_output_dir = "./dist"

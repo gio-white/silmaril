@@ -4,7 +4,8 @@
  *
  * Owns the heading, the mono label and the optional "see all" link so that
  * every section is announced the same way and none of them can forget
- * aria-labelledby.
+ * aria-labelledby. The header also carries `data-reveal`, so a section
+ * announces itself with one motion rather than staggering every child.
  *
  * `viewAll` is deliberately passed as an already-resolved value rather than
  * computed here: the caller knows whether its collection was truncated, and
@@ -25,7 +26,7 @@ const headingId = `${id}-heading`;
 ---
 
 <section class="section" id={id} aria-labelledby={headingId}>
-  <header class="section__head">
+  <header class="section__head" data-reveal>
     <p class="label section__label">{label}</p>
     <div class="section__title-row">
       <Heading id={headingId} class="section__title">{title}</Heading>

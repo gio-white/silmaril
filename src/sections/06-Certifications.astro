@@ -39,7 +39,7 @@ const now = new Date().toISOString().slice(0, 7);
       shown.map((cert) => {
         const expired = cert.data.expires !== undefined && cert.data.expires < now;
         return (
-          <li class="cert" data-reveal>
+          <li class="cert">
             <div class="cert__main">
               <h3 class="cert__name">
                 {cert.data.credentialUrl ? (

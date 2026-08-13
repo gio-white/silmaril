@@ -17,13 +17,15 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-budgets.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome check .",
     "format": "biome check --write .",
     "typecheck": "astro check",
-    "check": "biome check . && astro check"
+    "check": "biome check . && astro check",
+    "check:budgets": "node scripts/check-budgets.mjs",
+    "rasterize": "node scripts/rasterize.mjs"
   },
   "dependencies": {
     "@fontsource-variable/archivo": "^5.3.0",
@@ -37,6 +39,7 @@
     "@astrojs/check": "^0.9.10",
     "@biomejs/biome": "^2.5.8",
     "@types/three": "^0.185.4",
+    "sharp": "^0.35.3",
     "typescript": "^6.0.3"
   }
 }

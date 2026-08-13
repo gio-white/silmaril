@@ -1,7 +1,11 @@
 # Design system
 
 The enforceable version of this lives in [`.cursor/rules/design-system.mdc`](../.cursor/rules/design-system.mdc)
-and the values live in `src/styles/tokens.css`. This document explains the reasoning.
+and the values live in `src/styles/tokens.css`. The `ui-ux-pro-max` skill's generated
+recommendation is in [`design-system/personal-site/MASTER.md`](../design-system/personal-site/MASTER.md);
+what we actually ship, where the two disagree, is in
+[`design-system/personal-site/OVERRIDES.md`](../design-system/personal-site/OVERRIDES.md).
+This document explains the reasoning.
 
 ## The idea
 
@@ -69,8 +73,9 @@ CSS scroll-driven animation.
 
 On the home page the ticks are sections. On a dedicated page there is no multi-section scroll to
 track, so it becomes a site-level axis whose ticks are the pages, keeping the identity coherent
-across the site. Below 64rem it collapses to a thin progress rail, because it needs horizontal
-room to work.
+across the site. Below 64rem the labelled axis has no horizontal room, so it becomes a 2px
+scroll-progress rail on the inline-start edge — same rust fill, no labels. The sticky header
+carries named navigation at that size.
 
 ## Motion
 

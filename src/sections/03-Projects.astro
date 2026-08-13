@@ -34,7 +34,7 @@ const truncated = shown.length < total;
       shown.map((project) => {
         const detail = hasCaseStudy(project) ? `/projects/${project.id}` : undefined;
         return (
-          <li class="project" data-reveal>
+          <li class="project">
             <article class="project__body">
               <h3 class="project__title">
                 {detail ? (

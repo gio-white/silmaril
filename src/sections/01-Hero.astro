@@ -1,6 +1,8 @@
 ---
-import posterDark from '../assets/posters/signal-surface-dark.svg?url';
-import posterLight from '../assets/posters/signal-surface-light.svg?url';
+import posterDarkAvif from '../assets/posters/signal-surface-dark.avif?url';
+import posterDarkWebp from '../assets/posters/signal-surface-dark.webp?url';
+import posterLightAvif from '../assets/posters/signal-surface-light.avif?url';
+import posterLightWebp from '../assets/posters/signal-surface-light.webp?url';
 import { profile } from '../data/profile';
 import Scene3D from '../three/Scene3D.astro';
 
@@ -14,7 +16,11 @@ import Scene3D from '../three/Scene3D.astro';
 
 <section class="hero" aria-labelledby="hero-heading">
   <div class="hero__scene" aria-hidden="true">
-    <Scene3D name="signal-surface" posterLight={posterLight} posterDark={posterDark} />
+    <Scene3D
+      name="signal-surface"
+      posterLight={{ avif: posterLightAvif, webp: posterLightWebp }}
+      posterDark={{ avif: posterDarkAvif, webp: posterDarkWebp }}
+    />
   </div>
 
   <div class="hero__content" data-reveal="fade">
@@ -80,6 +86,13 @@ import Scene3D from '../three/Scene3D.astro';
     .hero__scene::after {
       background: var(--color-bg);
       opacity: 0.55;
+    }
+  }
+
+  @media (orientation: landscape) and (max-height: 40rem) {
+    .hero {
+      min-block-size: auto;
+      padding-block: var(--space-l) var(--space-xl);
     }
   }
 

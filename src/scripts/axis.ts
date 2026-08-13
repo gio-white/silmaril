@@ -87,3 +87,41 @@ export function initAxis(): void {
   window.addEventListener('resize', schedule, { passive: true });
   paint();
 }
+
+/**
+ * Drive the mobile progress rail when CSS scroll-driven animation is missing.
+ * The CSS path (animation-timeline: scroll()) is preferred; this is the
+ * Firefox / reduced-capability counterpart. Scale rather than height so it
+ * stays on the compositor.
+ */
+export function initAxisRail(): void {
+  const fill = document.querySelector<HTMLElement>('[data-axis-rail]');
+  if (fill === null) return;
+  const rail = fill;
+
+  // Scroll-driven CSS already drives the fill. Under reduced-motion that
+  // animation is killed, so we still need JS — setting scaleY from scroll
+  // position is a reading, not a motion.
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduce && window.CSS?.supports('animation-timeline: scroll()')) return;
+
+  function paint(): void {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = max <= 0 ? 0 : Math.min(1, Math.max(0, window.scrollY / max));
+    rail.style.transform = `scaleY(${progress})`;
+  }
+
+  let queued = false;
+  function schedule(): void {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => {
+      queued = false;
+      paint();
+    });
+  }
+
+  window.addEventListener('scroll', schedule, { passive: true });
+  window.addEventListener('resize', schedule, { passive: true });
+  paint();
+}

@@ -13,7 +13,8 @@
  * tier 1 is unavailable. It sets data-reveal-js on <html> before paint.
  *
  * Discipline that matters more than either: one or two animated elements per
- * view. Everything stops under prefers-reduced-motion.
+ * view. Reveals therefore live on the section header, not on every card.
+ * Everything stops under prefers-reduced-motion.
  */
 
 @keyframes reveal-rise {
@@ -33,6 +34,15 @@
   }
   to {
     opacity: 1;
+  }
+}
+
+@keyframes axis-progress {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
   }
 }
 

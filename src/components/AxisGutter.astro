@@ -8,9 +8,8 @@
  *            you scroll (see scripts/axis.ts).
  *   site   — ticks are the pages; the current one is marked server-side.
  *
- * Desktop only. Below 64rem there is no horizontal room for an axis, so it is
- * removed entirely rather than shrunk into something illegible — the sticky
- * header carries navigation at that size.
+ * Desktop labelled axis from 64rem. Below that it becomes a thin
+ * scroll-progress rail rather than disappearing — same rust fill, no labels.
  */
 export interface AxisItem {
   /** Section id for scroll mode, or href for site mode. */
@@ -27,6 +26,12 @@ interface Props {
 
 const { items, mode, current } = Astro.props;
 ---
+
+<!-- Thin progress rail for viewports that cannot fit the labelled axis.
+     Hidden from AT: the sticky header already exposes the same destinations. -->
+<div class="axis-rail" aria-hidden="true">
+  <div class="axis-rail__fill" data-axis-rail></div>
+</div>
 
 <nav class="axis" data-axis={mode} aria-label={mode === 'site' ? 'Site sections' : 'On this page'}>
   <ol class="axis__list">
@@ -56,12 +61,51 @@ const { items, mode, current } = Astro.props;
      runtime condition is misleading - it ships either way. initAxis() exits
      immediately when there is no scroll-mode axis on the page. -->
 <script>
-  import { initAxis } from '../scripts/axis';
+  import { initAxis, initAxisRail } from '../scripts/axis';
 
   initAxis();
+  initAxisRail();
 </script>
 
 <style>
+  /*
+   * Below 64rem the labelled axis has no horizontal room, so it is replaced
+   * by a 2px scroll-progress rail on the inline-start edge. Same rust fill,
+   * same hairline language — just without the tick labels.
+   */
+  .axis-rail {
+    position: fixed;
+    inset-block: 0;
+    inset-inline-start: 0;
+    z-index: var(--z-axis);
+    inline-size: 2px;
+    pointer-events: none;
+    background-color: var(--color-rule);
+  }
+
+  .axis-rail__fill {
+    block-size: 100%;
+    inline-size: 100%;
+    background-color: var(--color-accent);
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      :global(html:not([data-reveal-js])) .axis-rail__fill {
+        animation: axis-progress linear;
+        animation-timeline: scroll();
+      }
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .axis-rail {
+      display: none;
+    }
+  }
+
   .axis {
     display: none;
   }

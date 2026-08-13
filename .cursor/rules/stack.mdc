@@ -24,12 +24,14 @@ alwaysApply: true
 ```bash
 pnpm install          # never npm/yarn — preinstall guard will reject them
 pnpm dev              # dev server
-pnpm build            # production build to dist/
+pnpm build            # production build to dist/, then size-budget check
 pnpm preview          # serve the built output
 pnpm lint             # biome check (no writes)
 pnpm format           # biome check --write
 pnpm typecheck        # astro check
 pnpm check            # biome + astro check — the gate below
+pnpm check:budgets    # gzip/size budgets; requires dist/
+pnpm rasterize        # SVG → AVIF/WebP posters and og.png
 ```
 
 ## Never do these
@@ -53,7 +55,7 @@ pnpm check            # biome + astro check — the gate below
 No task is finished until all four hold:
 
 1. **`pnpm check` passes.** Biome and `astro check`, both clean.
-2. **`pnpm build` succeeds.**
+2. **`pnpm build` succeeds.** This includes the size-budget check against `dist/`.
 3. **`docs/` reflects reality.** If the architecture changed, `docs/architecture.md` and
    `.cursor/rules/architecture.mdc` change in the same commit.
 4. **`CHANGELOG.md` has an entry** describing what changed *and why*. The reason matters more

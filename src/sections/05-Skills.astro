@@ -29,7 +29,7 @@ const truncated = groups.length < all.length;
   <dl class="skills">
     {
       groups.map((group) => (
-        <div class="skills__group" data-reveal>
+        <div class="skills__group">
           <dt class="skills__label label">{group.data.group}</dt>
           <dd class="skills__items">
             <TagList items={group.data.items} label={group.data.group} />

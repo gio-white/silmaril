@@ -9,34 +9,41 @@
  * page is complete without it.
  *
  * Pass `name` matching a folder under src/three/scenes/. Two posters, one per
- * theme, so a dark-mode visitor never flashes a light frame.
+ * theme, so a dark-mode visitor never flashes a light frame. AVIF is the
+ * primary format; WebP is the fallback for browsers that still lack AVIF.
  */
+interface PosterSet {
+  avif: string;
+  webp: string;
+}
+
 interface Props {
   name: string;
-  posterLight: string;
-  posterDark: string;
+  posterLight: PosterSet;
+  posterDark: PosterSet;
 }
 
 const { name, posterLight, posterDark } = Astro.props;
 ---
 
 <div class="scene3d" data-scene={name}>
-  <img
-    class="scene3d__poster scene3d__poster--light"
-    src={posterLight}
-    width="1600"
-    height="900"
-    alt=""
-    decoding="async"
-  />
-  <img
-    class="scene3d__poster scene3d__poster--dark"
-    src={posterDark}
-    width="1600"
-    height="900"
-    alt=""
-    decoding="async"
-  />
+  <picture class="scene3d__poster scene3d__poster--light">
+    <source type="image/avif" srcset={posterLight.avif} />
+    <source type="image/webp" srcset={posterLight.webp} />
+    <img
+      src={posterLight.webp}
+      width="1600"
+      height="900"
+      alt=""
+      decoding="async"
+      fetchpriority="high"
+    />
+  </picture>
+  <picture class="scene3d__poster scene3d__poster--dark">
+    <source type="image/avif" srcset={posterDark.avif} />
+    <source type="image/webp" srcset={posterDark.webp} />
+    <img src={posterDark.webp} width="1600" height="900" alt="" decoding="async" loading="lazy" />
+  </picture>
   <canvas class="scene3d__canvas" data-scene-canvas aria-hidden="true"></canvas>
 </div>
 
@@ -61,7 +68,9 @@ const { name, posterLight, posterDark } = Astro.props;
     block-size: 100%;
   }
 
-  .scene3d__poster {
+  .scene3d__poster img {
+    inline-size: 100%;
+    block-size: 100%;
     object-fit: cover;
     object-position: right center;
   }
