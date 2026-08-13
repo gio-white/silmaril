@@ -27,8 +27,10 @@ Two designed palettes, not one palette inverted. Every ratio below was computed 
 theme's background and passes WCAG AA for body text.
 
 **Light** — `--paper` `#EDF0F2`, a pale cool blue-grey that reads as drafting paper rather than
-cream. `--ink` `#101418` at 16.2:1. `--slate` `#5B6670` at 5.13:1 for secondary text and
-hairlines. `--rust` `#B23A16` at 5.23:1. `--teal` `#0E6B63` at 5.56:1. `--surface` `#FFFFFF`.
+cream. `--ink` `#101418` at 16.2:1. `--slate` `#4F5963` at 6.24:1 for secondary text and
+hairlines — darker than a theoretical-AA `#5B6670` because 12px antialiased labels sampled
+below 4.5:1 in Lighthouse. `--rust` `#B23A16` at 5.23:1. `--teal` `#0E6B63` at 5.56:1.
+`--surface` `#FFFFFF`.
 
 **Dark** — `--paper` `#101519`, a deep desaturated blue-black. `--ink` `#E6EAED` at 15.2:1.
 `--slate` `#96A1AB` at 6.98:1. `--rust` `#D9603A` at 4.97:1, deliberately muted rather than

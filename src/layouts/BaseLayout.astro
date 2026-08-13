@@ -139,11 +139,15 @@ const hasAxis = Astro.slots.has('axis');
         border-block-end: var(--border-hair) solid var(--color-rule);
       }
 
-      /* Phone landscape: a sticky header plus a 78svh hero eats the whole
+      /* Phone landscape: a sticky header plus a tall hero eats the whole
        * screen. Unpin the header and let the page scroll as a normal document. */
       @media (orientation: landscape) and (max-height: 40rem) {
         .site-header {
           position: static;
+        }
+
+        .site-header__inner {
+          padding-block: 2px;
         }
       }
 

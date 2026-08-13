@@ -31,6 +31,10 @@ The light poster is preloaded; it is the LCP image.
 so `public/og.png` is a 1200×630 raster of the same axis-and-type composition, with
 matching `twitter:image` tags.
 
+**Light `--slate` is now `#4F5963` (6.24:1).** The original `#5B6670` is 5.13:1 on paper
+in the abstract, but 12px antialiased labels sampled at 4.23:1 in Lighthouse, which
+fails AA. The extra headroom is for subpixel smoothing, not decoration.
+
 **Size budgets run at the end of `pnpm build`.** A regression that used to be a
 changelog note is now a failed build. `wrangler.toml` is the repo-side Cloudflare
 Pages config; the custom domain still has to be pointed in the dashboard.

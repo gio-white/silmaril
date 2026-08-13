@@ -65,7 +65,9 @@ const htmlFiles = files.filter((f) => extname(f) === '.html');
 const cssFiles = files.filter((f) => extname(f) === '.css');
 const jsFiles = files.filter((f) => extname(f) === '.js');
 const fontFiles = files.filter((f) => extname(f) === '.woff2');
-const posterFiles = files.filter((f) => /signal-surface-(light|dark)\.(avif|webp|svg)$/.test(f));
+const posterFiles = files.filter((f) =>
+  /signal-surface-(light|dark)\.[^/]+\.(avif|webp|svg)$/.test(f),
+);
 
 console.log('HTML (gzip, per page)');
 for (const file of htmlFiles.sort()) {
@@ -89,7 +91,11 @@ console.log('Critical-path JS (gzip, excluding the lazy three.js chunk)');
     const buf = await readFile(file);
     const gz = gzipSize(buf);
     const name = relative(dist, file);
-    if (gz >= 40 * 1024 || /three|scene|signal/i.test(name)) {
+    // The scene module is the only chunk that is allowed to be large, and it
+    // is fetched only after the capability gates pass. Everything else is
+    // critical-path. Matching on filename `scene.*` rather than a size
+    // heuristic so a future regression that bloats the loader still fails.
+    if (/(^|\/)scene\.[^/]+\.js$/.test(name)) {
       check(`lazy ${name}`, gz, BUDGET.three);
     } else {
       critical += gz;
@@ -98,15 +104,18 @@ console.log('Critical-path JS (gzip, excluding the lazy three.js chunk)');
   check('critical-path JS', critical, BUDGET.criticalJs);
 }
 
-console.log('Fonts (raw WOFF2, latin critical path)');
+console.log('Fonts (raw WOFF2, latin; latin-ext is unicode-range gated)');
 {
   let total = 0;
   for (const file of fontFiles) {
     const { size } = await stat(file);
-    total += size;
-    console.log(`       ${relative(dist, file).padEnd(48)} ${kb(size).padStart(8)}`);
+    const name = relative(dist, file);
+    console.log(`       ${name.padEnd(48)} ${kb(size).padStart(8)}`);
+    // latin-ext is declared behind its own unicode-range, so most visitors
+    // never fetch it. The 85 kB budget is the latin critical path.
+    if (!name.includes('latin-ext')) total += size;
   }
-  check('all fonts', total, BUDGET.fonts);
+  check('latin fonts', total, BUDGET.fonts);
 }
 
 console.log('Hero posters (raw, per theme, AVIF preferred)');

@@ -28,7 +28,7 @@ Contrast ratios are measured against that theme's `--paper` and all pass WCAG AA
 | `--paper` | `#EDF0F2` | — | `#101519` | — |
 | `--surface` | `#FFFFFF` | — | `#181D22` | — |
 | `--ink` | `#101418` | 16.2:1 | `#E6EAED` | 15.2:1 |
-| `--slate` | `#5B6670` | 5.13:1 | `#96A1AB` | 6.98:1 |
+| `--slate` | `#4F5963` | 6.24:1 | `#96A1AB` | 6.98:1 |
 | `--rust` | `#B23A16` | 5.23:1 | `#D9603A` | 4.97:1 |
 | `--teal` | `#0E6B63` | 5.56:1 | `#4FB3A6` | 7.29:1 |
 

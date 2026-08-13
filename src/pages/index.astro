@@ -28,7 +28,14 @@ import Contact from '../sections/07-Contact.astro';
   title={`${profile.name} — ${profile.role}`}
   description={profile.positioning}
 >
-  <link slot="head" rel="preload" as="image" href={posterLightAvif} type="image/avif" />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={posterLightAvif}
+    type="image/avif"
+    fetchpriority="high"
+  />
   <AxisGutter slot="axis" items={axisHomeItems} mode="scroll" />
 
   <Hero />
