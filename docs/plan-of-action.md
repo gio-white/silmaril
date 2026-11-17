@@ -29,7 +29,7 @@ This plan tracks every suggested change so it can be tackled **one phase at a ti
 - [x] **[DECISION] Preview links** — decided: public.
 - [x] **[DECISION] Merging** — decided: Giorgio always merges.
 - [x] **[DECISION] Headshot** — decided: no.
-- [ ] **[DECISION] Extra routes** — which of /lab, /now, /writing, /uses, /cv to build (see Phase 10).
+- [x] **[DECISION] Extra routes** — decided: /cv and /now now; /lab, /writing and /uses later.
 
 ## Phase 0 — Baseline and functional audit, then fix
 
@@ -117,7 +117,7 @@ A static site has a small attack surface: no server, database or login. The real
 
 ### 3.5 Personal and confidential data
 
-- [ ] Public CV PDF has no phone number or home address; strip PDF metadata.
+- [x] Public CV PDF has no phone number or home address; strip PDF metadata. (Generated from `/cv`: no phone or address; the only metadata is the page title and Chromium as producer.)
 - [ ] Consider an email alias for the site to contain spam.
 - [ ] Review every work case study against contracts or NDAs (e.g. CNH or client projects): anonymise names, use ranges instead of exact figures, no internal screenshots.
 - [x] Apply the **[DECISION]** on preview link protection. (Public.)
@@ -155,7 +155,7 @@ The biggest single improvement: today every piece of content is placeholder for 
 
 ### 4.5 Assets
 
-- [x] Real `public/cv.pdf` (no phone or address; see Phase 3). Later replaced by the generated CV in Phase 10. (Generated from `/cv`; see Phase 10.)
+- [x] Real `public/cv.pdf` (no phone or address; see Phase 3). Later replaced by the generated CV in Phase 10. (Generated from `/cv`.)
 - [x] Regenerate `og.png` with the real name and positioning (`pnpm rasterize`).
 - [x] Favicon with a real monogram.
 - [x] **[DECISION]** Headshot: if yes, add it to About via `astro:assets`. Decided: no.
@@ -225,11 +225,11 @@ The current design is already distinctive (Swiss grid, blueprint-and-oxide palet
 ## Phase 10 — Growth (after launch, pick per [DECISION])
 
 - [ ] **/lab — side projects:** personal builds and experiments (e.g. Atlas), using `kind: 'side'` from Phase 5. Lighter cards than case studies: what it is, why, status, link or demo.
-- [ ] **/now:** one Markdown page with a "last updated" date: what you are focused on this month.
+- [x] **/now:** one Markdown page with a "last updated" date: what you are focused on this month.
 - [ ] **/writing:** short notes and posts (route already reserved): a `posts` collection, tags, RSS feed, per-post OG image.
 - [ ] **/uses:** your tools and setup.
-- [ ] **/cv:** a print-styled CV generated from the same content, exported to PDF at build time in each language, replacing the hand-made `cv.pdf` so the CV and the site never drift apart.
-- [ ] **Navigation:** today four items fit on a phone without a menu. New routes need a nav decision (e.g. secondary links in the footer, or a "More" group).
+- [x] **/cv:** a print-styled CV generated from the same content, exported to PDF at build time in each language, replacing the hand-made `cv.pdf` so the CV and the site never drift apart. (PDF via `pnpm cv:pdf`, run locally and committed: Cloudflare's build has no browser. Italian version with Phase 6.)
+- [x] **Navigation:** today four items fit on a phone without a menu. New routes need a nav decision (e.g. secondary links in the footer, or a "More" group). (Decided: /now and /cv go in the footer; the header keeps four items plus Contact.)
 
 ## Backlog — not now
 

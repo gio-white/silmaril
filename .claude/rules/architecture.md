@@ -15,6 +15,8 @@ stands alone, because it is the URL that gets shared. Dedicated pages exist for 
 /projects/<slug>      case study
 /experience           work history and education
 /skills               tech stack and certifications
+/now                  what Giorgio is focused on (src/content/now/en.md)
+/cv                   the CV as a page; `pnpm cv:pdf` prints it to public/cv.pdf
 404                   not-found page, served by Cloudflare Pages for unknown paths
 #contact              anchor, present on every page — never a route
 ```
@@ -57,7 +59,14 @@ whether a link is shown.
 Content collections in `src/content/`, validated by Zod at build time, baked into static HTML.
 Nothing is fetched at runtime. Editing content means editing a YAML or Markdown file.
 
-Collections: `profile`, `roles`, `education`, `projects`, `skills`, `certifications`.
+Collections: `roles`, `education`, `projects`, `skills`, `certifications`, `now`; the profile is
+the typed module `src/data/profile.ts`.
+
+`/now` and `/cv` are linked from the footer, not the header: the header stays at four items plus
+Contact so it fits on one line on a phone.
+
+**After any content change, run `pnpm build && pnpm cv:pdf` and commit `public/cv.pdf`** so the
+downloadable CV matches the site.
 
 If a schema gains a required field, update the placeholder entries too — a build that fails on
 missing content is the schema working correctly, not a bug to route around.

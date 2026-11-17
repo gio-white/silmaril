@@ -1,0 +1,381 @@
+---
+import { profile } from '../data/profile';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  formatMonth,
+  formatRange,
+  getCertifications,
+  getEducation,
+  getRoles,
+  getSkills,
+} from '../lib/content';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * The CV as a page, built from the same collections as the rest of the site,
+ * so the CV and the site cannot drift apart. `pnpm cv:pdf` prints this route
+ * to public/cv.pdf; the print stylesheet below is what makes that PDF.
+ *
+ * On screen it sits inside the normal layout and ends with the contact
+ * section, so the header's #contact link still resolves. In print, the site
+ * chrome and the contact section are hidden and the page becomes A4.
+ */
+const roles = await getRoles();
+const education = await getEducation();
+const certifications = await getCertifications();
+const skills = await getSkills();
+
+const contacts = [
+  { label: profile.email, href: `mailto:${profile.email}` },
+  {
+    label: profile.linkedin.replace(/^https?:\/\/(www\.)?/, ''),
+    href: profile.linkedin,
+  },
+  { label: profile.github.replace(/^https?:\/\//, ''), href: profile.github },
+];
+---
+
+<BaseLayout
+  title={`CV — ${profile.name}`}
+  description={`Curriculum vitae of ${profile.name}, ${profile.role}.`}
+>
+  <article class="cv">
+    <header class="cv__head">
+      <div class="cv__identity">
+        <p class="label cv__role">{profile.role}</p>
+        <h1 class="cv__name">{profile.name}</h1>
+        <p class="cv__meta">{profile.location} · {profile.availability}</p>
+      </div>
+      <ul class="cv__contacts" role="list">
+        {
+          contacts.map((contact) => (
+            <li>
+              <a href={contact.href} rel="noopener noreferrer">
+                {contact.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="cv__download">
+        <a class="link" href={profile.cvPath} download>Download PDF</a>
+      </p>
+    </header>
+
+    <section class="cv__section" aria-labelledby="cv-profile">
+      <h2 id="cv-profile" class="cv__heading">Profile</h2>
+      <div class="cv__body">
+        {profile.about.map((paragraph) => <p>{paragraph}</p>)}
+      </div>
+    </section>
+
+    <section class="cv__section" aria-labelledby="cv-experience">
+      <h2 id="cv-experience" class="cv__heading">Experience</h2>
+      <ol class="cv__list" role="list">
+        {
+          roles.map((entry) => (
+            <li class="cv__item">
+              <div class="cv__item-head">
+                <h3 class="cv__item-title">{entry.data.role}</h3>
+                <p class="cv__when tabular">{formatRange(entry.data.start, entry.data.end)}</p>
+              </div>
+              <p class="cv__org">
+                {entry.data.company}
+                {entry.data.companyNote && <span> — {entry.data.companyNote}</span>}
+              </p>
+              <ul class="cv__points">
+                {entry.data.highlights.map((highlight) => (
+                  <li>{highlight}</li>
+                ))}
+              </ul>
+              {entry.data.stack.length > 0 && (
+                <p class="cv__stack">{entry.data.stack.join(' · ')}</p>
+              )}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+
+    <section class="cv__section" aria-labelledby="cv-skills">
+      <h2 id="cv-skills" class="cv__heading">Skills</h2>
+      <dl class="cv__skills">
+        {
+          skills.map((group) => (
+            <div>
+              <dt>{group.data.group}</dt>
+              <dd>{group.data.items.join(' · ')}</dd>
+            </div>
+          ))
+        }
+      </dl>
+    </section>
+
+    <section class="cv__section" aria-labelledby="cv-certifications">
+      <h2 id="cv-certifications" class="cv__heading">Certifications</h2>
+      <ul class="cv__certs" role="list">
+        {
+          certifications.map((cert) => (
+            <li>
+              <span class="cv__cert-name">{cert.data.name}</span>
+              <span class="cv__when tabular">
+                {cert.data.issuer} · {formatMonth(cert.data.earned)}
+              </span>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="cv__section" aria-labelledby="cv-education">
+      <h2 id="cv-education" class="cv__heading">Education</h2>
+      <ol class="cv__list" role="list">
+        {
+          education.map((entry) => (
+            <li class="cv__item">
+              <div class="cv__item-head">
+                <h3 class="cv__item-title">
+                  {entry.data.qualification}, {entry.data.field}
+                </h3>
+                <p class="cv__when tabular">
+                  {entry.data.start && entry.data.start !== entry.data.end
+                    ? `${entry.data.start} — ${entry.data.end}`
+                    : entry.data.end}
+                </p>
+              </div>
+              <p class="cv__org">{entry.data.institution}</p>
+              {entry.data.note && <p class="cv__note">{entry.data.note}</p>}
+            </li>
+          ))
+        }
+      </ol>
+    </section>
+  </article>
+
+  <div class="cv__contact-section">
+    <Contact />
+  </div>
+</BaseLayout>
+
+<style>
+  .cv {
+    display: grid;
+    gap: var(--space-l);
+    max-inline-size: 48rem;
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .cv__head {
+    display: grid;
+    gap: var(--space-s);
+    padding-block-end: var(--space-m);
+    border-block-end: var(--border-hair) solid var(--color-rule-strong);
+  }
+
+  .cv__identity {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .cv__role {
+    color: var(--color-accent);
+  }
+
+  .cv__name {
+    font-size: var(--text-3xl);
+  }
+
+  .cv__meta {
+    color: var(--color-text-muted);
+  }
+
+  .cv__contacts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3xs) var(--space-m);
+    margin: 0;
+    padding: 0;
+    font-size: var(--text-sm);
+  }
+
+  .cv__contacts a {
+    overflow-wrap: anywhere;
+  }
+
+  .cv__download {
+    margin-block-start: var(--space-2xs);
+  }
+
+  .cv__section {
+    display: grid;
+    gap: var(--space-s);
+  }
+
+  .cv__heading {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: var(--weight-normal);
+    letter-spacing: var(--tracking-widest);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    padding-block-end: var(--space-3xs);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  .cv__body {
+    display: grid;
+    gap: var(--space-xs);
+    max-inline-size: var(--width-prose);
+  }
+
+  .cv__list {
+    display: grid;
+    gap: var(--space-m);
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv__item {
+    display: grid;
+    gap: var(--space-3xs);
+  }
+
+  .cv__item-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0 var(--space-s);
+  }
+
+  .cv__item-title {
+    font-size: var(--text-md);
+  }
+
+  .cv__when {
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .cv__org,
+  .cv__note,
+  .cv__stack {
+    color: var(--color-text-muted);
+  }
+
+  .cv__note,
+  .cv__stack {
+    font-size: var(--text-sm);
+  }
+
+  .cv__stack {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+  }
+
+  .cv__points {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: var(--space-3xs) 0 0;
+    padding-inline-start: 1.1em;
+  }
+
+  .cv__skills {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+  }
+
+  .cv__skills > div {
+    display: grid;
+    gap: 0 var(--space-s);
+  }
+
+  @media (min-width: 40rem) {
+    .cv__skills > div {
+      grid-template-columns: 11rem minmax(0, 1fr);
+    }
+  }
+
+  .cv__skills dt {
+    font-weight: var(--weight-semibold);
+  }
+
+  .cv__skills dd {
+    margin: 0;
+  }
+
+  .cv__certs {
+    display: grid;
+    gap: var(--space-3xs);
+    margin: 0;
+    padding: 0;
+  }
+
+  .cv__certs li {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0 var(--space-s);
+  }
+
+  /*
+   * Print: the PDF is this page with the site removed. A4 with modest
+   * margins, the light palette whatever the screen theme, smaller type, and
+   * no item split across a page break.
+   */
+  @media print {
+    @page {
+      size: A4;
+      margin: 14mm 16mm;
+    }
+
+    /* Every size on the site is in rem, so the root size scales the whole
+     * CV down for paper in one place. */
+    :global(html) {
+      color-scheme: light;
+      font-size: 12px;
+    }
+
+    :global(.site-header),
+    :global(.footer),
+    :global(.shell__axis),
+    :global(.axis-rail),
+    :global(.skip-link),
+    .cv__download,
+    .cv__contact-section {
+      display: none;
+    }
+
+    .cv {
+      max-inline-size: none;
+      padding: 0;
+      gap: 5mm;
+    }
+
+    .cv__name {
+      font-size: 24pt;
+    }
+
+    .cv__item-title {
+      font-size: 11pt;
+    }
+
+    .cv__item,
+    .cv__certs li,
+    .cv__skills > div {
+      break-inside: avoid;
+    }
+
+    .cv__heading {
+      break-after: avoid;
+    }
+
+    .cv__contacts a {
+      text-decoration: none;
+    }
+  }
+</style>

@@ -25,6 +25,8 @@ src/sections/*.astro ┘
 | `/projects/<slug>` | Case study for one project. |
 | `/experience` | Work history and education on one timeline. |
 | `/skills` | Tech stack and certifications. |
+| `/now` | What Giorgio is focused on, from `src/content/now/en.md`, with its `updated` date. |
+| `/cv` | The CV as a page, built from the same collections. Its print stylesheet makes `public/cv.pdf` (`pnpm cv:pdf`). |
 | `/404` | Not-found page. Cloudflare Pages serves `404.html` with a 404 status for any unknown path. |
 
 `#contact` is an anchor present on every page, never a route. `/writing/<slug>` is reserved for

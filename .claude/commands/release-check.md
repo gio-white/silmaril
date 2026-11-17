@@ -16,7 +16,8 @@ Run the release checklist for the current branch and report each item as pass or
    - The nav marks the current page; the theme choice persists across navigation with no flash.
    - No horizontal overflow at 360px.
 4. Run `pnpm check:launch` and list any placeholders it reports. Before go-live it must pass.
-5. Check that `CHANGELOG.md` has an entry for this branch and that `docs/` matches any structural
+5. If content changed, confirm `public/cv.pdf` was regenerated with `pnpm cv:pdf`.
+6. Check that `CHANGELOG.md` has an entry for this branch and that `docs/` matches any structural
    change.
 
 Summarise the result as a short table, with screenshots of anything that failed.

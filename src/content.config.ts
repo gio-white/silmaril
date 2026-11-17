@@ -114,4 +114,12 @@ const skills = defineCollection({
   }),
 });
 
-export const collections = { roles, education, projects, certifications, skills };
+/** The /now page: one Markdown file with the date it was last true. */
+const now = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/now' }),
+  schema: z.object({
+    updated: z.coerce.date(),
+  }),
+});
+
+export const collections = { roles, education, projects, certifications, skills, now };

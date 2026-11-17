@@ -39,6 +39,7 @@ pnpm typecheck        # astro check
 pnpm check            # biome + astro check — the gate below
 pnpm check:budgets    # gzip/size budgets; requires dist/
 pnpm check:launch     # fails while PLACEHOLDER or example.com remain (strict at go-live)
+pnpm cv:pdf           # print /cv to public/cv.pdf (needs a build and a local Chrome)
 pnpm rasterize        # SVG → AVIF/WebP posters and og.png
 ```
 

@@ -26,6 +26,7 @@
     "check": "biome check . && astro check",
     "check:budgets": "node scripts/check-budgets.mjs",
     "check:launch": "node scripts/check-launch.mjs",
+    "cv:pdf": "node scripts/cv-pdf.mjs",
     "rasterize": "node scripts/rasterize.mjs"
   },
   "dependencies": {
@@ -40,6 +41,7 @@
     "@astrojs/check": "^0.9.10",
     "@biomejs/biome": "^2.5.8",
     "@types/three": "^0.185.4",
+    "playwright-core": "1.64.1",
     "sharp": "^0.35.3",
     "typescript": "^6.0.3"
   }
