@@ -40,7 +40,7 @@ import Scene3D from '../three/Scene3D.astro';
 
     <p class="hero__meta">
       <span>{profile.location}</span>
-      <span aria-hidden="true">·</span>
+      <span class="hero__meta-sep" aria-hidden="true">·</span>
       <span>{profile.availability}</span>
     </p>
   </div>
@@ -147,6 +147,20 @@ import Scene3D from '../three/Scene3D.astro';
     font-family: var(--font-mono);
     font-size: var(--text-xs);
     color: var(--color-text-muted);
+  }
+
+  /* On a phone the availability line wraps under the location, which would
+   * leave the separator dangling at the end of the first line. Stack the two
+   * instead and drop the dot. */
+  @media (max-width: 30rem) {
+    .hero__meta {
+      flex-direction: column;
+      gap: var(--space-3xs);
+    }
+
+    .hero__meta-sep {
+      display: none;
+    }
   }
 
   /* Buttons are square-cornered and hairline-bordered to match the drafting

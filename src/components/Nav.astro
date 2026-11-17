@@ -38,6 +38,13 @@ const pathname = Astro.url.pathname;
     padding: 0;
   }
 
+  /* Five items need a tighter gap to stay on one line at 360px. */
+  @media (max-width: 30rem) {
+    .nav__list {
+      column-gap: var(--space-2xs);
+    }
+  }
+
   .nav__link {
     display: inline-block;
     padding-block: var(--space-3xs);

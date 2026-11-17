@@ -7,6 +7,22 @@ Newest first.
 
 ---
 
+## Phase 0: first functional audit
+
+The site had been reviewed by reading the source, never by running it. This pass drove the
+production build in a real browser (desktop, phone, dark, reduced motion) and ran Lighthouse;
+the full results are in `docs/audit-2026.md`. Lighthouse scores 100 across the board, and nothing
+is broken. Two layout faults on phones are fixed here.
+
+**The phone nav fits on one line again.** At 360–414px the five items wrapped, and the sticky
+header grew to 131px — a sixth of the screen spent on chrome. A tighter column gap below 30rem
+keeps them on one line, which is what `nav.ts` already promised; the header is now 99px.
+
+**The hero meta line stacks on phones.** Location and availability wrapped onto two lines with
+the separator dot left hanging at the end of the first. Below 30rem they stack and the dot goes.
+
+---
+
 ## Motion, posters, share card, and the budget gate
 
 The remaining design work that was still sitting as "implemented in spirit".
