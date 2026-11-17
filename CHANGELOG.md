@@ -7,6 +7,26 @@ Newest first.
 
 ---
 
+## Phase 5: richer project entries
+
+Project cards could only say what a project was, not when, by whom, or whether it still exists.
+The schema now carries that, so real projects can land without another model change.
+
+**New optional fields:** `period`, `role` and `status` render as a mono line above the title;
+`tags` (topics, as opposed to the `stack` tools) appear on the case study; `cover` adds an image
+with required alt text; `confidential` hides repository and demo links and says details are
+anonymised; `kind` separates client work from side projects in one collection, so a future `/lab`
+page is a filter rather than a second content model.
+
+**Covers are served as AVIF at three widths** through `astro:assets`, with a fixed 16:9 frame so
+a late image never shifts the card. Astro does not process SVG sources, so an authored SVG cover
+goes through `pnpm rasterize` to a PNG first, like the hero posters.
+
+**The samples exercise every variant:** one with a cover and a case study, one confidential with
+its repo link hidden, one plain.
+
+---
+
 ## Phase 4: Giorgio's content replaces the placeholders
 
 Every name, role and metric on the site belonged to a fictional "Alessandro Bernardini". The site
