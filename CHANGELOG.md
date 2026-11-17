@@ -7,6 +7,41 @@ Newest first.
 
 ---
 
+## Phase 1: Claude Code replaces Cursor, and a 404 page
+
+The project is now worked on with Claude Code only, so its instructions moved to where Claude
+Code reads them.
+
+**`CLAUDE.md` holds the essentials; the long rules live in `.claude/rules/`.** The three Cursor
+rules became a root `CLAUDE.md` (stack, commands, never-do list, definition of done, commit style)
+plus `architecture.md` and `design-system.md` under `.claude/rules/`, which Claude Code loads
+automatically. Nothing in them changed except file references. `AGENTS.md` was Astro's stock
+boilerplate; it is now a pointer to `CLAUDE.md` for any other agent.
+
+**A standing security guideline.** `CLAUDE.md` now carries the rules from the plan's Phase 3.1:
+server-side validation for any future form, no raw HTML from untrusted input, no secrets in the
+repo, every new external origin goes through the CSP, least privilege, and no personal data or
+unanonymised client work on the site. They apply to every later change, not just one phase.
+
+**`.cursor/skills/` is gone.** 146 files and 2.9 MB of third-party design skills that the site
+never used. The `__pycache__` ignore lines existed only for their scripts.
+
+**Two design skills replace them, chosen for the design phases.** Anthropic's `frontend-design`
+and Paul Bakaus's Impeccable (v4.9.2) are vendored into `.claude/skills/`, so every session and
+contributor gets the same version. Impeccable is installed as a skill only: its optional design
+hook would run a downloaded binary on every file an agent edits, which is more than a static site
+needs to trust by default. It can be added later with `npx impeccable install`.
+
+**A 404 page.** Unknown URLs showed Astro's bare "404: Not Found". The new page uses the site's
+layout, links home, and ends with the contact section so the header's `#contact` link still works.
+Cloudflare Pages serves `dist/404.html` with a 404 status for any path that matches no file.
+
+**The plan is in the repo.** `docs/plan-of-action.md` tracks every phase, with the boxes ticked as
+work lands and the decisions taken so far recorded. Two project commands help with recurring work:
+`/add-project` and `/release-check`.
+
+---
+
 ## Phase 0: first functional audit
 
 The site had been reviewed by reading the source, never by running it. This pass drove the
