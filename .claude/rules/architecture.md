@@ -1,7 +1,3 @@
----
-description: Site structure, routing, content model, and where new code belongs
-alwaysApply: true
----
 
 # Architecture
 
@@ -19,6 +15,7 @@ stands alone, because it is the URL that gets shared. Dedicated pages exist for 
 /projects/<slug>      case study
 /experience           work history and education
 /skills               tech stack and certifications
+404                   not-found page, served by Cloudflare Pages for unknown paths
 #contact              anchor, present on every page — never a route
 ```
 

@@ -3,7 +3,7 @@
  * crossfade and pause-when-hidden all live here so a future scene is a scene
  * file rather than a fresh round of performance mistakes.
  *
- * Do not bypass this. See .cursor/rules/architecture.mdc.
+ * Do not bypass this. See .claude/rules/architecture.md.
  */
 
 import { canLoadScene } from './capabilities';

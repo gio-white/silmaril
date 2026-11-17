@@ -42,7 +42,8 @@ is a template listing everything it needs.
 - [`docs/content-intake.md`](docs/content-intake.md) — content template
 - [`CHANGELOG.md`](CHANGELOG.md) — what changed and why
 
-Agent rules live in `.cursor/rules/`.
+Agent instructions live in [`CLAUDE.md`](CLAUDE.md), with longer rule sets in `.claude/rules/`.
+The phased roadmap is [`docs/plan-of-action.md`](docs/plan-of-action.md).
 
 ## Deployment
 

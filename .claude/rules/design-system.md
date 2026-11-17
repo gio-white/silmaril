@@ -1,7 +1,3 @@
----
-description: Visual language, tokens, motion tiers, accessibility floors and performance budgets
-alwaysApply: true
----
 
 # Design system
 

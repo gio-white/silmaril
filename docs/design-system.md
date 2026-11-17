@@ -1,6 +1,6 @@
 # Design system
 
-The enforceable version of this lives in [`.cursor/rules/design-system.mdc`](../.cursor/rules/design-system.mdc)
+The enforceable version of this lives in [`.claude/rules/design-system.md`](../.claude/rules/design-system.md)
 and the values live in `src/styles/tokens.css`. The `ui-ux-pro-max` skill's generated
 recommendation is in [`design-system/personal-site/MASTER.md`](../design-system/personal-site/MASTER.md);
 what we actually ship, where the two disagree, is in

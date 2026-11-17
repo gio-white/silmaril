@@ -25,6 +25,7 @@ src/sections/*.astro ┘
 | `/projects/<slug>` | Case study for one project. |
 | `/experience` | Work history and education on one timeline. |
 | `/skills` | Tech stack and certifications. |
+| `/404` | Not-found page. Cloudflare Pages serves `404.html` with a 404 status for any unknown path. |
 
 `#contact` is an anchor present on every page, never a route. `/writing/<slug>` is reserved for
 later; nothing is built for it yet, but the shape is fixed so a future change does not need
@@ -65,7 +66,10 @@ A missing required field fails the build. That is the schema doing its job.
 ## Directory layout
 
 ```
-.cursor/rules/     always-applied rules for agents
+CLAUDE.md          agent instructions: stack, commands, security, definition of done
+.claude/rules/     longer agent rule sets, loaded automatically
+.claude/skills/    vendored design skills (frontend-design, impeccable)
+.claude/commands/  project slash commands
 docs/              this documentation
 scripts/           build-time Node scripts, never shipped
 public/            static assets served as-is; _headers lives here
