@@ -24,6 +24,15 @@ export const navItems: NavItem[] = [
 
 export const contactItem: NavItem = { href: '#contact', label: 'Contact' };
 
+/**
+ * Secondary pages, linked from the footer. The header stays at four items plus
+ * Contact so it still fits on one line on a phone.
+ */
+export const secondaryItems: NavItem[] = [
+  { href: '/now', label: 'Now' },
+  { href: '/cv', label: 'CV' },
+];
+
 /** Ticks for the site-level axis on dedicated pages. */
 export const axisSiteItems = navItems.map((item) => ({ target: item.href, label: item.label }));
 
