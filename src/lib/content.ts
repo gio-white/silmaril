@@ -54,6 +54,24 @@ export function hasCaseStudy(project: CollectionEntry<'projects'>): boolean {
   return (project.body ?? '').trim().length > 0;
 }
 
+const STATUS_LABELS = { live: 'Live', archived: 'Archived', internal: 'Internal' } as const;
+
+/** The short mono line above a project title: period, who built it, status. */
+export function projectMeta(project: CollectionEntry<'projects'>): string[] {
+  const { period, role, status } = project.data;
+  return [period, role, status && STATUS_LABELS[status]].filter((part): part is string =>
+    Boolean(part),
+  );
+}
+
+/** Confidential projects never expose repository or demo links. */
+export function publicLinks(project: CollectionEntry<'projects'>): [string, string][] {
+  if (project.data.confidential) return [];
+  return Object.entries(project.data.links).filter((entry): entry is [string, string] =>
+    Boolean(entry[1]),
+  );
+}
+
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 /** `2023-04` -> `Apr 2023`. */

@@ -57,7 +57,7 @@ All content is files in `src/content/`, validated by Zod at build time.
 | `profile` | Name, role, positioning, contact details, availability. |
 | `roles` | Work history. |
 | `education` | Degrees and study, sharing the Experience timeline with `roles`. |
-| `projects` | Problem / approach / outcome, stack, links, optional long-form body. |
+| `projects` | Problem / approach / outcome, stack, links, optional long-form body. Optional `cover` (image + required alt, served as AVIF), `period`, `role`, `status` (live / archived / internal), `tags` (topics), `confidential` (hides links, adds an anonymised note) and `kind` (work / side, so a future `/lab` is a filter, not a new collection). |
 | `skills` | Grouped technologies. |
 | `certifications` | Issuer, name, dates, credential URL. |
 

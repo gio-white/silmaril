@@ -1,11 +1,12 @@
 ---
+import { Image } from 'astro:assets';
 import { render } from 'astro:content';
 import AxisGutter from '../../components/AxisGutter.astro';
 import TagList from '../../components/TagList.astro';
 import { axisSiteItems } from '../../data/nav';
 import { profile } from '../../data/profile';
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getProjects, hasCaseStudy } from '../../lib/content';
+import { getProjects, hasCaseStudy, projectMeta, publicLinks } from '../../lib/content';
 import Contact from '../../sections/07-Contact.astro';
 
 /**
@@ -24,10 +25,9 @@ export async function getStaticPaths() {
 const { project } = Astro.props;
 const { Content } = await render(project);
 
-const externalLinks = Object.entries(project.data.links).filter(([, href]) => Boolean(href)) as [
-  string,
-  string,
-][];
+const externalLinks = publicLinks(project);
+const meta = projectMeta(project);
+const { cover, tags, confidential } = project.data;
 ---
 
 <BaseLayout
@@ -43,14 +43,38 @@ const externalLinks = Object.entries(project.data.links).filter(([, href]) => Bo
       </p>
       <h1 class="case__title">{project.data.title}</h1>
       <p class="case__summary">{project.data.summary}</p>
+      {meta.length > 0 && <p class="label case__meta">{meta.join(' · ')}</p>}
       <TagList items={project.data.stack} label="Stack" />
     </header>
+
+    {
+      cover && (
+        <Image
+          class="case__cover"
+          src={cover.src}
+          alt={cover.alt}
+          widths={[640, 960, 1280]}
+          format="avif"
+          sizes="(min-width: 64rem) 52rem, 100vw"
+          loading="eager"
+        />
+      )
+    }
 
     <dl class="case__facts">
       <div><dt>Problem</dt><dd>{project.data.problem}</dd></div>
       <div><dt>Approach</dt><dd>{project.data.approach}</dd></div>
       <div><dt>Outcome</dt><dd>{project.data.outcome}</dd></div>
+      {tags.length > 0 && <div><dt>Topics</dt><dd>{tags.join(' · ')}</dd></div>}
     </dl>
+
+    {
+      confidential && (
+        <p class="case__note">
+          Client work under confidentiality: names are anonymised and figures are given as ranges.
+        </p>
+      )
+    }
 
     {
       externalLinks.length > 0 && (
@@ -103,6 +127,27 @@ const externalLinks = Object.entries(project.data.links).filter(([, href]) => Bo
     font-size: var(--text-md);
     color: var(--color-text-muted);
     text-wrap: pretty;
+  }
+
+  .case__meta {
+    font-size: var(--text-2xs);
+  }
+
+  .case__cover {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-block-end: var(--space-xl);
+    border: var(--border-hair) solid var(--color-rule);
+    background-color: var(--color-surface);
+  }
+
+  .case__note {
+    margin-block-end: var(--space-l);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .case__facts {

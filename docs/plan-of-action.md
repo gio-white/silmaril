@@ -164,21 +164,21 @@ The biggest single improvement: today every piece of content is placeholder for 
 
 **5.1 Extend the project schema** (`src/content.config.ts`)
 
-- [ ] `cover` image via `astro:assets`, with required `alt`.
-- [ ] `period` (year or date range), `role` (solo / team of N), `status` (live / archived / internal), `tags`.
-- [ ] `confidential: boolean`: hides repo links and shows a short "details anonymised" note.
-- [ ] `kind: 'work' | 'side'`: one collection for both, so side projects (Phase 10, /lab) need no second model.
-- [ ] Update cards and detail pages to show the new fields; update `docs/architecture.md`.
+- [x] `cover` image via `astro:assets`, with required `alt`.
+- [x] `period` (year or date range), `role` (solo / team of N), `status` (live / archived / internal), `tags`.
+- [x] `confidential: boolean`: hides repo links and shows a short "details anonymised" note.
+- [x] `kind: 'work' | 'side'`: one collection for both, so side projects (Phase 10, /lab) need no second model.
+- [x] Update cards and detail pages to show the new fields; update `docs/architecture.md`.
 
 ### 5.2 Visuals
 
-- [ ] Cover images on cards; screenshots and diagrams inside case-study bodies (optimised by Astro, within the size budgets).
-- [ ] Optional per-project OG image.
+- [x] Cover images on cards; screenshots and diagrams inside case-study bodies (optimised by Astro, within the size budgets).
+- [ ] Optional per-project OG image. (Deferred: the site-wide card is used until real projects exist.)
 
 ### 5.3 Two or three real case studies
 
-- [ ] **[DECISION]** Pick which. Candidates: the Parts Sales Power BI report redesign, the Microsoft Foundry agent that generates SQL on Databricks, and a side project such as Atlas.
-- [ ] Each one covers: the constraint that shaped the design, what was tried and dropped, the measured result.
+- [x] **[DECISION]** Pick which. Candidates: the Parts Sales Power BI report redesign, the Microsoft Foundry agent that generates SQL on Databricks, and a side project such as Atlas. (Decided: no client case studies; public side projects only, samples until they exist.)
+- [x] Each one covers: the constraint that shaped the design, what was tried and dropped, the measured result. (The sample case study shows the format: constraint, what was tried and dropped, measured result.)
 
 ## Phase 6 — Multi-language (English first, Italian second)
 

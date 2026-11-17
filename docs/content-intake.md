@@ -99,6 +99,15 @@ links:
   demo:
   writeup:
 featured:          # true for the ones that should appear on the home page
+period:            # optional, as it should read: "2026" or "2024 – 2025"
+role:              # optional: "Solo", "Team of 4"
+status:            # optional: live | archived | internal
+tags: []           # optional topics, e.g. [Governance, Cost]
+confidential:      # true for NDA work: links hidden, "details anonymised" note shown
+kind:              # work | side (side projects can later get their own /lab page)
+cover:             # optional image in src/assets/projects/, with alt text
+  src:
+  alt:
 ```
 
 If a project deserves a full case study, also send the long-form text and any diagrams or

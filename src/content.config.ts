@@ -56,25 +56,41 @@ const projects = defineCollection({
   // Markdown so a project can carry a full case study in its body. Projects
   // without one simply have an empty body and get no detail page.
   loader: glob({ pattern: '**/*.md', base: './src/content/projects' }),
-  schema: z.object({
-    title: z.string(),
-    summary: z.string(),
-    problem: z.string(),
-    approach: z.string(),
-    outcome: z.string(),
-    stack: z.array(z.string()).default([]),
-    links: z
-      .object({
-        repo: z.url().optional(),
-        demo: z.url().optional(),
-        writeup: z.url().optional(),
-      })
-      .default({}),
-    /** Surfaced on the home page. */
-    featured: z.boolean().default(false),
-    /** Lower sorts first. Ties fall back to title. */
-    order: z.number().default(100),
-  }),
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      summary: z.string(),
+      problem: z.string(),
+      approach: z.string(),
+      outcome: z.string(),
+      stack: z.array(z.string()).default([]),
+      links: z
+        .object({
+          repo: z.url().optional(),
+          demo: z.url().optional(),
+          writeup: z.url().optional(),
+        })
+        .default({}),
+      /** Surfaced on the home page. */
+      featured: z.boolean().default(false),
+      /** Lower sorts first. Ties fall back to title. */
+      order: z.number().default(100),
+      /** Optimised by astro:assets. Alt text is required: a cover is content. */
+      cover: z.object({ src: image(), alt: z.string().min(1) }).optional(),
+      /** A year or a range as it should read, e.g. "2026" or "2024 – 2025". */
+      period: z.string().optional(),
+      /** Who built it, e.g. "Solo" or "Team of 4". */
+      role: z.string().optional(),
+      status: z.enum(['live', 'archived', 'internal']).optional(),
+      /** Topics rather than tools (the tools are `stack`). */
+      tags: z.array(z.string()).default([]),
+      /** Work under NDA: repository links are hidden and the page says details
+       *  are anonymised. */
+      confidential: z.boolean().default(false),
+      /** One collection for client work and side projects, so a future /lab
+       *  page is a filter rather than a second content model. */
+      kind: z.enum(['work', 'side']).default('work'),
+    }),
 });
 
 const certifications = defineCollection({

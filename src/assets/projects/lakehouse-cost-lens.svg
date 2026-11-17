@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900">
+  <title>Cost per pipeline, sample chart</title>
+  <!-- PLACEHOLDER cover for a fictional sample project. -->
+  <rect width="1600" height="900" fill="#ffffff"/>
+  <g stroke="#d3dade" stroke-width="1">
+    <path d="M160 160h1280M160 300h1280M160 440h1280M160 580h1280M160 720h1280"/>
+  </g>
+  <path d="M160 120v600" stroke="#b6c0c7" stroke-width="2"/>
+  <g font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="22" fill="#4f5963" letter-spacing="3">
+    <text x="160" y="96">COST PER PIPELINE · LAST 30 DAYS</text>
+    <text x="160" y="790">INGEST</text><text x="400" y="790">SILVER</text><text x="640" y="790">GOLD</text>
+    <text x="880" y="790">KPI</text><text x="1120" y="790">IDLE</text>
+  </g>
+  <g fill="#101418" fill-opacity="0.82">
+    <rect x="200" y="420" width="120" height="300"/>
+    <rect x="440" y="360" width="120" height="360"/>
+    <rect x="680" y="500" width="120" height="220"/>
+    <rect x="920" y="560" width="120" height="160"/>
+  </g>
+  <rect x="1160" y="250" width="120" height="470" fill="#b23a16"/>
+  <path d="M160 250h1280" stroke="#e4572e" stroke-width="2" stroke-dasharray="10 8"/>
+  <text x="1300" y="236" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="22" fill="#b23a16" letter-spacing="3">THRESHOLD</text>
+</svg>

@@ -1,7 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import Section from '../components/Section.astro';
 import TagList from '../components/TagList.astro';
-import { getFeaturedProjects, getProjects, hasCaseStudy } from '../lib/content';
+import { getFeaturedProjects, getProjects, hasCaseStudy, projectMeta } from '../lib/content';
 
 /**
  * Home passes a limit; /projects does not. The "see all" link appears only
@@ -33,9 +34,22 @@ const truncated = shown.length < total;
     {
       shown.map((project) => {
         const detail = hasCaseStudy(project) ? `/projects/${project.id}` : undefined;
+        const meta = projectMeta(project);
+        const { cover } = project.data;
         return (
           <li class="project">
             <article class="project__body">
+              {cover && (
+                <Image
+                  class="project__cover"
+                  src={cover.src}
+                  alt={cover.alt}
+                  widths={[400, 640, 800]}
+                  format="avif"
+                  sizes="(min-width: 48rem) 40vw, 100vw"
+                />
+              )}
+              {meta.length > 0 && <p class="label project__meta">{meta.join(' · ')}</p>}
               <h3 class="project__title">
                 {detail ? (
                   <a href={detail} class="project__link">
@@ -55,6 +69,10 @@ const truncated = shown.length < total;
                 <dt>Outcome</dt>
                 <dd class="project__outcome">{project.data.outcome}</dd>
               </dl>
+
+              {project.data.confidential && (
+                <p class="project__note">Client work; details anonymised.</p>
+              )}
 
               <TagList items={project.data.stack} label={`${project.data.title} stack`} />
             </article>
@@ -94,6 +112,28 @@ const truncated = shown.length < total;
 
   .project__title {
     font-size: var(--text-lg);
+  }
+
+  /* The cover keeps a fixed ratio so a missing or late image never shifts the
+   * card, and a hairline frame so a pale screenshot still has an edge. */
+  .project__cover {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-block-end: var(--space-2xs);
+    border: var(--border-hair) solid var(--color-rule);
+    background-color: var(--color-surface);
+  }
+
+  .project__meta {
+    font-size: var(--text-2xs);
+  }
+
+  .project__note {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   /* The whole card is not a link: the stack tags and the outcome are worth
