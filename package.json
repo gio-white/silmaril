@@ -17,7 +17,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "astro dev",
-    "build": "astro build && node scripts/check-budgets.mjs",
+    "build": "astro build && node scripts/csp-hashes.mjs && node scripts/check-budgets.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome check .",
