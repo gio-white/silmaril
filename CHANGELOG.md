@@ -7,6 +7,29 @@ Newest first.
 
 ---
 
+## Phase 2: CI, Dependabot, and the deployment flow
+
+Until now nothing checked a change before it reached `main`. The intended flow is: a branch, a
+pull request, CI, a Cloudflare preview, Giorgio's review, merge, live.
+
+**CI runs the definition of done on every pull request.** `.github/workflows/ci.yml` installs with
+`--frozen-lockfile`, then runs `pnpm check` and `pnpm build` (which includes the size budgets) on
+the Node version in `.nvmrc`. Two more gates cover what the build cannot: an offline link check of
+`dist/` (internal links only, so a slow external site cannot fail a PR) and Lighthouse CI on four
+pages. Accessibility, best practices and SEO fail below their thresholds; performance only warns,
+because CI runners vary too much for a hard performance gate.
+
+**The workflow can only read the repository**, and every third-party action is pinned to a commit
+with the tag in a comment. A moved tag cannot change what runs.
+
+**Dependabot opens grouped update PRs weekly**, for npm and for the workflow's actions, so a
+normal week is one or two PRs rather than ten. CI validates each one.
+
+**`README.md` documents the dashboard steps the repo cannot do itself**: connecting the Cloudflare
+Pages project, the `main` ruleset, the security toggles, and how to roll back a bad deploy.
+
+---
+
 ## Phase 1: Claude Code replaces Cursor, and a 404 page
 
 The project is now worked on with Claude Code only, so its instructions moved to where Claude

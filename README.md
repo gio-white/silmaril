@@ -47,6 +47,36 @@ The phased roadmap is [`docs/plan-of-action.md`](docs/plan-of-action.md).
 
 ## Deployment
 
-Cloudflare Pages, free tier. Build command `pnpm build`, output directory `dist`. Repo-side config
-is `wrangler.toml` plus `public/_headers`. No environment variables required. Point a custom domain
-at the Pages project in the Cloudflare dashboard when you have one.
+Cloudflare Pages, free tier. Repo-side config is `wrangler.toml` plus `public/_headers`.
+
+### How a change ships
+
+1. Work happens on a branch, one pull request per change.
+2. GitHub Actions (`.github/workflows/ci.yml`) runs `pnpm check`, `pnpm build` with the size
+   budgets, an internal link check on `dist/`, and Lighthouse CI (thresholds in
+   `lighthouserc.json`).
+3. Cloudflare Pages builds the same branch and posts a preview URL on `*.pages.dev` to the PR.
+   Previews are public.
+4. Giorgio reviews the preview and merges. Pages deploys `main` to production in about a minute.
+
+### One-time setup (Cloudflare and GitHub dashboards)
+
+These cannot be done from the repository.
+
+- **Cloudflare Pages project.** Workers & Pages → Create → Pages → Connect to Git → this repo.
+  Production branch `main`, framework preset Astro, build command `pnpm build`, output directory
+  `dist`. Under Settings → Variables, set `NODE_VERSION` to the value in `.nvmrc` (without the `v`)
+  and `PNPM_VERSION` to the version in `package.json` `packageManager`. Preview deployments: all
+  non-production branches.
+- **Branch protection on `main`.** GitHub → Settings → Rules → Rulesets → New branch ruleset,
+  target `main`: require a pull request, require the **Check and build** and **Lighthouse** status
+  checks to pass, block force pushes, restrict deletions.
+- **Dependabot.** `.github/dependabot.yml` opens grouped update PRs every Monday. Under Settings →
+  Code security, turn on Dependabot alerts, Dependabot security updates, secret scanning and push
+  protection.
+
+### Rolling back
+
+Cloudflare keeps every deployment. In the Pages project → Deployments, open the last good
+production deployment → ⋯ → **Rollback to this deployment**. The rollback is live in seconds; then
+revert the bad commit on `main` with a pull request so the next deploy does not bring it back.

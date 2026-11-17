@@ -75,14 +75,14 @@ Nothing has been run yet: the original review only read the source. This phase p
 
 Target flow: Claude Code works on a branch → opens a PR → CI runs → Cloudflare posts a preview URL → Giorgio reviews → merge → live in about a minute.
 
-- [ ] **GitHub Actions workflow** `.github/workflows/ci.yml` on every PR and push to `main`: set up Node from `.nvmrc`, pnpm via `packageManager`, `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm build`. Cache the pnpm store.
-- [ ] Workflow `permissions: contents: read` (least privilege); pin third-party actions to a version or commit.
-- [ ] Optional CI jobs: broken-link check on `dist/`, an accessibility scan, Lighthouse CI with thresholds.
-- [ ] **Cloudflare Pages project** connected to the GitHub repo: production branch `main`, build command `pnpm build`, output `dist`, Node version set to match `.nvmrc`. Every PR gets a preview URL on `*.pages.dev`.
-- [ ] **Branch protection on main:** PR required, CI must pass, no force pushes.
-- [ ] **Dependabot** (or Renovate): weekly, grouped dependency PRs plus security alerts; CI validates them.
-- [ ] **Rollback procedure** documented in `README.md`: roll back from the Cloudflare Pages deployments list.
-- [ ] Apply the **[DECISION]** on preview protection and on who merges.
+- [x] **GitHub Actions workflow** `.github/workflows/ci.yml` on every PR and push to `main`: set up Node from `.nvmrc`, pnpm via `packageManager`, `pnpm install --frozen-lockfile`, `pnpm check`, `pnpm build`. Cache the pnpm store.
+- [x] Workflow `permissions: contents: read` (least privilege); pin third-party actions to a version or commit.
+- [x] Optional CI jobs: broken-link check on `dist/`, an accessibility scan, Lighthouse CI with thresholds. (Link check and Lighthouse CI; Lighthouse's accessibility category is the scan, failing below 95.)
+- [ ] **Cloudflare Pages project** (manual, Giorgio; steps in `README.md`) connected to the GitHub repo: production branch `main`, build command `pnpm build`, output `dist`, Node version set to match `.nvmrc`. Every PR gets a preview URL on `*.pages.dev`.
+- [ ] **Branch protection on main** (manual, Giorgio; steps in `README.md`): PR required, CI must pass, no force pushes.
+- [x] **Dependabot** (or Renovate): weekly, grouped dependency PRs plus security alerts; CI validates them.
+- [x] **Rollback procedure** documented in `README.md`: roll back from the Cloudflare Pages deployments list.
+- [x] Apply the **[DECISION]** on preview protection and on who merges. (Public previews; Giorgio merges.)
 
 ## Phase 3 — Security
 
