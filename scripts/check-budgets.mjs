@@ -1,5 +1,5 @@
 /**
- * Enforce the performance budget in .cursor/rules/design-system.mdc.
+ * Enforce the performance budget in .claude/rules/design-system.md.
  *
  * Reads dist/ after `pnpm build`. Gzipped sizes for HTML, CSS, JS; raw file
  * size for WOFF2 (already compressed) and posters (already compressed).

@@ -1,0 +1,106 @@
+
+# Design system
+
+Concept: **instrument on drafting paper.** A cool neutral ground, hairline rules, mono numerals,
+and a single hot accent used the way a monitoring dashboard uses red — for thresholds. Light is
+the canonical theme; dark is designed, not inverted.
+
+Structurally this follows Swiss Modernism: a strict grid, mathematical spacing, one accent only,
+high contrast, no decoration. Colour values deliberately diverge from the skill's default
+recommendation — see `docs/decisions.md` for why.
+
+## Tokens
+
+Never hardcode a colour, size or duration in a component. Everything comes from
+`src/styles/tokens.css` as a custom property. A raw hex in a `.astro` or `.module.css` file is a
+bug.
+
+### Palette
+
+Contrast ratios are measured against that theme's `--paper` and all pass WCAG AA for body text.
+
+| Token | Light | Ratio | Dark | Ratio |
+| --- | --- | --- | --- | --- |
+| `--paper` | `#EDF0F2` | — | `#101519` | — |
+| `--surface` | `#FFFFFF` | — | `#181D22` | — |
+| `--ink` | `#101418` | 16.2:1 | `#E6EAED` | 15.2:1 |
+| `--slate` | `#4F5963` | 6.24:1 | `#96A1AB` | 6.98:1 |
+| `--rust` | `#B23A16` | 5.23:1 | `#D9603A` | 4.97:1 |
+| `--teal` | `#0E6B63` | 5.56:1 | `#4FB3A6` | 7.29:1 |
+
+`--rust-bright` `#E4572E` is **canvas-only**. Never use it for text; it does not meet contrast.
+
+One accent at a time. `--rust` carries emphasis and thresholds; `--teal` is for healthy or
+positive states only. If a third colour seems necessary, the layout is doing something wrong.
+
+### Type
+
+- **Display: Archivo** (variable, `wdth` 62–125, `wght` 100–900). Headings sit at expanded
+  widths, 112–125, weight 600–700. The width axis is the point — it is what stops this looking
+  like every other Inter site.
+- **Body: Public Sans** (variable).
+- **Mono: IBM Plex Mono**, one weight, rationed to dates, metrics, tags and axis labels. It makes
+  numbers read as measurements. Do not use it for prose.
+
+Self-hosted WOFF2, latin subset, `font-display: swap`. No third-party font CDN.
+
+Sizes come from a fluid `clamp()` scale in `type.css`. Do not add one-off `font-size` values.
+
+## Motion
+
+Four tiers, in order of preference. Do not skip to a lower tier without exhausting the one above.
+
+1. **CSS transitions** for hover and state. 120–200ms, `ease-out` entering, on `transform` and
+   `opacity` only — never on layout properties.
+2. **CSS scroll-driven animations** (`animation-timeline: view()`) for reveals and the axis
+   gutter, always inside `@supports`, with the visible state as the default so Firefox sees a
+   complete page.
+3. **A small `IntersectionObserver` fallback** for reveals where tier 2 is unsupported.
+4. **A JS animation library** only on a specific trigger — layout/FLIP animation, drag, or spring
+   physics. It would be vanilla `motion` (~2.3 kB), never `motion/react`, which drags React into
+   an island. Flag it before adding it.
+
+Animate at most **one or two elements per view**. Everything stops under
+`prefers-reduced-motion: reduce`.
+
+## Accessibility floors
+
+Non-negotiable, checked in both themes:
+
+- Body text ≥4.5:1, large text and UI ≥3:1.
+- Visible `:focus-visible` ring, 2px `--rust` with offset, on every interactive element.
+- Colour never carries meaning alone.
+- One `<h1>` per page; sections use `aria-labelledby`; lists are real lists.
+- Interactive targets ≥44×44px under `@media (pointer: coarse)`.
+- The 3D canvas is `aria-hidden` and not focusable.
+- No scroll-jacking, no focus traps, no hidden navigation behind a hamburger.
+
+## Responsive
+
+Mobile-first CSS (`min-width` queries), desktop-first ambition. The mobile layout is a complete
+design at that size, not a desktop layout with pieces switched off.
+
+- Type and spacing scale fluidly with `clamp()`. Breakpoints — 48rem, 64rem, 90rem — are for
+  layout changes only.
+- Prose caps at ~68 characters.
+- The axis gutter is desktop-only from 64rem; below that it becomes a thin progress rail.
+- Verify at 360, 390, 768, 1280 and 1440px, in both themes, plus phone landscape.
+
+## Performance budget
+
+Enforced per page, gzipped:
+
+| Asset | Budget |
+| --- | --- |
+| HTML | 18 kB |
+| CSS | 12 kB |
+| Critical-path JS | 6 kB |
+| Fonts, total | 85 kB |
+| Poster image | 35 kB per theme |
+| three.js chunk | 140 kB, lazy, never blocking |
+
+Targets: Lighthouse mobile ≥98 across all four categories, LCP <1.5s on throttled 4G, CLS <0.02,
+INP <100ms.
+
+The three.js chunk is ~120 kB gzip on its own. It is never on the critical path, never fetched
+below 48rem, and never fetched under reduced-motion.
