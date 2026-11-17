@@ -8,17 +8,17 @@
   <path d="M88 408h10" stroke="#b6c0c7" stroke-width="1"/>
   <path d="M88 488h10" stroke="#b6c0c7" stroke-width="1"/>
   <text x="124" y="174" fill="#5b6670" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">HOME</text>
-  <text x="124" y="254" fill="#b23a16" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">DATA ENGINEER</text>
+  <text x="124" y="254" fill="#b23a16" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">DATA &amp; AI ENGINEER</text>
   <text x="124" y="334" fill="#5b6670" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">PROJECTS</text>
   <text x="124" y="414" fill="#5b6670" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">EXPERIENCE</text>
   <text x="124" y="494" fill="#5b6670" font-family="ui-monospace, 'IBM Plex Mono', monospace" font-size="14" letter-spacing="3.2">CONTACT</text>
-  <text x="360" y="268" fill="#101418" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="700">Alessandro Bernardini</text>
-  <text x="360" y="328" fill="#5b6670" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">Pipelines you can trust, at the scale they actually run.</text>
+  <text x="392" y="266" fill="#101418" font-family="ui-sans-serif, system-ui, sans-serif" font-size="54" font-weight="700">Giorgio Bianchini</text>
+  <text x="392" y="322" fill="#5b6670" font-family="ui-sans-serif, system-ui, sans-serif" font-size="22">Data platforms and AI agents on Databricks.</text>
   <!-- Hairline grid fragment, matching the signal surface -->
   <g fill="none" stroke="#101418" stroke-opacity="0.18" stroke-width="1">
-    <path d="M820 80h320M820 120h320M820 160h320M820 200h320M820 240h320M820 280h320M820 320h320M820 360h320M820 400h320M820 440h320M820 480h320M820 520h320"/>
-    <path d="M820 80v440M860 80v440M900 80v440M940 80v440M980 80v440M1020 80v440M1060 80v440M1100 80v440M1140 80v440"/>
+    <path d="M900 80h240M900 120h240M900 160h240M900 200h240M900 240h240M900 280h240M900 320h240M900 360h240M900 400h240M900 440h240M900 480h240M900 520h240"/>
+    <path d="M900 80v440M940 80v440M980 80v440M1020 80v440M1060 80v440M1100 80v440M1140 80v440"/>
   </g>
-  <path d="M820 280h320" stroke="#e4572e" stroke-opacity="0.7" stroke-width="1.5"/>
-  <path d="M820 320h320" stroke="#e4572e" stroke-opacity="0.55" stroke-width="1"/>
+  <path d="M900 280h240" stroke="#e4572e" stroke-opacity="0.7" stroke-width="1.5"/>
+  <path d="M900 320h240" stroke="#e4572e" stroke-opacity="0.55" stroke-width="1"/>
 </svg>
