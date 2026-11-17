@@ -25,6 +25,7 @@
     "typecheck": "astro check",
     "check": "biome check . && astro check",
     "check:budgets": "node scripts/check-budgets.mjs",
+    "check:launch": "node scripts/check-launch.mjs",
     "rasterize": "node scripts/rasterize.mjs"
   },
   "dependencies": {

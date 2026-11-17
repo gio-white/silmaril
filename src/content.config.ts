@@ -33,8 +33,8 @@ const roles = defineCollection({
     end: yearMonth.optional(),
     location: z.string().optional(),
     stack: z.array(z.string()).default([]),
-    /** Each should carry a number. Bullets without one are what makes a data
-     *  engineering CV forgettable. */
+    /** Each should carry a number where one exists. Bullets without one are
+     *  what makes a CV forgettable. */
     highlights: z.array(z.string()).min(1),
   }),
 });
@@ -45,7 +45,8 @@ const education = defineCollection({
     institution: z.string(),
     qualification: z.string(),
     field: z.string(),
-    start: yearOnly,
+    /** Omitted when only the completion year is known. */
+    start: yearOnly.optional(),
     end: yearOnly,
     note: z.string().optional(),
   }),

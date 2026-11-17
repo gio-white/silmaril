@@ -15,7 +15,7 @@ Run the release checklist for the current branch and report each item as pass or
      page.
    - The nav marks the current page; the theme choice persists across navigation with no flash.
    - No horizontal overflow at 360px.
-4. Search `src/` and `public/` for `example.com` and `PLACEHOLDER`, and list any hits.
+4. Run `pnpm check:launch` and list any placeholders it reports. Before go-live it must pass.
 5. Check that `CHANGELOG.md` has an entry for this branch and that `docs/` matches any structural
    change.
 

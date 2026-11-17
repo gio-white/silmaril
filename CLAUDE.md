@@ -38,6 +38,7 @@ pnpm format           # biome check --write
 pnpm typecheck        # astro check
 pnpm check            # biome + astro check — the gate below
 pnpm check:budgets    # gzip/size budgets; requires dist/
+pnpm check:launch     # fails while PLACEHOLDER or example.com remain (strict at go-live)
 pnpm rasterize        # SVG → AVIF/WebP posters and og.png
 ```
 

@@ -7,7 +7,7 @@
  *
  * Run: node scripts/rasterize.mjs
  */
-import { readFile, stat, writeFile } from 'node:fs/promises';
+import { readFile, stat } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import sharp from 'sharp';
@@ -77,29 +77,14 @@ await raster(join(publicDir, 'og.svg'), [
   },
 ]);
 
-const pdf = `%PDF-1.4
-1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
-2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
-3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
-4 0 obj << /Length 128 >>
-stream
-BT /F1 24 Tf 72 720 Td (Alessandro Bernardini) Tj 0 -36 Td /F1 14 Tf (Data Engineer) Tj 0 -28 Td (Placeholder CV — replace public/cv.pdf) Tj ET
-endstream
-endobj
-5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
-xref
-0 6
-0000000000 65535 f 
-0000000009 00000 n 
-0000000058 00000 n 
-0000000115 00000 n 
-0000000266 00000 n 
-0000000446 00000 n 
-trailer << /Size 6 /Root 1 0 R >>
-startxref
-527
-%%EOF
-`;
-
-await writeFile(join(publicDir, 'cv.pdf'), pdf, 'utf8');
-console.log('public/cv.pdf  placeholder');
+// The 32px PNG fallback for browsers that ignore SVG favicons. Saved as .ico
+// because that is the path browsers request on their own; every current
+// browser accepts PNG data under that name.
+await raster(join(publicDir, 'favicon.svg'), [
+  {
+    path: join(publicDir, 'favicon.ico'),
+    format: 'png',
+    width: 32,
+    height: 32,
+  },
+]);

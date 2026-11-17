@@ -1,0 +1,25 @@
+# Source: Giorgio's CV (docs/content-source.md). The client is anonymised on
+# purpose: no client names, no internal figures, no screenshots.
+company: KPMG Italy
+companyNote: Global analytics programme, industrial client
+role: Senior Consultant — Data Engineer
+start: 2026-10
+location: Italy
+stack:
+  - Databricks
+  - Unity Catalog
+  - Power BI
+  - Microsoft Foundry
+  - DABs
+  - Azure DevOps
+highlights:
+  - One of the technical leads on a global analytics programme for a multinational agricultural
+    machinery manufacturer, bringing worldwide aftermarket sales into a new dimensional model
+    reported in Power BI.
+  - Coordinate around five engineers through work breakdown, architecture and code review, and
+    gather requirements directly with client stakeholders.
+  - Building several LLM agents on Microsoft Foundry behind an orchestrator; the first, now in
+    pilot, answers business questions over a data model through Microsoft Teams and a portal.
+  - Moving our Databricks projects to DABs, released through Azure DevOps across three
+    environments (Dev, Cert, Prod), and building the Unity Catalog governance so users and agents
+    only see the data they are entitled to.

@@ -5,9 +5,8 @@
  * of exactly one entry is awkward to read and awkward to query. Everything
  * that is a *list* lives in src/content/.
  *
- * PLACEHOLDER. Replace with real values — see docs/content-intake.md.
- * The placeholders are deliberately awkward (a long name, a long positioning
- * line) so the layout is stress-tested rather than tuned to convenient text.
+ * Sourced from Giorgio's CV; see docs/content-source.md. Metrics use only
+ * figures the CV supports.
  */
 
 export interface Metric {
@@ -33,25 +32,25 @@ export interface Profile {
 }
 
 export const profile: Profile = {
-  name: 'Alessandro Bernardini',
-  role: 'Data Engineer',
+  name: 'Giorgio Bianchini',
+  role: 'Data & AI Engineer',
   positioning:
-    'I build batch and streaming pipelines that move around 2.4 TB a day, and I spend most of my time making sure the numbers at the end of them are ones people can trust.',
+    'I build Databricks data platforms and the AI agents on top of them, so a global business can trust its numbers and ask them questions.',
   about: [
-    'I work on the unglamorous half of data: ingestion, modelling, orchestration and the alerting that tells you when any of it has quietly stopped being true. Most of what I have built has been in regulated environments, where a wrong figure is a bigger problem than a late one.',
-    'My preference is for boring, observable systems — small well-understood components, explicit contracts between them, and enough instrumentation that a failure explains itself before anyone has to open a notebook to investigate.',
+    'I came to data from business economics, and I now work as a data engineer at KPMG Italy. For more than two years I have been building Databricks and Microsoft Azure platforms for a multinational industrial client: ingestion and Medallion pipelines, dimensional models and the KPIs behind executive Power BI reporting.',
+    'More and more of my work is applied AI. I am building LLM agents on Microsoft Foundry that answer business questions over governed data, and bringing CI/CD to our Databricks projects with Declarative Automation Bundles. I work directly with business stakeholders and coordinate a small team of engineers, which is where most of the design decisions actually get made.',
   ],
   metrics: [
-    { label: 'Years in data engineering', value: '6' },
-    { label: 'Peak daily volume', value: '2.4 TB' },
-    { label: 'Pipelines in production', value: '40+' },
-    { label: 'Reporting uptime', value: '99.95%' },
+    { label: 'Years in data engineering', value: '2+' },
+    { label: 'Certifications', value: '8' },
+    { label: 'Global regions in one model', value: '5' },
+    { label: 'Engineers coordinated', value: '~5' },
   ],
-  location: 'Milan, Italy',
+  location: 'Rome, Italy',
   timezone: 'CET / UTC+1',
-  availability: 'Open to contract and full-time roles',
-  email: 'hello@example.com',
-  github: 'https://github.com/example',
-  linkedin: 'https://www.linkedin.com/in/example',
+  availability: 'Open to roles across Europe and relocation',
+  email: 'gio.whiteh@gmail.com',
+  github: 'https://github.com/gio-white',
+  linkedin: 'https://www.linkedin.com/in/giorgio-bianchini',
   cvPath: '/cv.pdf',
 };

@@ -1,0 +1,3 @@
+group: Data platforms
+order: 10
+items: [Databricks, Apache Spark, Delta Lake, Unity Catalog, Auto Loader, Spark Declarative Pipelines, Liquid Clustering]
