@@ -41,6 +41,11 @@ jobs:
       - name: Build and size budgets
         run: pnpm build
 
+      # Warn-only until go-live: sample content is expected while the site is
+      # being built. The launch checklist runs `pnpm check:launch` strictly.
+      - name: Placeholders left before launch
+        run: node scripts/check-launch.mjs --warn
+
       # Internal links only. External URLs are skipped so a slow third-party
       # site cannot turn a PR red.
       - name: Check links in the built site
