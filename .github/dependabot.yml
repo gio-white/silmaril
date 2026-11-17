@@ -1,0 +1,32 @@
+# Weekly dependency updates, grouped so a normal week is one or two PRs rather
+# than ten. Security updates are not grouped and arrive as soon as an advisory
+# is published. CI validates every update PR before it can be merged.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    groups:
+      astro:
+        patterns: ["astro", "@astrojs/*"]
+      dev-dependencies:
+        dependency-type: development
+      production-dependencies:
+        dependency-type: production
+    commit-message:
+      prefix: chore
+      include: scope
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    groups:
+      actions:
+        patterns: ["*"]
+    commit-message:
+      prefix: ci
