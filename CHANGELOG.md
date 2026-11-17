@@ -7,6 +7,38 @@ Newest first.
 
 ---
 
+## Phase 4: Giorgio's content replaces the placeholders
+
+Every name, role and metric on the site belonged to a fictional "Alessandro Bernardini". The site
+now describes Giorgio, from his CV; `docs/content-source.md` maps every fact to its source and
+lists what the CV does not cover yet.
+
+**Positioning widened from "Data Engineer" to "Data & AI Engineer".** The work spans Databricks
+platforms, executive Power BI reporting and LLM agents on Microsoft Foundry, and the hero line now
+says so. Copy that was hard-wired to data engineering (the projects page description, schema
+comments, the intake template) is neutral.
+
+**Client work lives in the work history, anonymised.** The three KPMG roles describe the programme
+for "a multinational agricultural machinery manufacturer" without naming it, with no internal
+figures. Highlights carry numbers only where the CV has them; nothing is invented.
+
+**`/projects` is reserved for public projects.** Until those exist it shows three clearly marked
+fictional samples, chosen to exercise the layout: one with a full case study and a repo link, one
+with a repo link and no case study, one with neither.
+
+**A launch guard.** `pnpm check:launch` fails while `PLACEHOLDER` or `example.com` remain in
+`src/`, `public/` or the Astro config. CI runs it warn-only, so sample content can sit on a
+branch, and the go-live checklist runs it strictly.
+
+**Education can omit its start year**, because the CV gives only the graduation date for the
+degree. Skills are regrouped around the real profile, and spoken languages are listed.
+
+**Share card and favicon.** `og.png` carries the new name and line, re-laid out so nothing
+collides; the favicon is a "GB" monogram on the axis. `pnpm rasterize` no longer writes a
+placeholder `cv.pdf`, which would have overwritten the real one; the CV PDF now comes from `/cv`.
+
+---
+
 ## Phase 3: inline scripts allowed by hash, not by `'unsafe-inline'`
 
 `script-src 'unsafe-inline'` meant any script injected into a page would run. The site has no

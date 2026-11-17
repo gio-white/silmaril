@@ -128,37 +128,37 @@ The biggest single improvement: today every piece of content is placeholder for 
 
 ### 4.1 Content source
 
-- [ ] **[DECISION]** Giorgio uploads his CV (any language version; the copy is the same).
-- [ ] Claude Code extracts it into `docs/content-source.md` (roles, dates, education, projects, skills, certifications, links), then maps it onto `docs/content-intake.md`.
-- [ ] Giorgio reviews the extraction before it goes into `src/content/`.
+- [x] **[DECISION]** Giorgio uploads his CV (any language version; the copy is the same). (Taken from the "CV Giorgio Bianchini" design artifact.)
+- [x] Claude Code extracts it into `docs/content-source.md` (roles, dates, education, projects, skills, certifications, links), then maps it onto `docs/content-intake.md`.
+- [x] Giorgio reviews the extraction before it goes into `src/content/`. (Review in the Phase 4 PR; open items listed in `docs/content-source.md`.)
 
 ### 4.2 Positioning and model
 
-- [ ] **[DECISION]** One-line positioning (proposal: "Data & AI" rather than pure "Data Engineer").
-- [ ] Widen what is hard-wired to data engineering: hero role, metric labels (e.g. "Years in data engineering"), schema comments, intake template.
-- [ ] Rework skill groups to match the real profile, for example: Languages · Data platforms (Databricks, Delta) · BI & analytics (Power BI) · AI & agents (Microsoft Foundry, LLMs) · Cloud · Engineering practice · Currently learning.
+- [x] **[DECISION]** One-line positioning (proposal: "Data & AI" rather than pure "Data Engineer"). Decided: "Data & AI Engineer" plus the platforms-and-agents line.
+- [x] Widen what is hard-wired to data engineering: hero role, metric labels (e.g. "Years in data engineering"), schema comments, intake template.
+- [x] Rework skill groups to match the real profile, for example: Languages · Data platforms (Databricks, Delta) · BI & analytics (Power BI) · AI & agents (Microsoft Foundry, LLMs) · Cloud · Engineering practice · Currently learning.
 
 ### 4.3 Replace all placeholder content
 
-- [ ] `src/data/profile.ts`: name, role, positioning, about, metrics, location, availability, email, GitHub, LinkedIn.
-- [ ] `src/content/roles`, `education`, `projects`, `certifications`, `skills`: real entries; remove every `PLACEHOLDER` comment.
-- [ ] Expired certifications: hide, or show as "expired" (decide during implementation).
-- [ ] **Guard in CI:** fail the build if `example.com` or `PLACEHOLDER` remains anywhere in `src/` or `public/`.
+- [x] `src/data/profile.ts`: name, role, positioning, about, metrics, location, availability, email, GitHub, LinkedIn.
+- [x] `src/content/roles`, `education`, `projects`, `certifications`, `skills`: real entries; remove every `PLACEHOLDER` comment. (Projects are three marked samples by decision until real public ones exist.)
+- [x] Expired certifications: hide, or show as "expired" (decide during implementation). Shown as "Expired"; no expiry dates are in the CV yet.
+- [x] **Guard in CI:** fail the build if `example.com` or `PLACEHOLDER` remains anywhere in `src/` or `public/`. (`pnpm check:launch`; warn-only in CI while sample projects exist, strict at go-live.)
 
 ### 4.4 Content quality rules
 
-- [ ] Every role highlight carries a number (volume, time saved, cost, users, people).
-- [ ] Projects follow problem → approach → outcome, with the outcome measured.
-- [ ] Confidential work is anonymised ("a global manufacturer"), with ranges instead of exact figures.
-- [ ] A more personal About: what you care about and a line on life outside work, not a generic senior-engineer voice.
-- [ ] No testimonials (decided).
+- [x] Every role highlight carries a number (volume, time saved, cost, users, people). (Where the CV has one; stronger numbers are an open item.)
+- [x] Projects follow problem → approach → outcome, with the outcome measured.
+- [x] Confidential work is anonymised ("a global manufacturer"), with ranges instead of exact figures.
+- [x] A more personal About: what you care about and a line on life outside work, not a generic senior-engineer voice. (Personal line left out for now, by decision.)
+- [x] No testimonials (decided).
 
 ### 4.5 Assets
 
-- [ ] Real `public/cv.pdf` (no phone or address; see Phase 3). Later replaced by the generated CV in Phase 10.
-- [ ] Regenerate `og.png` with the real name and positioning (`pnpm rasterize`).
-- [ ] Favicon with a real monogram.
-- [ ] **[DECISION]** Headshot: if yes, add it to About via `astro:assets`.
+- [x] Real `public/cv.pdf` (no phone or address; see Phase 3). Later replaced by the generated CV in Phase 10. (Generated from `/cv`; see Phase 10.)
+- [x] Regenerate `og.png` with the real name and positioning (`pnpm rasterize`).
+- [x] Favicon with a real monogram.
+- [x] **[DECISION]** Headshot: if yes, add it to About via `astro:assets`. Decided: no.
 
 ## Phase 5 — Portfolio depth
 
