@@ -207,3 +207,25 @@ are fixed now because renaming routes later costs redirects.
 The share card is a **PNG**, not SVG. Slack, LinkedIn and WhatsApp routinely ignore SVG unfurls,
 so `public/og.png` (1200×630) is a raster of the same axis-and-type composition. `twitter:image`
 points at the same file.
+
+---
+
+## Script CSP by hash, computed after the build
+
+**Decided:** `script-src` allows `'self'` plus the SHA-256 hash of each inline script, written into
+`dist/_headers` by `scripts/csp-hashes.mjs` after `astro build`. `'unsafe-inline'` is gone from
+`script-src`.
+
+The inline scripts are the no-flash theme script and three small modules Astro inlines because
+they are under its size threshold. They are the same on every page, so one header covers the site.
+Hashing the built output rather than the source means the allow-list cannot drift: change a script
+and the next build allows only the new hash.
+
+**Rejected:** Astro's built-in `security.csp`. It emits a `<meta>` policy per page, but the
+`_headers` policy still applies on top, and the two are intersected: the header would have to allow
+the scripts anyway, so the meta tag adds nothing. A meta policy also cannot carry `frame-ancestors`.
+
+**Not yet:** `style-src` keeps `'unsafe-inline'`. Astro inlines small stylesheets, and an injected
+stylesheet is a much weaker attack than an injected script. Revisit if the site ever renders
+third-party content.
+

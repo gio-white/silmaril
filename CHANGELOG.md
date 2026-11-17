@@ -7,6 +7,29 @@ Newest first.
 
 ---
 
+## Phase 3: inline scripts allowed by hash, not by `'unsafe-inline'`
+
+`script-src 'unsafe-inline'` meant any script injected into a page would run. The site has no
+user input today, so this is defence in depth, but it is the one CSP weakness that costs almost
+nothing to close.
+
+**`pnpm build` now hashes the inline scripts it emitted.** `scripts/csp-hashes.mjs` reads every
+page in `dist/`, takes the SHA-256 of each inline `<script>` (the no-flash theme script and three
+small modules Astro inlines), and writes them into `dist/_headers` in place of a placeholder.
+Hashing the built output means the allow-list cannot drift from what ships. If the step were ever
+skipped, the placeholder is not valid CSP, so browsers block inline scripts rather than allowing
+them: the failure is loud, not silent. Why this and not Astro's built-in CSP is in
+`docs/decisions.md`.
+
+**Verified in a browser with the real header applied:** theme toggle, scroll-spy axis, 3D hero and
+both reveal modes work with no CSP violations, and a policy without the hashes does report them,
+so the test is real.
+
+The standing security guideline from the plan went into `CLAUDE.md` in Phase 1. HSTS waits for the
+custom domain (Phase 9); account 2FA and the registrar lock are dashboard settings.
+
+---
+
 ## Phase 2: CI, Dependabot, and the deployment flow
 
 Until now nothing checked a change before it reached `main`. The intended flow is: a branch, a

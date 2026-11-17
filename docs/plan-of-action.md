@@ -101,26 +101,26 @@ A static site has a small attack surface: no server, database or login. The real
 
 ### 3.2 Accounts (manual, Giorgio)
 
-- [ ] Two-factor authentication on GitHub, Cloudflare and the domain registrar; store recovery codes safely.
-- [ ] Registrar transfer lock enabled on the domain.
+- [ ] (Manual, Giorgio) Two-factor authentication on GitHub, Cloudflare and the domain registrar; store recovery codes safely.
+- [ ] (Manual, Giorgio) Registrar transfer lock enabled on the domain.
 
 ### 3.3 Headers
 
 - [ ] Add `Strict-Transport-Security` once the custom domain is live (start with a short `max-age`, raise it after a week).
-- [ ] Remove `'unsafe-inline'` from `script-src`: switch to hash-based CSP (Astro's built-in CSP support; check the current Astro docs) so the inline theme script is allowed by hash.
-- [ ] Re-test the theme toggle, scroll-spy and 3D hero with the tightened CSP; check the browser console for violations.
+- [x] Remove `'unsafe-inline'` from `script-src`: switch to hash-based CSP so the inline theme script is allowed by hash. (Done with a post-build hashing step rather than Astro's meta-tag CSP; see `docs/decisions.md`.)
+- [x] Re-test the theme toggle, scroll-spy and 3D hero with the tightened CSP; check the browser console for violations.
 
 ### 3.4 Supply chain
 
-- [ ] Dependabot security alerts on; keep `pnpm.onlyBuiltDependencies` restricted to what is needed.
-- [ ] CI uses `--frozen-lockfile`; third-party actions pinned (Phase 2).
+- [x] Dependabot security alerts on (toggle is manual, see `README.md`); keep `pnpm.onlyBuiltDependencies` restricted to what is needed.
+- [x] CI uses `--frozen-lockfile`; third-party actions pinned (Phase 2).
 
 ### 3.5 Personal and confidential data
 
 - [ ] Public CV PDF has no phone number or home address; strip PDF metadata.
 - [ ] Consider an email alias for the site to contain spam.
 - [ ] Review every work case study against contracts or NDAs (e.g. CNH or client projects): anonymise names, use ranges instead of exact figures, no internal screenshots.
-- [ ] Apply the **[DECISION]** on preview link protection.
+- [x] Apply the **[DECISION]** on preview link protection. (Public.)
 
 ## Phase 4 — Identity and content
 
