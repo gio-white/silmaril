@@ -17,4 +17,11 @@ stack:
   - NumPy
 featured: true
 order: 30
+kind: side
+period: '2024'
+role: Solo
+status: archived
+tags:
+  - Quantitative finance
+  - Reinforcement learning
 ---

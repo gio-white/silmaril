@@ -77,6 +77,17 @@ await raster(join(publicDir, 'og.svg'), [
   },
 ]);
 
+// Project covers authored as SVG. Astro does not process SVG sources, so the
+// PNG is what content files reference; astro:assets turns it into AVIF.
+await raster(join(root, 'src/assets/projects/lakehouse-cost-lens.svg'), [
+  {
+    path: join(root, 'src/assets/projects/lakehouse-cost-lens.png'),
+    format: 'png',
+    width: 1600,
+    height: 900,
+  },
+]);
+
 // The 32px PNG fallback for browsers that ignore SVG favicons. Saved as .ico
 // because that is the path browsers request on their own; every current
 // browser accepts PNG data under that name.

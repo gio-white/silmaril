@@ -19,6 +19,14 @@ stack:
   - Databricks SDK
 featured: true
 order: 20
+kind: work
+period: 2025 – 2026
+role: Team of 3
+status: internal
+confidential: true
+tags:
+  - Governance
+  - Testing
 links:
   repo: https://github.com/gio-white/uc-access-check
 ---
