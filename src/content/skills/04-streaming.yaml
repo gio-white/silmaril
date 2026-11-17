@@ -1,3 +1,0 @@
-group: Streaming
-order: 40
-items: [Kafka, Kafka Streams, Spark Structured Streaming]

@@ -23,7 +23,7 @@ length of the bullets materially shape the timeline design.
 
 ```yaml
 name:
-role:              # e.g. "Data Engineer"
+role:              # e.g. "Data & AI Engineer"
 positioning:       # ONE sentence, containing a real number.
                    # e.g. "I build streaming pipelines moving 2 TB/day for fintech reporting."
 location:
@@ -43,7 +43,7 @@ Plus three or four headline metrics for the strip beneath it:
 
 ```yaml
 metrics:
-  - label: Years in data engineering
+  - label: Years in the field
     value:
   - label: Largest daily volume
     value:
@@ -68,7 +68,7 @@ highlights:
   - # 2-3 bullets. EACH ONE SHOULD CONTAIN A NUMBER —
     # volume, latency, cost, uptime, or people.
     # Bullets without numbers are the single biggest thing
-    # that makes a data engineer CV forgettable.
+    # that makes a CV forgettable.
 ```
 
 ## 4. Education

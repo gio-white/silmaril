@@ -1,3 +1,0 @@
-group: Storage & warehouse
-order: 30
-items: [Snowflake, BigQuery, Postgres, Delta Lake, Iceberg]

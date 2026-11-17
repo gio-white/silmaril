@@ -1,0 +1,7 @@
+# Source: Giorgio's CV (docs/content-source.md). The CV gives the graduation
+# date only, so there is no start year.
+institution: Roma Tre University, Rome
+qualification: BSc
+field: Business Economics
+end: '2024'
+note: 'Thesis: "From Delta Hedging to Deep Hedging", on how portfolio hedging moved from classical delta hedging to deep reinforcement learning.'

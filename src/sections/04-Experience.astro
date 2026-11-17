@@ -69,8 +69,10 @@ const education = showEducation ? await getEducation() : [];
           {education.map((entry) => (
             <li class="entry">
               <div class="entry__when tabular">
-                <time datetime={entry.data.start}>
-                  {entry.data.start} — {entry.data.end}
+                <time datetime={entry.data.start ?? entry.data.end}>
+                  {entry.data.start && entry.data.start !== entry.data.end
+                    ? `${entry.data.start} — ${entry.data.end}`
+                    : entry.data.end}
                 </time>
               </div>
               <div class="entry__what">

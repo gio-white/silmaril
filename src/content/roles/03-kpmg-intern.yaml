@@ -1,0 +1,19 @@
+# Source: Giorgio's CV (docs/content-source.md). Client anonymised.
+company: KPMG Italy
+companyNote: Logistics division, same industrial client
+role: Intern — Data Engineer
+start: 2024-11
+end: 2025-02
+location: Italy
+stack:
+  - Databricks
+  - Auto Loader
+  - Azure Data Lake Storage
+  - Delta Lake
+highlights:
+  - Integrated ocean freight and road shipment data from multiple carriers into one Databricks and
+    Azure platform, with full traceability of every shipment.
+  - Ingested carrier messages from ADLS Gen2 incrementally with Auto Loader and Spark Declarative
+    Pipelines, handling schema drift.
+  - Helped design a three-layer Medallion architecture with SCD Type 1/2 and CDC, keeping the full
+    history of each shipment.

@@ -1,0 +1,22 @@
+# Source: Giorgio's CV (docs/content-source.md). Client anonymised.
+company: KPMG Italy
+companyNote: Global analytics programme, industrial client
+role: Consultant — Data Engineer
+start: 2025-03
+end: 2026-09
+location: Italy
+stack:
+  - Databricks
+  - PySpark
+  - SQL
+  - Unity Catalog
+  - Power BI
+highlights:
+  - Built the KPI and estimation logic of a Databricks model of aftermarket sales potential across
+    five regions (NA, EMEA, LATAM, APAC, India), feeding a Power BI application used by global and
+    regional executives.
+  - Harmonised six kinds of regional source (telematics, warranty, sales, marketing, supply chain,
+    manufacturing) plus manual inputs into a single model governed in Unity Catalog.
+  - Co-developed the firm's custom Databricks orchestration framework for pipelines, schedules and
+    dependencies across projects, with logging and Zabbix alerting; tuned processing with Liquid
+    Clustering, partitioning and cluster configuration.
