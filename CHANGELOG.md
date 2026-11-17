@@ -7,6 +7,24 @@ Newest first.
 
 ---
 
+## /cv and /now (Phase 10, brought forward)
+
+**The CV is now a page, and the PDF is printed from it.** `/cv` is built from the same collections
+as the rest of the site, so the CV and the site cannot disagree. Its print stylesheet hides the
+site chrome, scales the type down from the root (every size is in rem), and lays it out on two A4
+pages. `pnpm cv:pdf` serves the build locally and prints that page to `public/cv.pdf` with a local
+Chrome. It is a manual step rather than part of `pnpm build` because Cloudflare's build image has
+no browser; the architecture rule and `/release-check` both say to run it after content changes.
+`playwright-core` is a new dev dependency for this, pinned and without a bundled browser.
+
+**`/now`** says what Giorgio is focused on, from one Markdown file whose `updated` date is shown on
+the page.
+
+**Both live in the footer**, not the header: four items plus Contact is what fits on one line on a
+phone.
+
+---
+
 ## Phase 5: richer project entries
 
 Project cards could only say what a project was, not when, by whom, or whether it still exists.
