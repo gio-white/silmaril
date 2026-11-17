@@ -13,7 +13,7 @@
       "!.astro",
       "!node_modules",
       // Third-party skill sources; not ours to format.
-      "!.cursor/skills",
+      "!.claude/skills",
       // Hand-authored static assets. a11y rules objecting that a favicon has
       // no <title> are noise.
       "!public",
