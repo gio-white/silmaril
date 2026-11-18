@@ -113,6 +113,15 @@ const { cover, tags, confidential } = project.data;
     color: var(--color-accent);
   }
 
+  @media (pointer: coarse) {
+    .case__back,
+    .case__links a {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
   .case__back:hover {
     text-decoration: underline;
   }
