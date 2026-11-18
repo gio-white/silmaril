@@ -7,6 +7,14 @@ Newest first.
 
 ---
 
+## Go-live runbook (Phase 9 preparation)
+
+Launch waits only on the domain now, so `docs/go-live.md` turns Phase 9 into a checklist:
+buying and attaching the domain, the one-line `site` change that fixes every absolute URL, HSTS
+starting at one day, making the placeholder guard strict, production checks, and Search Console.
+
+---
+
 ## Phase 7: design review on the real content
 
 `docs/design-review.md` records an Impeccable-style audit and critique of the home page, a case

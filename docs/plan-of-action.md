@@ -215,6 +215,8 @@ The current design is already distinctive (Swiss grid, blueprint-and-oxide palet
 
 ## Phase 9 — Go-live
 
+Step-by-step runbook: [`go-live.md`](go-live.md).
+
 - [ ] **[DECISION]** Domain bought through Cloudflare Registrar and attached to the Pages project; one canonical host (redirect `www` to the bare domain, or the reverse).
 - [ ] Set `site` in `astro.config.mjs` to the real domain; rebuild.
 - [ ] Turn on HSTS (Phase 3.3).
