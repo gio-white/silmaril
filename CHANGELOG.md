@@ -7,6 +7,28 @@ Newest first.
 
 ---
 
+## Phase 8: sitemap, robots.txt, structured data and analytics
+
+The site was built for link sharing first, so search-engine plumbing was deferred. With two
+languages and a launch coming, it is in now.
+
+**`sitemap-index.xml`** lists every page in both languages, each with its translation as an
+`hreflang` alternate; the 404 pages are left out. It comes from `@astrojs/sitemap` (new
+dependency, the official integration). **`robots.txt`** is generated, so its sitemap URL follows
+the real domain once `site` changes.
+
+**A schema.org `Person`** on both home pages ties the site to the LinkedIn and GitHub profiles:
+name, role, employer, city, languages, the main skills and the certifications. It is a JSON data
+block, which browsers do not execute, so it needs no CSP hash.
+
+**Titles and descriptions are unique** on every page within each language (checked on the build).
+
+**Cloudflare Web Analytics** is cookieless and needs no consent banner. Cloudflare injects its
+beacon at the edge once it is switched on in the Pages dashboard, so the only repo change is the
+CSP: `static.cloudflareinsights.com` for the script and `cloudflareinsights.com` for the beacon.
+
+---
+
 ## Phase 6: English and Italian
 
 The site now exists in both languages, before launch, because the URL shapes are fixed by this and
