@@ -71,6 +71,10 @@ These cannot be done from the repository.
 - **Branch protection on `main`.** GitHub → Settings → Rules → Rulesets → New branch ruleset,
   target `main`: require a pull request, require the **Check and build** and **Lighthouse** status
   checks to pass, block force pushes, restrict deletions.
+- **Web Analytics.** In the Pages project → Metrics → Web Analytics, enable it (automatic setup).
+  Cloudflare then injects its cookieless beacon into every page at the edge; the CSP in
+  `public/_headers` already allows `static.cloudflareinsights.com` and `cloudflareinsights.com`, and
+  nothing else is needed in the repo.
 - **Dependabot.** `.github/dependabot.yml` opens grouped update PRs every Monday. Under Settings →
   Code security, turn on Dependabot alerts, Dependabot security updates, secret scanning and push
   protection.
