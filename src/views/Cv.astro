@@ -207,6 +207,15 @@ const contacts = [
     overflow-wrap: anywhere;
   }
 
+  @media (pointer: coarse) {
+    .cv__contacts a,
+    .cv__download a {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
+
   .cv__download {
     margin-block-start: var(--space-2xs);
   }

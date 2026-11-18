@@ -66,6 +66,17 @@ const profile = getProfile(locale);
     text-decoration: none;
   }
 
+  /* Touch: 44px targets without changing how the row looks. */
+  @media (pointer: coarse) {
+    .footer__links a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-block-size: 2.75rem;
+      min-inline-size: 2.75rem;
+    }
+  }
+
   .footer__links a:hover {
     color: var(--color-text);
     text-decoration: underline;

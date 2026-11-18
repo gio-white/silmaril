@@ -129,4 +129,13 @@ const links = [
     text-align: end;
     overflow-wrap: anywhere;
   }
+
+  /* Touch: each row's link becomes a full 44px target. */
+  @media (pointer: coarse) {
+    .contact__value a {
+      display: inline-flex;
+      align-items: center;
+      min-block-size: 2.75rem;
+    }
+  }
 </style>
