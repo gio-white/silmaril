@@ -1,6 +1,7 @@
 ---
 import posterLightAvif from '../assets/posters/signal-surface-light.avif?url';
 import AxisGutter from '../components/AxisGutter.astro';
+import PersonSchema from '../components/PersonSchema.astro';
 import { axisHomeItems } from '../data/nav';
 import { getProfile } from '../data/profile';
 import { toLocale, useTranslations } from '../i18n';
@@ -32,6 +33,7 @@ const profile = getProfile(locale);
   title={`${profile.name} — ${profile.role}`}
   description={profile.positioning}
 >
+  <PersonSchema slot="head" />
   <link
     slot="head"
     rel="preload"

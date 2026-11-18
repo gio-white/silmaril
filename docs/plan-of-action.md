@@ -206,12 +206,12 @@ The current design is already distinctive (Swiss grid, blueprint-and-oxide palet
 
 ## Phase 8 — Discoverability and analytics
 
-- [ ] `sitemap.xml` (Astro sitemap integration) including both languages.
-- [ ] `robots.txt` allowing all crawlers and pointing to the sitemap.
-- [ ] JSON-LD `Person` on the home page: name, job title, site URL, and `sameAs` links to LinkedIn and GitHub.
-- [ ] Unique title and description on every page, in both languages.
-- [ ] Cloudflare Web Analytics (free, cookieless); update the CSP in `public/_headers` for it.
-- [ ] Update `docs/decisions.md`: the deferred discoverability items are now done.
+- [x] `sitemap.xml` (Astro sitemap integration) including both languages.
+- [x] `robots.txt` allowing all crawlers and pointing to the sitemap.
+- [x] JSON-LD `Person` on the home page: name, job title, site URL, and `sameAs` links to LinkedIn and GitHub.
+- [x] Unique title and description on every page, in both languages.
+- [x] Cloudflare Web Analytics (free, cookieless); update the CSP in `public/_headers` for it. (CSP done; switching it on is one toggle in the Pages dashboard, see `README.md`.)
+- [x] Update `docs/decisions.md`: the deferred discoverability items are now done.
 
 ## Phase 9 — Go-live
 

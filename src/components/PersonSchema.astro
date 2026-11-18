@@ -1,0 +1,44 @@
+---
+import { getProfile } from '../data/profile';
+import { localizePath, toLocale } from '../i18n';
+import { getCertifications, getSkills } from '../lib/content';
+
+/**
+ * schema.org `Person` for the home page, so search engines can tie the site to
+ * the same person as the LinkedIn and GitHub profiles. A JSON data block is
+ * not executed, so it needs no CSP hash.
+ *
+ * `</` is escaped so no string in the data can close the script element.
+ */
+const locale = toLocale(Astro.currentLocale);
+const profile = getProfile(locale);
+const skills = await getSkills(locale);
+const certifications = await getCertifications(locale);
+
+const data = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: profile.name,
+  jobTitle: profile.role,
+  description: profile.positioning,
+  url: new URL(localizePath('/', locale), Astro.site).href,
+  email: `mailto:${profile.email}`,
+  sameAs: [profile.linkedin, profile.github],
+  worksFor: { '@type': 'Organization', name: 'KPMG Italy' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Rome', addressCountry: 'IT' },
+  knowsLanguage: ['it', 'en'],
+  knowsAbout: skills
+    .filter((group) => group.data.order < 80)
+    .flatMap((group) => group.data.items)
+    .slice(0, 20),
+  hasCredential: certifications.map((cert) => ({
+    '@type': 'EducationalOccupationalCredential',
+    name: cert.data.name,
+    recognizedBy: { '@type': 'Organization', name: cert.data.issuer },
+  })),
+};
+
+const json = JSON.stringify(data).replace(/<\//g, '<\\/');
+---
+
+<script type="application/ld+json" is:inline set:html={json} />

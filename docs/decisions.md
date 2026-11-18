@@ -208,6 +208,12 @@ The share card is a **PNG**, not SVG. Slack, LinkedIn and WhatsApp routinely ign
 so `public/og.png` (1200×630) is a raster of the same axis-and-type composition. `twitter:image`
 points at the same file.
 
+**Update (Phase 8):** the deferred items are done now that the site is about to launch in two
+languages: `sitemap-index.xml` (both languages, with `hreflang` alternates, 404s excluded) via
+`@astrojs/sitemap`, a generated `robots.txt` that points at it, and a schema.org `Person` block on
+both home pages. Cloudflare Web Analytics is cookieless and injected at the edge, so it needs no
+consent banner and no code in the repo, only two CSP origins.
+
 ---
 
 ## Script CSP by hash, computed after the build
