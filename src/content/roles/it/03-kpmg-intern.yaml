@@ -1,0 +1,19 @@
+# Traduzione di src/content/roles/en/03-kpmg-intern.yaml.
+company: KPMG Italia
+companyNote: Divisione logistica, stesso cliente industriale
+role: Intern — Data Engineer
+start: 2024-11
+end: 2025-02
+location: Italia
+stack:
+  - Databricks
+  - Auto Loader
+  - Azure Data Lake Storage
+  - Delta Lake
+highlights:
+  - Ho integrato i dati delle spedizioni via mare e su strada di più vettori in un'unica piattaforma
+    Databricks e Azure, con la tracciabilità completa di ogni spedizione.
+  - Ho caricato in modo incrementale i messaggi dei vettori da ADLS Gen2 con Auto Loader e Spark
+    Declarative Pipelines, gestendo lo schema drift.
+  - Ho contribuito a progettare un'architettura Medallion a tre livelli con SCD di tipo 1/2 e CDC,
+    conservando lo storico completo di ogni spedizione.

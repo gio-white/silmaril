@@ -34,9 +34,9 @@ November 2026). Anything not in the CV is listed under *Open items* rather than 
 
 | Role | Dates | File |
 | --- | --- | --- |
-| Senior Consultant — Data Engineer | Oct 2026 – present | `src/content/roles/01-kpmg-senior-consultant.yaml` |
-| Consultant — Data Engineer | Mar 2025 – Sep 2026 | `src/content/roles/02-kpmg-consultant.yaml` |
-| Intern — Data Engineer | Nov 2024 – Feb 2025 | `src/content/roles/03-kpmg-intern.yaml` |
+| Senior Consultant — Data Engineer | Oct 2026 – present | `src/content/roles/en/01-kpmg-senior-consultant.yaml` |
+| Consultant — Data Engineer | Mar 2025 – Sep 2026 | `src/content/roles/en/02-kpmg-consultant.yaml` |
+| Intern — Data Engineer | Nov 2024 – Feb 2025 | `src/content/roles/en/03-kpmg-intern.yaml` |
 
 Highlights are condensed from the CV bullets: technical lead on the global aftermarket analytics
 programme, coordination of about five engineers, Foundry agents behind an orchestrator (first one
@@ -50,8 +50,8 @@ Loader and Spark Declarative Pipelines, Medallion with SCD 1/2 and CDC).
 
 | Qualification | Institution | Dates | File |
 | --- | --- | --- | --- |
-| Data Engineering bootcamp | Generation Italy | Jun – Oct 2024 | `src/content/education/01-generation.yaml` |
-| BSc Business Economics | Roma Tre University | Graduated Mar 2024 | `src/content/education/02-roma-tre.yaml` |
+| Data Engineering bootcamp | Generation Italy | Jun – Oct 2024 | `src/content/education/en/01-generation.yaml` |
+| BSc Business Economics | Roma Tre University | Graduated Mar 2024 | `src/content/education/en/02-roma-tre.yaml` |
 
 Thesis: "From Delta Hedging to Deep Hedging".
 
@@ -73,6 +73,9 @@ Thesis: "From Delta Hedging to Deep Hedging".
 Grouped as Data platforms · Data modelling · AI & agents · BI & analytics · Programming · Cloud ·
 Engineering practice · Spoken languages, from the CV's core skills and certification topics.
 
+Every entry also has an Italian version in the matching `it/` folder, drafted from the English.
+**Please review the Italian too**: it is a first draft.
+
 ## Open items for Giorgio
 
 - [ ] **Credential links and expiry dates** for each certification (the CV has neither). Databricks
@@ -81,4 +84,4 @@ Engineering practice · Spoken languages, from the CV's core skills and certific
       times, cost or time saved, number of users of the Power BI app or the agent pilot.
 - [ ] **Roma Tre start year** (only the graduation date is in the CV).
 - [ ] **A personal line** for About, when you want one.
-- [ ] **Real public projects** to replace the three samples in `src/content/projects/`.
+- [ ] **Real public projects** to replace the three samples in `src/content/projects/en/` (and `it/`).

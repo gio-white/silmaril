@@ -1,0 +1,236 @@
+---
+import { Image } from 'astro:assets';
+import { type CollectionEntry, render } from 'astro:content';
+import AxisGutter from '../components/AxisGutter.astro';
+import TagList from '../components/TagList.astro';
+import { axisSiteItems } from '../data/nav';
+import { getProfile } from '../data/profile';
+import { localizePath, toLocale, useTranslations } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { isFallback, projectMeta, publicLinks } from '../lib/content';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * One project's case study. The routes (src/pages/projects/[slug].astro and
+ * its Italian twin) decide which projects get a page: only those with a body.
+ */
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
+const externalLinks = publicLinks(project);
+const meta = projectMeta(project, locale);
+const fallback = isFallback(project, locale);
+const { cover, tags, confidential } = project.data;
+---
+
+<BaseLayout
+  title={`${project.data.title} — ${profile.name}`}
+  description={project.data.summary}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" current="/projects" />
+
+  <article class="case" lang={fallback ? 'en' : undefined}>
+    <header class="case__head">
+      <p class="label">
+        <a href={localizePath('/projects', locale)} class="case__back">{t.nav.projects}</a>
+      </p>
+      <h1 class="case__title">{project.data.title}</h1>
+      <p class="case__summary">{project.data.summary}</p>
+      {meta.length > 0 && <p class="label case__meta">{meta.join(' · ')}</p>}
+      <TagList items={project.data.stack} label={t.projects.stack} />
+      {fallback && <p class="case__note">{t.fallback}</p>}
+    </header>
+
+    {
+      cover && (
+        <Image
+          class="case__cover"
+          src={cover.src}
+          alt={cover.alt}
+          widths={[640, 960, 1280]}
+          format="avif"
+          sizes="(min-width: 64rem) 52rem, 100vw"
+          loading="eager"
+        />
+      )
+    }
+
+    <dl class="case__facts">
+      <div><dt>{t.projects.problem}</dt><dd>{project.data.problem}</dd></div>
+      <div><dt>{t.projects.approach}</dt><dd>{project.data.approach}</dd></div>
+      <div><dt>{t.projects.outcome}</dt><dd>{project.data.outcome}</dd></div>
+      {tags.length > 0 && <div><dt>{t.projects.topics}</dt><dd>{tags.join(' · ')}</dd></div>}
+    </dl>
+
+    {
+      confidential && (
+        <p class="case__note">{t.projects.confidentialCase}</p>
+      )
+    }
+
+    {
+      externalLinks.length > 0 && (
+        <ul class="case__links" role="list">
+          {externalLinks.map(([label, href]) => (
+            <li>
+              <a href={href} rel="noopener noreferrer" class="link">
+                {t.projects.links[label] ?? label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="case__body prose">
+      <Content />
+    </div>
+  </article>
+
+  <Contact />
+</BaseLayout>
+
+<style>
+  .case {
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .case__head {
+    display: grid;
+    gap: var(--space-2xs);
+    margin-block-end: var(--space-xl);
+  }
+
+  .case__back {
+    text-decoration: none;
+    color: var(--color-accent);
+  }
+
+  .case__back:hover {
+    text-decoration: underline;
+  }
+
+  .case__title {
+    font-size: var(--text-2xl);
+  }
+
+  .case__summary {
+    max-inline-size: 52ch;
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .case__meta {
+    font-size: var(--text-2xs);
+  }
+
+  .case__cover {
+    display: block;
+    inline-size: 100%;
+    block-size: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    margin-block-end: var(--space-xl);
+    border: var(--border-hair) solid var(--color-rule);
+    background-color: var(--color-surface);
+  }
+
+  .case__note {
+    margin-block-end: var(--space-l);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .case__facts {
+    display: grid;
+    gap: 0;
+    margin: 0 0 var(--space-l);
+    border-block-start: var(--border-hair) solid var(--color-rule);
+  }
+
+  .case__facts > div {
+    display: grid;
+    gap: var(--space-3xs);
+    padding-block: var(--space-s);
+    border-block-end: var(--border-hair) solid var(--color-rule);
+  }
+
+  @media (min-width: 48rem) {
+    .case__facts > div {
+      grid-template-columns: 10rem minmax(0, 1fr);
+      gap: var(--space-l);
+    }
+  }
+
+  .case__facts dt {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .case__facts dd {
+    margin: 0;
+    max-inline-size: var(--width-prose);
+    text-wrap: pretty;
+  }
+
+  .case__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin: 0 0 var(--space-xl);
+    padding: 0;
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  /* Markdown body. Headings and tables need explicit treatment because the
+   * global stylesheet only styles what the components use. */
+  .case__body :global(h2) {
+    margin-block: var(--space-xl) var(--space-s);
+    font-size: var(--text-xl);
+  }
+
+  .case__body :global(h3) {
+    margin-block: var(--space-l) var(--space-2xs);
+  }
+
+  .case__body :global(table) {
+    inline-size: 100%;
+    border-collapse: collapse;
+    margin-block: var(--space-m);
+    font-size: var(--text-sm);
+  }
+
+  .case__body :global(th),
+  .case__body :global(td) {
+    padding: var(--space-2xs) var(--space-s) var(--space-2xs) 0;
+    border-block-end: var(--border-hair) solid var(--color-rule);
+    text-align: start;
+  }
+
+  .case__body :global(th) {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    font-weight: var(--weight-normal);
+    color: var(--color-text-muted);
+  }
+
+  .case__body :global(td:not(:first-child)) {
+    font-variant-numeric: tabular-nums;
+  }
+</style>

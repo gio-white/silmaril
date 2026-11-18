@@ -1,7 +1,8 @@
 ---
 import Section from '../components/Section.astro';
 import TagList from '../components/TagList.astro';
-import { formatRange, getEducation, getRoles } from '../lib/content';
+import { localizePath, toLocale, useTranslations } from '../i18n';
+import { formatRange, getEducation, getRoles, isFallback } from '../lib/content';
 
 /**
  * Work history and education on one timeline. Education is a subheading here
@@ -17,25 +18,33 @@ interface Props {
 
 const { limit, as, showEducation = false } = Astro.props;
 
-const allRoles = await getRoles();
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const allRoles = await getRoles(locale);
 const roles = limit ? allRoles.slice(0, limit) : allRoles;
 const truncated = roles.length < allRoles.length;
-const education = showEducation ? await getEducation() : [];
+const education = showEducation ? await getEducation(locale) : [];
+const fallback = [...roles, ...education].some((entry) => isFallback(entry, locale));
 ---
 
 <Section
   id="experience"
-  label="Experience"
-  title="Where I've worked"
+  label={t.experience.label}
+  title={t.experience.title}
   as={as}
-  viewAll={truncated ? { href: '/experience', text: 'Full history' } : undefined}
+  fallback={fallback}
+  viewAll={truncated
+    ? { href: localizePath('/experience', locale), text: t.experience.full }
+    : undefined}
 >
   <ol class="timeline" role="list">
     {
       roles.map((entry) => (
-        <li class="entry">
+        <li class="entry" lang={isFallback(entry, locale) ? 'en' : undefined}>
           <div class="entry__when tabular">
-            <time datetime={entry.data.start}>{formatRange(entry.data.start, entry.data.end)}</time>
+            <time datetime={entry.data.start}>
+              {formatRange(entry.data.start, entry.data.end, locale)}
+            </time>
             {entry.data.location && <span class="entry__location">{entry.data.location}</span>}
           </div>
 
@@ -54,7 +63,7 @@ const education = showEducation ? await getEducation() : [];
               ))}
             </ul>
 
-            <TagList items={entry.data.stack} label={`${entry.data.company} stack`} />
+            <TagList items={entry.data.stack} label={t.projects.stackOf(entry.data.company)} />
           </div>
         </li>
       ))
@@ -64,10 +73,10 @@ const education = showEducation ? await getEducation() : [];
   {
     education.length > 0 && (
       <div class="education">
-        <h3 class="education__heading label">Education</h3>
+        <h3 class="education__heading label">{t.experience.education}</h3>
         <ol class="timeline" role="list">
           {education.map((entry) => (
-            <li class="entry">
+            <li class="entry" lang={isFallback(entry, locale) ? 'en' : undefined}>
               <div class="entry__when tabular">
                 <time datetime={entry.data.start ?? entry.data.end}>
                   {entry.data.start && entry.data.start !== entry.data.end

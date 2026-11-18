@@ -184,15 +184,15 @@ The biggest single improvement: today every piece of content is placeholder for 
 
 Must be done before go-live, because it fixes the URL shapes, and changing URLs after launch costs redirects.
 
-- [ ] **Routing:** Astro i18n routing with English as the default at the root (`/projects`) and Italian under `/it/` (`/it/projects`). No prefix for the default language.
-- [ ] **Interface strings** (nav, buttons, section titles, labels, 404) in typed dictionaries, e.g. `src/i18n/en.ts` and `src/i18n/it.ts`, so a missing key fails `astro check`.
-- [ ] **Content:** per-locale entries (e.g. `src/content/projects/en/` and `/it/`, or a `locale` field). An Italian page that is not translated yet falls back to English with a short notice.
-- [ ] **Language switcher** in the header that links to the same page in the other language, not to the home page.
-- [ ] **SEO for languages:** `<html lang>`, `hreflang` alternates plus `x-default`, `og:locale`, and both languages in the sitemap (Phase 8).
-- [ ] **Dates** formatted per locale with `Intl.DateTimeFormat` (today `formatMonth` hard-codes English month names).
-- [ ] **CV** in both languages (Phase 4 now, generated in Phase 10).
-- [ ] **Translation workflow:** write English first; Claude Code drafts Italian; Giorgio reviews. A CI step lists untranslated pages as a warning, not a failure.
-- [ ] Update `docs/architecture.md` (routes table) and `CLAUDE.md`.
+- [x] **Routing:** Astro i18n routing with English as the default at the root (`/projects`) and Italian under `/it/` (`/it/projects`). No prefix for the default language.
+- [x] **Interface strings** (nav, buttons, section titles, labels, 404) in typed dictionaries, e.g. `src/i18n/en.ts` and `src/i18n/it.ts`, so a missing key fails `astro check`.
+- [x] **Content:** per-locale entries (e.g. `src/content/projects/en/` and `/it/`, or a `locale` field). An Italian page that is not translated yet falls back to English with a short notice.
+- [x] **Language switcher** in the header that links to the same page in the other language, not to the home page.
+- [x] **SEO for languages:** `<html lang>`, `hreflang` alternates plus `x-default`, `og:locale`, and both languages in the sitemap (Phase 8). (Sitemap itself is Phase 8.)
+- [x] **Dates** formatted per locale with `Intl.DateTimeFormat` (today `formatMonth` hard-codes English month names).
+- [x] **CV** in both languages (Phase 4 now, generated in Phase 10).
+- [x] **Translation workflow:** write English first; Claude Code drafts Italian; Giorgio reviews. A CI step lists untranslated pages as a warning, not a failure. (`pnpm check:translations`.)
+- [x] Update `docs/architecture.md` (routes table) and `CLAUDE.md`.
 
 ## Phase 7 — Design refinement
 

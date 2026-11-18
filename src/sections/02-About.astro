@@ -1,9 +1,14 @@
 ---
 import Section from '../components/Section.astro';
-import { profile } from '../data/profile';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
+
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
 ---
 
-<Section id="about" label="About" title="What I work on">
+<Section id="about" label={t.about.label} title={t.about.title}>
   <div class="about">
     <div class="prose about__body">
       {profile.about.map((paragraph) => <p>{paragraph}</p>)}

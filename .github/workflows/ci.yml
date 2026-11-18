@@ -46,6 +46,10 @@ jobs:
       - name: Placeholders left before launch
         run: node scripts/check-launch.mjs --warn
 
+      # Untranslated entries render in English with a note, so this only warns.
+      - name: Untranslated content
+        run: node scripts/check-translations.mjs
+
       # Internal links only. External URLs are skipped so a slow third-party
       # site cannot turn a PR red.
       - name: Check links in the built site

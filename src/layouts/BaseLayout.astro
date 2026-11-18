@@ -1,9 +1,11 @@
 ---
 import archivoLatin from '../assets/fonts/archivo-latin.woff2';
 import publicSansLatin from '../assets/fonts/public-sans-latin.woff2';
+import LanguageSwitch from '../components/LanguageSwitch.astro';
 import Nav from '../components/Nav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import ThemeToggle from '../components/ThemeToggle.astro';
+import { locales, localeTags, localizePath, stripLocale, toLocale, useTranslations } from '../i18n';
 import '../styles/global.css';
 
 interface Props {
@@ -11,24 +13,48 @@ interface Props {
   description: string;
   /** Path-relative OG image; falls back to the site-wide card. */
   image?: string;
+  /** False for the 404 page: no canonical, no alternates, and noindex. */
+  indexable?: boolean;
 }
 
-const { title, description, image = '/og.png' } = Astro.props;
+const { title, description, image = '/og.png', indexable = true } = Astro.props;
 
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const ogImage = new URL(image, Astro.site);
+
+// Every page exists in every locale, so each one lists all of them as
+// alternates, with English as the x-default.
+const barePath = stripLocale(Astro.url.pathname);
+const alternates = locales.map((alt) => ({
+  hreflang: localeTags[alt].lang,
+  href: new URL(localizePath(barePath, alt), Astro.site).href,
+}));
 const hasAxis = Astro.slots.has('axis');
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={localeTags[locale].lang}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <title>{title}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={canonical} />
+    {
+      indexable ? (
+        <>
+          <link rel="canonical" href={canonical} />
+          {alternates.map((alt) => (
+            <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+          ))}
+          <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+        </>
+      ) : (
+        <meta name="robots" content="noindex" />
+      )
+    }
 
     <!-- Overwritten at runtime by theme.ts so mobile browser chrome tracks the
          active theme. The static value here is the light background. -->
@@ -37,6 +63,12 @@ const hasAxis = Astro.slots.has('axis');
     <!-- Open Graph is the point of prerendering: Slack, LinkedIn and WhatsApp
          build the preview card without executing any JavaScript. -->
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content={localeTags[locale].og} />
+    {
+      locales
+        .filter((alt) => alt !== locale)
+        .map((alt) => <meta property="og:locale:alternate" content={localeTags[alt].og} />)
+    }
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -88,12 +120,15 @@ const hasAxis = Astro.slots.has('axis');
   </head>
 
   <body>
-    <a href="#main" class="skip-link">Skip to content</a>
+    <a href="#main" class="skip-link">{t.layout.skipLink}</a>
 
     <header class="site-header">
       <div class="site-header__inner">
         <Nav />
-        <ThemeToggle />
+        <div class="site-header__tools">
+          <LanguageSwitch />
+          <ThemeToggle />
+        </div>
       </div>
     </header>
 
@@ -160,6 +195,12 @@ const hasAxis = Astro.slots.has('axis');
         max-inline-size: var(--width-content);
         margin-inline: auto;
         padding: var(--space-2xs) var(--gutter);
+      }
+
+      .site-header__tools {
+        display: flex;
+        align-items: center;
+        gap: var(--space-2xs);
       }
 
       .shell {

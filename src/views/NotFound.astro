@@ -1,0 +1,68 @@
+---
+import AxisGutter from '../components/AxisGutter.astro';
+import { axisSiteItems } from '../data/nav';
+import { getProfile } from '../data/profile';
+import { localizePath, toLocale, useTranslations } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * Cloudflare Pages serves the nearest 404.html up the path, with a 404
+ * status, for any path that matches no file: dist/it/404.html for anything
+ * under /it/, dist/404.html for everything else. It ends with the contact section like every other page, so
+ * the header's #contact link still resolves here.
+ */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
+---
+
+<BaseLayout
+  title={`${t.pages.notFound.title} — ${profile.name}`}
+  description={t.pages.notFound.description}
+  indexable={false}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" />
+
+  <section class="missing" aria-labelledby="missing-heading">
+    <p class="label missing__code">404</p>
+    <h1 id="missing-heading" class="missing__title">{t.pages.notFound.heading}</h1>
+    <p class="missing__text">{t.pages.notFound.text}</p>
+    <p class="missing__actions">
+      <a class="link" href={localizePath('/', locale)}>{t.pages.notFound.home}</a>
+      <a class="link" href="#contact">{t.pages.notFound.contact}</a>
+    </p>
+  </section>
+
+  <Contact />
+</BaseLayout>
+
+<style>
+  .missing {
+    display: grid;
+    gap: var(--space-s);
+    padding-block: var(--space-2xl) var(--space-section);
+  }
+
+  .missing__code {
+    color: var(--color-accent);
+  }
+
+  .missing__title {
+    font-size: var(--text-3xl);
+  }
+
+  .missing__text {
+    max-inline-size: 48ch;
+    font-size: var(--text-md);
+    color: var(--color-text-muted);
+    text-wrap: pretty;
+  }
+
+  .missing__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s) var(--space-l);
+    margin-block-start: var(--space-xs);
+  }
+</style>

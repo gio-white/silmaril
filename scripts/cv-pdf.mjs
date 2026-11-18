@@ -22,7 +22,10 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 /** Route on the built site → PDF written into public/. */
-const OUTPUTS = [{ route: '/cv/', file: 'cv.pdf' }];
+const OUTPUTS = [
+  { route: '/cv/', file: 'cv.pdf' },
+  { route: '/it/cv/', file: 'cv-it.pdf' },
+];
 
 const TYPES = {
   '.html': 'text/html; charset=utf-8',

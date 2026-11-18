@@ -1,7 +1,8 @@
 ---
 import Section from '../components/Section.astro';
 import TagList from '../components/TagList.astro';
-import { getSkills } from '../lib/content';
+import { localizePath, toLocale, useTranslations } from '../i18n';
+import { getSkills, isFallback } from '../lib/content';
 
 /**
  * No proficiency bars, star ratings or percentages. They are a cliché, and
@@ -14,17 +15,21 @@ interface Props {
 
 const { limit, as } = Astro.props;
 
-const all = await getSkills();
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const all = await getSkills(locale);
 const groups = limit ? all.slice(0, limit) : all;
 const truncated = groups.length < all.length;
+const fallback = groups.some((group) => isFallback(group, locale));
 ---
 
 <Section
   id="skills"
-  label="Stack"
-  title="What I work with"
+  label={t.skills.label}
+  title={t.skills.title}
   as={as}
-  viewAll={truncated ? { href: '/skills', text: 'Full stack' } : undefined}
+  fallback={fallback}
+  viewAll={truncated ? { href: localizePath('/skills', locale), text: t.skills.full } : undefined}
 >
   <dl class="skills">
     {

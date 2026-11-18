@@ -4,7 +4,8 @@ Everything the site needs from you. Nothing here blocks development — the site
 placeholder data and the real text swaps in section by section.
 
 **Fill this in however is easiest.** Reply with it in a message, or edit the matching files in
-`src/content/` directly. The field names below match the schemas.
+`src/content/<collection>/en/` directly (Italian goes in the matching `it/` folder). The field names
+below match the schemas.
 
 ## One thing worth knowing first
 

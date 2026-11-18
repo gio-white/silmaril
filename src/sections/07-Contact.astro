@@ -1,6 +1,7 @@
 ---
 import Section from '../components/Section.astro';
-import { profile } from '../data/profile';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
 
 /**
  * Closes every page, so #contact always resolves without navigating. This is
@@ -11,19 +12,30 @@ import { profile } from '../data/profile';
  * No contact form. A form needs a backend, gets spam, and is a worse
  * experience than a mail client that already knows who you are.
  */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
 const links = [
-  { label: 'Email', value: profile.email, href: `mailto:${profile.email}` },
-  { label: 'GitHub', value: profile.github.replace(/^https?:\/\//, ''), href: profile.github },
-  { label: 'LinkedIn', value: profile.linkedin.replace(/^https?:\/\//, ''), href: profile.linkedin },
-  { label: 'CV', value: 'Download PDF', href: profile.cvPath },
+  { label: t.contact.email, value: profile.email, href: `mailto:${profile.email}` },
+  {
+    label: t.contact.github,
+    value: profile.github.replace(/^https?:\/\//, ''),
+    href: profile.github,
+  },
+  {
+    label: t.contact.linkedin,
+    value: profile.linkedin.replace(/^https?:\/\//, ''),
+    href: profile.linkedin,
+  },
+  { label: t.contact.cv, value: t.contact.downloadPdf, href: profile.cvPath },
 ];
 ---
 
-<Section id="contact" label="Contact" title="Get in touch">
+<Section id="contact" label={t.contact.label} title={t.contact.title}>
   <div class="contact">
     <div class="contact__intro">
       <p class="contact__lead">
-        {profile.availability}. Based in {profile.location}, working {profile.timezone}.
+        {t.contact.lead(profile.availability, profile.location, profile.timezone)}
       </p>
       <a class="contact__email" href={`mailto:${profile.email}`}>{profile.email}</a>
     </div>

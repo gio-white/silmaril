@@ -7,6 +7,37 @@ Newest first.
 
 ---
 
+## Phase 6: English and Italian
+
+The site now exists in both languages, before launch, because the URL shapes are fixed by this and
+changing them later would cost redirects.
+
+**English stays at the root; Italian lives under `/it/`.** Every page has an Italian twin, and the
+header has an EN / IT switch that keeps you on the same page. `<html lang>`, `hreflang` alternates
+with an `x-default`, and `og:locale` tell search engines and link previews which is which.
+
+**Interface strings are typed dictionaries** (`src/i18n/en.ts`, `it.ts`): a key missing in Italian
+is a type error, not a blank on the live site. Dates come from `Intl.DateTimeFormat` in the page's
+language.
+
+**Content is split into `en/` and `it/` folders** per collection, and the profile has prose per
+language. Everything is drafted in Italian now, for Giorgio to review. Anything left untranslated
+later shows in English with a short note rather than vanishing, and `pnpm check:translations`
+lists it as a CI warning. Certifications stay English-only: their names are official titles.
+
+**Pages became shared views** in `src/views/`, with a thin route file per language, so a page's
+markup exists once.
+
+**Two build details.** Astro writes the Italian 404 to `it/404/index.html`, but Cloudflare Pages
+looks for the nearest `404.html`, so the build moves it. The 404 pages are now `noindex`, without
+canonical or alternate links. And on a 360px phone the longer Italian labels wrapped the nav, so
+below 24rem the nav drops its letter-spacing.
+
+**The CV prints in both languages:** `pnpm cv:pdf` writes `cv.pdf` and `cv-it.pdf`, and each
+language's "Download CV" links to its own.
+
+---
+
 ## /cv and /now (Phase 10, brought forward)
 
 **The CV is now a page, and the PDF is printed from it.** `/cv` is built from the same collections

@@ -17,7 +17,7 @@
   "scripts": {
     "preinstall": "npx only-allow pnpm",
     "dev": "astro dev",
-    "build": "astro build && node scripts/csp-hashes.mjs && node scripts/check-budgets.mjs",
+    "build": "astro build && node scripts/localized-404.mjs && node scripts/csp-hashes.mjs && node scripts/check-budgets.mjs",
     "preview": "astro preview",
     "astro": "astro",
     "lint": "biome check .",
@@ -26,6 +26,7 @@
     "check": "biome check . && astro check",
     "check:budgets": "node scripts/check-budgets.mjs",
     "check:launch": "node scripts/check-launch.mjs",
+    "check:translations": "node scripts/check-translations.mjs",
     "cv:pdf": "node scripts/cv-pdf.mjs",
     "rasterize": "node scripts/rasterize.mjs"
   },

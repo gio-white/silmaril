@@ -1,0 +1,3 @@
+group: AI e agenti
+order: 30
+items: [Microsoft Foundry, Agenti LLM, RAG, Vector Search, MLflow]

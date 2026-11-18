@@ -1,0 +1,25 @@
+# Traduzione di src/content/roles/en/01-kpmg-senior-consultant.yaml.
+company: KPMG Italia
+companyNote: Programma globale di analytics, cliente industriale
+role: Senior Consultant — Data Engineer
+start: 2026-10
+location: Italia
+stack:
+  - Databricks
+  - Unity Catalog
+  - Power BI
+  - Microsoft Foundry
+  - DABs
+  - Azure DevOps
+highlights:
+  - >-
+    Uno dei referenti tecnici di un programma globale di analytics per un produttore multinazionale
+    di macchine agricole: porto le vendite aftermarket di tutto il mondo in un nuovo modello
+    dimensionale, con reporting in Power BI.
+  - Coordino circa cinque engineer tra suddivisione del lavoro, architettura e code review, e
+    raccolgo i requisiti direttamente con gli stakeholder del cliente.
+  - Sviluppo diversi agenti LLM su Microsoft Foundry gestiti da un orchestratore; il primo, ora in
+    pilota, risponde a domande di business su un modello dati tramite Microsoft Teams e un portale.
+  - Sto migrando i nostri progetti Databricks ai DABs, rilasciati con Azure DevOps su tre ambienti
+    (Dev, Cert, Prod), e costruendo la governance in Unity Catalog perché utenti e agenti vedano
+    solo i dati a cui hanno diritto.

@@ -1,10 +1,13 @@
 ---
 import { contactItem, isActive, navItems } from '../data/nav';
+import { localizePath, stripLocale, toLocale, useTranslations } from '../i18n';
 
-const pathname = Astro.url.pathname;
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const pathname = stripLocale(Astro.url.pathname);
 ---
 
-<nav class="nav" aria-label="Primary">
+<nav class="nav" aria-label={t.layout.primaryNav}>
   <ul class="nav__list" role="list">
     {
       navItems.map((item) => {
@@ -13,21 +16,20 @@ const pathname = Astro.url.pathname;
           <li>
             <a
               class:list={['nav__link', { 'is-active': active }]}
-              href={item.href}
+              href={localizePath(item.href, locale)}
               aria-current={active ? 'page' : undefined}
             >
-              {item.label}
+              {t.nav[item.key]}
             </a>
           </li>
         );
       })
     }
     <li>
-      <a class="nav__link nav__link--accent" href={contactItem.href}>{contactItem.label}</a>
+      <a class="nav__link nav__link--accent" href={contactItem.href}>{t.nav[contactItem.key]}</a>
     </li>
   </ul>
 </nav>
-
 <style>
   .nav__list {
     display: flex;
@@ -36,13 +38,6 @@ const pathname = Astro.url.pathname;
     gap: var(--space-3xs) var(--space-s);
     margin: 0;
     padding: 0;
-  }
-
-  /* Five items need a tighter gap to stay on one line at 360px. */
-  @media (max-width: 30rem) {
-    .nav__list {
-      column-gap: var(--space-2xs);
-    }
   }
 
   .nav__link {
@@ -79,5 +74,24 @@ const pathname = Astro.url.pathname;
   .nav__link--accent:hover {
     color: var(--color-accent);
     border-block-end-color: var(--color-accent);
+  }
+
+  /* Five items need a tighter gap to stay on one line at 360px. */
+  @media (max-width: 30rem) {
+    .nav__list {
+      column-gap: var(--space-2xs);
+    }
+  }
+
+  /* The Italian labels are longer ("Esperienza", "Competenze"); on the
+   * narrowest phones the tracking goes, so they still fit on one line. */
+  @media (max-width: 24rem) {
+    .nav__list {
+      column-gap: 0.375rem;
+    }
+
+    .nav__link {
+      letter-spacing: 0;
+    }
   }
 </style>

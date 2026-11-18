@@ -7,7 +7,8 @@ Add a project to the site from this description: $ARGUMENTS
 
 1. Read `src/content.config.ts` (the `projects` schema) and one existing file in
    `src/content/projects/` so the new entry matches the current fields exactly.
-2. Choose a short, URL-safe slug; the file is `src/content/projects/<slug>.md`.
+2. Choose a short, URL-safe slug; the file is `src/content/projects/en/<slug>.md`. Then draft the
+   Italian version with the same file name in `src/content/projects/it/` for me to review.
 3. Fill the front matter: `title`, a one-line `summary`, and `problem` → `approach` → `outcome`.
    The outcome carries a measured number. Ask me for any fact you do not have; never invent
    figures, clients or dates.

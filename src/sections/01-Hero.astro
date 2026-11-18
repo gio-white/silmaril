@@ -3,7 +3,8 @@ import posterDarkAvif from '../assets/posters/signal-surface-dark.avif?url';
 import posterDarkWebp from '../assets/posters/signal-surface-dark.webp?url';
 import posterLightAvif from '../assets/posters/signal-surface-light.avif?url';
 import posterLightWebp from '../assets/posters/signal-surface-light.webp?url';
-import { profile } from '../data/profile';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
 import Scene3D from '../three/Scene3D.astro';
 
 /**
@@ -12,6 +13,9 @@ import Scene3D from '../three/Scene3D.astro';
  * motion will see. A readability scrim on the left keeps the type on paper
  * even when the canvas is live; it is a functional fade, not decoration.
  */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
 ---
 
 <section class="hero" aria-labelledby="hero-heading">
@@ -29,9 +33,9 @@ import Scene3D from '../three/Scene3D.astro';
     <p class="hero__positioning">{profile.positioning}</p>
 
     <div class="hero__actions">
-      <a class="button button--primary" href={`mailto:${profile.email}`}>Get in touch</a>
+      <a class="button button--primary" href={`mailto:${profile.email}`}>{t.hero.getInTouch}</a>
       <a class="button" href={profile.cvPath} download>
-        Download CV
+        {t.hero.downloadCv}
         <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
           <path d="M8 2.5v8M4.5 7.5 8 11l3.5-3.5M2.5 13.5h11" />
         </svg>

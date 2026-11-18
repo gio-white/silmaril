@@ -9,10 +9,13 @@
  * Deliberately not a React island: React would cost ~45kB gzip to render three
  * radio buttons, against a 6kB critical-path JS budget for the whole site.
  */
+import { toLocale, useTranslations } from '../i18n';
+
+const t = useTranslations(toLocale(Astro.currentLocale)).theme;
 ---
 
 <fieldset class="theme-toggle">
-  <legend class="visually-hidden">Colour theme</legend>
+  <legend class="visually-hidden">{t.legend}</legend>
 
   <label class="theme-toggle__option">
     <input type="radio" name="theme-choice" value="light" class="visually-hidden" />
@@ -21,7 +24,7 @@
         <circle cx="12" cy="12" r="4.25"></circle>
         <path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"></path>
       </svg>
-      <span class="visually-hidden">Light</span>
+      <span class="visually-hidden">{t.light}</span>
     </span>
   </label>
 
@@ -32,7 +35,7 @@
         <rect x="2.75" y="4.25" width="18.5" height="12.5" rx="1.5"></rect>
         <path d="M8.5 20.25h7M12 16.75v3.5"></path>
       </svg>
-      <span class="visually-hidden">Match system</span>
+      <span class="visually-hidden">{t.system}</span>
     </span>
   </label>
 
@@ -42,7 +45,7 @@
       <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
         <path d="M20.2 14.2A8.4 8.4 0 0 1 9.8 3.8a8.4 8.4 0 1 0 10.4 10.4Z"></path>
       </svg>
-      <span class="visually-hidden">Dark</span>
+      <span class="visually-hidden">{t.dark}</span>
     </span>
   </label>
 </fieldset>

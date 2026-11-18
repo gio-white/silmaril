@@ -1,0 +1,82 @@
+---
+import { locales, localeTags, localizePath, stripLocale, toLocale, useTranslations } from '../i18n';
+
+/**
+ * Links to the same page in each language, not to the other home page: a
+ * reader halfway down /experience who switches language should stay there.
+ * Plain links, so it works before any script and every target is crawlable.
+ */
+const current = toLocale(Astro.currentLocale);
+const t = useTranslations(current);
+// The 404 page has no counterpart URL (its address is whatever was mistyped),
+// so from there each language links to its home page.
+const stripped = stripLocale(Astro.url.pathname);
+const path = /^\/404\/?$/.test(stripped) ? '/' : stripped;
+---
+
+<nav class="lang" aria-label={t.layout.language}>
+  <ul class="lang__list" role="list">
+    {
+      locales.map((locale) => (
+        <li>
+          <a
+            class:list={['lang__link', { 'is-current': locale === current }]}
+            href={localizePath(path, locale)}
+            hreflang={localeTags[locale].lang}
+            lang={localeTags[locale].lang}
+            aria-current={locale === current ? 'true' : undefined}
+          >
+            <span aria-hidden="true">{locale.toUpperCase()}</span>
+            <span class="visually-hidden">{localeTags[locale].name}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>
+
+<style>
+  .lang__list {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    margin: 0;
+    padding: 2px;
+    border: var(--border-hair) solid var(--color-rule);
+    border-radius: var(--radius-md);
+  }
+
+  .lang__link {
+    display: grid;
+    place-items: center;
+    min-inline-size: 1.75rem;
+    block-size: 1.75rem;
+    padding-inline: var(--space-3xs);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-decoration: none;
+    color: var(--color-text-muted);
+    transition:
+      color var(--duration-fast) var(--ease-out),
+      background-color var(--duration-fast) var(--ease-out);
+  }
+
+  .lang__link:hover {
+    color: var(--color-text);
+  }
+
+  /* Same selected treatment as the theme toggle beside it. */
+  .lang__link.is-current {
+    color: var(--color-accent);
+    background-color: color-mix(in oklab, var(--color-accent) 12%, transparent);
+  }
+
+  @media (pointer: coarse) {
+    .lang__link {
+      min-inline-size: 2.75rem;
+      block-size: 2.75rem;
+    }
+  }
+</style>

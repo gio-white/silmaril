@@ -1,7 +1,7 @@
 # Silmaril — personal site
 
 Giorgio's personal website and portfolio. A static Astro site with near-zero JavaScript, light and
-dark themes, and a lazy-loaded three.js hero, hosted on Cloudflare Pages.
+dark themes, English and Italian, and a lazy-loaded three.js hero, hosted on Cloudflare Pages.
 
 Work is tracked in [`docs/plan-of-action.md`](docs/plan-of-action.md): one phase at a time, one
 branch and one pull request per phase. Giorgio reviews the preview and merges; never merge, and
@@ -39,7 +39,8 @@ pnpm typecheck        # astro check
 pnpm check            # biome + astro check — the gate below
 pnpm check:budgets    # gzip/size budgets; requires dist/
 pnpm check:launch     # fails while PLACEHOLDER or example.com remain (strict at go-live)
-pnpm cv:pdf           # print /cv to public/cv.pdf (needs a build and a local Chrome)
+pnpm cv:pdf           # print /cv and /it/cv to public/cv.pdf and cv-it.pdf (needs a build + Chrome)
+pnpm check:translations # list content not yet translated to Italian (warning only)
 pnpm rasterize        # SVG → AVIF/WebP posters and og.png
 ```
 

@@ -229,3 +229,23 @@ the scripts anyway, so the meta tag adds nothing. A meta policy also cannot carr
 stylesheet is a much weaker attack than an injected script. Revisit if the site ever renders
 third-party content.
 
+---
+
+## Two languages: locale folders, shared views, English fallback
+
+**Decided:** Astro i18n routing with English at the root and Italian under `/it/`. Content is split
+into `en/` and `it/` folders per collection, matched by file name; pages are shared views rendered
+by thin route files in each language.
+
+Folders rather than a `locale` field because a translation is then a file next to its original,
+and "what is untranslated" is a directory listing (`pnpm check:translations`). Shared views rather
+than a dynamic `[locale]` segment because English must stay prefix-free, and two thin route files
+per page are easier to read than one `getStaticPaths` that special-cases the default.
+
+An untranslated entry falls back to English, marked with `lang="en"` and a one-line note, instead
+of disappearing: a half-translated Italian CV with gaps would be worse than one with a few English
+paragraphs.
+
+**Rejected:** a translation library (i18next and similar). Two typed dictionary objects give
+compile-time checks for missing keys with no runtime JavaScript.
+
