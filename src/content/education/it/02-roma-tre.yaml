@@ -1,0 +1,6 @@
+# Traduzione di src/content/education/en/02-roma-tre.yaml.
+institution: Università degli Studi Roma Tre, Roma
+qualification: Laurea triennale
+field: Economia aziendale
+end: '2024'
+note: 'Tesi: "From Delta Hedging to Deep Hedging", sull’evoluzione della copertura di portafoglio dal delta hedging classico al deep reinforcement learning.'

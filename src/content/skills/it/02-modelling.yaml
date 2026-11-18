@@ -1,0 +1,3 @@
+group: Modellazione dei dati
+order: 20
+items: [Architettura Medallion, Modellazione dimensionale, SCD di tipo 1/2, CDC]

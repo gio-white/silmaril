@@ -28,7 +28,7 @@ tags:
   - Cost
   - Observability
 cover:
-  src: ../../assets/projects/lakehouse-cost-lens.png
+  src: ../../../assets/projects/lakehouse-cost-lens.png
   alt: Bar chart of monthly cost per pipeline, with an idle cluster far above the threshold line.
 links:
   repo: https://github.com/gio-white/lakehouse-cost-lens

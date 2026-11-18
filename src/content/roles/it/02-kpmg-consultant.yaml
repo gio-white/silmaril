@@ -1,0 +1,22 @@
+# Traduzione di src/content/roles/en/02-kpmg-consultant.yaml.
+company: KPMG Italia
+companyNote: Programma globale di analytics, cliente industriale
+role: Consultant — Data Engineer
+start: 2025-03
+end: 2026-09
+location: Italia
+stack:
+  - Databricks
+  - PySpark
+  - SQL
+  - Unity Catalog
+  - Power BI
+highlights:
+  - Ho sviluppato la logica di KPI e di stima di un modello Databricks sul potenziale di vendita
+    aftermarket in cinque regioni (NA, EMEA, LATAM, APAC, India), alla base di un'applicazione Power
+    BI usata dal management globale e regionale.
+  - Ho armonizzato sei tipi di fonti regionali (telematica, garanzie, vendite, marketing, supply
+    chain, produzione) più input manuali in un unico modello governato in Unity Catalog.
+  - Ho co-sviluppato il framework Databricks interno per orchestrare pipeline, schedulazioni e
+    dipendenze tra progetti, con logging e alert su Zabbix; ho ottimizzato le elaborazioni con
+    Liquid Clustering, partizionamento e configurazione dei cluster.
