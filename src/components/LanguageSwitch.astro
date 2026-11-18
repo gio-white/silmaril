@@ -8,7 +8,10 @@ import { locales, localeTags, localizePath, stripLocale, toLocale, useTranslatio
  */
 const current = toLocale(Astro.currentLocale);
 const t = useTranslations(current);
-const path = stripLocale(Astro.url.pathname);
+// The 404 page has no counterpart URL (its address is whatever was mistyped),
+// so from there each language links to its home page.
+const stripped = stripLocale(Astro.url.pathname);
+const path = /^\/404\/?$/.test(stripped) ? '/' : stripped;
 ---
 
 <nav class="lang" aria-label={t.layout.language}>
