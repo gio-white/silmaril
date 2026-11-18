@@ -21,7 +21,20 @@ stands alone, because it is the URL that gets shared. Dedicated pages exist for 
 #contact              anchor, present on every page — never a route
 ```
 
+Every route also exists under `/it/` (Italian). English has no prefix. Route files are thin
+wrappers around `src/views/`; never put page markup in `src/pages/`.
+
 Reserved for later, do not invent a different scheme: `/writing/<slug>`.
+
+## Languages
+
+- Never hardcode interface text in a component: add a key to `src/i18n/en.ts` and the same key to
+  `src/i18n/it.ts` (the type makes a missing key an error). Read the locale with
+  `toLocale(Astro.currentLocale)` and the strings with `useTranslations(locale)`.
+- Internal links go through `localizePath(path, locale)`.
+- Content goes in `src/content/<collection>/en/` first, then the Italian draft with the same file
+  name in `…/it/`. Certifications are English-only by design.
+- Format dates with the helpers in `src/lib/content.ts`, which take the locale.
 
 ## The limit pattern
 

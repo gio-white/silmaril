@@ -29,6 +29,11 @@ src/sections/*.astro ┘
 | `/cv` | The CV as a page, built from the same collections. Its print stylesheet makes `public/cv.pdf` (`pnpm cv:pdf`). |
 | `/404` | Not-found page. Cloudflare Pages serves `404.html` with a 404 status for any unknown path. |
 
+Every route also exists in Italian under `/it/` (`/it/`, `/it/projects/<slug>`, `/it/experience`,
+…). English stays at the root with no prefix, so the original URLs never change. Route files in
+`src/pages/` and `src/pages/it/` are thin wrappers around the views in `src/views/`; components read
+the language from `Astro.currentLocale`.
+
 `#contact` is an anchor present on every page, never a route. `/writing/<slug>` is reserved for
 later; nothing is built for it yet, but the shape is fixed so a future change does not need
 redirects.
@@ -65,6 +70,26 @@ All content is files in `src/content/`, validated by Zod at build time.
 
 A missing required field fails the build. That is the schema doing its job.
 
+## Languages
+
+English is the default; Italian is the second locale (Astro i18n routing, `prefixDefaultLocale:
+false`).
+
+- **Interface strings** live in `src/i18n/en.ts` and `src/i18n/it.ts`. The Italian dictionary is
+  typed against the English one, so a missing key fails `astro check`.
+- **Content** is split by locale folder: `src/content/<collection>/en/` and `…/it/`, matched by
+  file name. An entry missing in Italian renders the English one with `lang="en"` and a short
+  "not translated yet" note, rather than disappearing. Certifications live only in `en/`: their
+  names are official titles.
+- **The profile** (`src/data/profile.ts`) has shared contact details plus prose per locale.
+- **Dates** are formatted with `Intl.DateTimeFormat` for the page's locale.
+- **SEO:** `<html lang>`, `hreflang` alternates for every locale plus `x-default`, and
+  `og:locale` with its alternate.
+- **404:** Cloudflare Pages serves the nearest `404.html` up the path, so `pnpm build` moves the
+  Italian one to `dist/it/404.html`.
+- **Workflow:** write English first; Claude drafts Italian; Giorgio reviews.
+  `pnpm check:translations` (a CI warning, never a failure) lists what is still untranslated.
+
 ## Directory layout
 
 ```
@@ -76,7 +101,9 @@ docs/              this documentation
 scripts/           build-time Node scripts, never shipped
 public/            static assets served as-is; _headers lives here
 src/
-  pages/           routes only, thin
+  pages/           routes only, thin; it/ holds the Italian twins
+  views/           one component per page, shared by both languages
+  i18n/            locales, URL helpers and the interface dictionaries
   layouts/         page shells: head, nav, footer, theme script
   sections/        one per content domain, limit-aware
   components/      shared pieces
