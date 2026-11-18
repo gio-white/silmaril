@@ -7,6 +7,23 @@ Newest first.
 
 ---
 
+## Phase 7: design review on the real content
+
+`docs/design-review.md` records an Impeccable-style audit and critique of the home page, a case
+study, `/experience` and the phone layout, in both languages and both themes. The audit scores
+17 / 20, the critique 25 / 32. It was a single-context run without Impeccable's detector, which
+could not run in the cloud session; rerunning both commands locally will add its findings.
+
+**Fixed: touch targets.** The design system sets a 44px floor on touch screens, but footer
+links, contact rows, the case-study back and repository links and the `/cv` contacts were 14–15px
+tall. Under `(pointer: coarse)` they now reach 44px without changing how they look with a mouse.
+
+**Not fixed, waiting for a decision:** condensing the home page's project cards (on a phone the
+page is 7,464px long), the two-row sticky header on phones, dark-mode handling for project covers,
+and whether the mono label above each heading should stay. The review lays out the options.
+
+---
+
 ## Phase 8: sitemap, robots.txt, structured data and analytics
 
 The site was built for link sharing first, so search-engine plumbing was deferred. With two

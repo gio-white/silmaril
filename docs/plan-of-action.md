@@ -198,11 +198,11 @@ Must be done before go-live, because it fixes the URL shapes, and changing URLs 
 
 The current design is already distinctive (Swiss grid, blueprint-and-oxide palette, Archivo, 3D signal surface). Refine it on real content rather than restart.
 
-- [ ] Run `/impeccable audit` and `/impeccable critique` on home, one project page, `/experience` and mobile; record findings in `docs/design-review.md`.
-- [ ] Apply fixes selectively with `/impeccable polish`; use the `frontend-design` skill for new sections so they stay consistent with the design system.
-- [ ] Specific checks: hero with the real name and positioning length; 3D scene still fits; project cards with covers; dark mode; language switcher placement; 404 page.
-- [ ] Optional: View Transitions between pages, within the size budgets.
-- [ ] Existing design rules stay unless deliberately changed (single accent, tokens, no Tailwind or shadcn, see `docs/decisions.md`); any change gets a decision-log entry.
+- [x] Run `/impeccable audit` and `/impeccable critique` on home, one project page, `/experience` and mobile; record findings in `docs/design-review.md`. (Done single-context: the detector binary could not run in the cloud session. Rerun locally for its findings.)
+- [x] Apply fixes selectively with `/impeccable polish`; use the `frontend-design` skill for new sections so they stay consistent with the design system. (Touch targets fixed; the larger changes wait for Giorgio's answers in `docs/design-review.md`.)
+- [x] Specific checks: hero with the real name and positioning length; 3D scene still fits; project cards with covers; dark mode; language switcher placement; 404 page.
+- [x] Optional: View Transitions between pages, within the size budgets. (Already in place: cross-document `@view-transition` in `motion.css`.)
+- [x] Existing design rules stay unless deliberately changed (single accent, tokens, no Tailwind or shadcn, see `docs/decisions.md`); any change gets a decision-log entry.
 
 ## Phase 8 — Discoverability and analytics
 
