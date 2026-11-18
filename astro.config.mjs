@@ -1,4 +1,5 @@
 // @ts-check
+import sitemap from '@astrojs/sitemap';
 import { defineConfig } from 'astro/config';
 
 // https://astro.build/config
@@ -11,7 +12,14 @@ export default defineConfig({
   // state, and registering React emitted a 191kB orphan chunk into dist that
   // no page referenced. `pnpm astro add react` restores it in one command if a
   // genuinely interactive island ever appears.
-  integrations: [],
+  integrations: [
+    // sitemap-index.xml with both languages; each URL lists its translations
+    // as xhtml:link alternates. The 404 pages are left out.
+    sitemap({
+      i18n: { defaultLocale: 'en', locales: { en: 'en-GB', it: 'it-IT' } },
+      filter: (page) => !/\/404\/?$/.test(new URL(page).pathname),
+    }),
+  ],
 
   // English at the root, Italian under /it/. The default locale has no prefix,
   // so the English URLs that already exist never change.
