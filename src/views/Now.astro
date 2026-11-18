@@ -1,0 +1,84 @@
+---
+import { render } from 'astro:content';
+import AxisGutter from '../components/AxisGutter.astro';
+import { axisSiteItems } from '../data/nav';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { formatDate, getNow, isFallback } from '../lib/content';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * A /now page (nownownow.com): what Giorgio is focused on at the moment. One
+ * Markdown file per locale, src/content/now/<locale>/now.md; its `updated` date
+ * is shown, because a /now page without a date cannot be trusted.
+ */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
+
+const entry = await getNow(locale);
+const { Content } = await render(entry);
+const fallback = isFallback(entry, locale);
+const updated = entry.data.updated;
+---
+
+<BaseLayout
+  title={`${t.pages.now.title} — ${profile.name}`}
+  description={t.pages.now.description(profile.name)}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" />
+
+  <article class="now">
+    <header class="now__head">
+      <p class="label">{t.pages.now.label}</p>
+      <h1 class="now__title">{t.pages.now.heading}</h1>
+      <p class="label now__updated">
+        {t.pages.now.updated}{' '}
+        <time datetime={updated.toISOString().slice(0, 10)}>{formatDate(updated, locale)}</time>
+      </p>
+      {fallback && <p class="now__fallback">{t.fallback}</p>}
+    </header>
+    <div class="now__body prose" lang={fallback ? 'en' : undefined}>
+      <Content />
+    </div>
+  </article>
+
+  <Contact />
+</BaseLayout>
+
+<style>
+  .now {
+    display: grid;
+    gap: var(--space-l);
+    padding-block: var(--space-xl) var(--space-section);
+  }
+
+  .now__head {
+    display: grid;
+    gap: var(--space-2xs);
+  }
+
+  .now__title {
+    font-size: var(--text-2xl);
+  }
+
+  .now__updated {
+    font-size: var(--text-2xs);
+  }
+
+  .now__fallback {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+  }
+
+  .now__body {
+    max-inline-size: var(--width-prose);
+  }
+
+  .now__body :global(ul) {
+    display: grid;
+    gap: var(--space-s);
+    padding-inline-start: 1.1em;
+  }
+</style>

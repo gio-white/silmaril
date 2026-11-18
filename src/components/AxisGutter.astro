@@ -11,20 +11,19 @@
  * Desktop labelled axis from 64rem. Below that it becomes a thin
  * scroll-progress rail rather than disappearing — same rust fill, no labels.
  */
-export interface AxisItem {
-  /** Section id for scroll mode, or href for site mode. */
-  target: string;
-  label: string;
-}
+import type { AxisEntry } from '../data/nav';
+import { localizePath, toLocale, useTranslations } from '../i18n';
 
 interface Props {
-  items: AxisItem[];
+  items: AxisEntry[];
   mode: 'scroll' | 'site';
-  /** Site mode only: the href of the page currently being viewed. */
+  /** Site mode only: the English href of the page currently being viewed. */
   current?: string;
 }
 
 const { items, mode, current } = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 ---
 
 <!-- Thin progress rail for viewports that cannot fit the labelled axis.
@@ -33,11 +32,11 @@ const { items, mode, current } = Astro.props;
   <div class="axis-rail__fill" data-axis-rail></div>
 </div>
 
-<nav class="axis" data-axis={mode} aria-label={mode === 'site' ? 'Site sections' : 'On this page'}>
+<nav class="axis" data-axis={mode} aria-label={mode === 'site' ? t.layout.siteSections : t.layout.onThisPage}>
   <ol class="axis__list">
     {
       items.map((item) => {
-        const href = mode === 'scroll' ? `#${item.target}` : item.target;
+        const href = mode === 'scroll' ? `#${item.target}` : localizePath(item.target, locale);
         const isCurrent = mode === 'site' && item.target === current;
         return (
           <li class="axis__row">
@@ -48,7 +47,7 @@ const { items, mode, current } = Astro.props;
               aria-current={isCurrent ? 'page' : undefined}
             >
               <span class="axis__mark" aria-hidden="true" />
-              <span class="axis__label">{item.label}</span>
+              <span class="axis__label">{t.nav[item.key]}</span>
             </a>
           </li>
         );

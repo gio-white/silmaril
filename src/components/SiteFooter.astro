@@ -1,6 +1,7 @@
 ---
 import { secondaryItems } from '../data/nav';
-import { profile } from '../data/profile';
+import { getProfile } from '../data/profile';
+import { localizePath, toLocale, useTranslations } from '../i18n';
 
 /**
  * The fourth and lightest contact touchpoint. Deliberately minimal: by the
@@ -8,6 +9,9 @@ import { profile } from '../data/profile';
  * link and the full contact section.
  */
 const year = new Date().getFullYear();
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
 ---
 
 <footer class="footer">
@@ -17,13 +21,13 @@ const year = new Date().getFullYear();
       {
         secondaryItems.map((item) => (
           <li>
-            <a href={item.href}>{item.label}</a>
+            <a href={localizePath(item.href, locale)}>{t.nav[item.key]}</a>
           </li>
         ))
       }
-      <li><a href={`mailto:${profile.email}`}>Email</a></li>
-      <li><a href={profile.github} rel="noopener noreferrer">GitHub</a></li>
-      <li><a href={profile.linkedin} rel="noopener noreferrer">LinkedIn</a></li>
+      <li><a href={`mailto:${profile.email}`}>{t.contact.email}</a></li>
+      <li><a href={profile.github} rel="noopener noreferrer">{t.contact.github}</a></li>
+      <li><a href={profile.linkedin} rel="noopener noreferrer">{t.contact.linkedin}</a></li>
     </ul>
   </div>
 </footer>

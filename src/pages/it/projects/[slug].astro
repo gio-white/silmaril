@@ -1,0 +1,21 @@
+---
+import { entryKey, getProjects, hasCaseStudy } from '../../../lib/content';
+import ProjectDetail from '../../../views/ProjectDetail.astro';
+
+/**
+ * A project earns a page only when it has a body. Projects without a write-up
+ * appear on the listing and link nowhere, which is what stops thin entries
+ * from generating empty pages.
+ */
+export async function getStaticPaths() {
+  const projects = await getProjects('it');
+  return projects.filter(hasCaseStudy).map((project) => ({
+    params: { slug: entryKey(project) },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+---
+
+<ProjectDetail project={project} />

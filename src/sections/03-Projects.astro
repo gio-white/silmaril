@@ -2,7 +2,15 @@
 import { Image } from 'astro:assets';
 import Section from '../components/Section.astro';
 import TagList from '../components/TagList.astro';
-import { getFeaturedProjects, getProjects, hasCaseStudy, projectMeta } from '../lib/content';
+import { localizePath, toLocale, useTranslations } from '../i18n';
+import {
+  entryKey,
+  getFeaturedProjects,
+  getProjects,
+  hasCaseStudy,
+  isFallback,
+  projectMeta,
+} from '../lib/content';
 
 /**
  * Home passes a limit; /projects does not. The "see all" link appears only
@@ -16,28 +24,36 @@ interface Props {
 }
 
 const { limit, as } = Astro.props;
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
 
-const all = limit ? await getFeaturedProjects() : await getProjects();
-const total = (await getProjects()).length;
+const all = limit ? await getFeaturedProjects(locale) : await getProjects(locale);
+const total = (await getProjects(locale)).length;
 const shown = limit ? all.slice(0, limit) : all;
 const truncated = shown.length < total;
+const fallback = shown.some((project) => isFallback(project, locale));
 ---
 
 <Section
   id="projects"
-  label="Selected work"
-  title="Projects"
+  label={t.projects.label}
+  title={t.projects.title}
   as={as}
-  viewAll={truncated ? { href: '/projects', text: `All ${total} projects` } : undefined}
+  fallback={fallback}
+  viewAll={truncated
+    ? { href: localizePath('/projects', locale), text: t.projects.all(total) }
+    : undefined}
 >
   <ul class="projects" role="list">
     {
       shown.map((project) => {
-        const detail = hasCaseStudy(project) ? `/projects/${project.id}` : undefined;
-        const meta = projectMeta(project);
+        const detail = hasCaseStudy(project)
+          ? localizePath(`/projects/${entryKey(project)}`, locale)
+          : undefined;
+        const meta = projectMeta(project, locale);
         const { cover } = project.data;
         return (
-          <li class="project">
+          <li class="project" lang={isFallback(project, locale) ? 'en' : undefined}>
             <article class="project__body">
               {cover && (
                 <Image
@@ -62,19 +78,19 @@ const truncated = shown.length < total;
               <p class="project__summary">{project.data.summary}</p>
 
               <dl class="project__detail">
-                <dt>Problem</dt>
+                <dt>{t.projects.problem}</dt>
                 <dd>{project.data.problem}</dd>
-                <dt>Approach</dt>
+                <dt>{t.projects.approach}</dt>
                 <dd>{project.data.approach}</dd>
-                <dt>Outcome</dt>
+                <dt>{t.projects.outcome}</dt>
                 <dd class="project__outcome">{project.data.outcome}</dd>
               </dl>
 
               {project.data.confidential && (
-                <p class="project__note">Client work; details anonymised.</p>
+                <p class="project__note">{t.projects.confidentialCard}</p>
               )}
 
-              <TagList items={project.data.stack} label={`${project.data.title} stack`} />
+              <TagList items={project.data.stack} label={t.projects.stackOf(project.data.title)} />
             </article>
           </li>
         );

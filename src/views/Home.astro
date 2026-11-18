@@ -1,0 +1,52 @@
+---
+import posterLightAvif from '../assets/posters/signal-surface-light.avif?url';
+import AxisGutter from '../components/AxisGutter.astro';
+import { axisHomeItems } from '../data/nav';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../sections/01-Hero.astro';
+import About from '../sections/02-About.astro';
+import Projects from '../sections/03-Projects.astro';
+import Experience from '../sections/04-Experience.astro';
+import Skills from '../sections/05-Skills.astro';
+import Certifications from '../sections/06-Certifications.astro';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * The self-contained home page. Every section appears here in condensed form,
+ * so this URL alone answers "who is this person" — which matters, because it
+ * is the one that gets pasted into applications and messages.
+ *
+ * The limits below are what make the dedicated pages appear. Each section
+ * renders its own "see all" link only when its collection is longer than the
+ * limit given here, so the site behaves as a one-pager while content is thin
+ * and grows into a multi-page site on its own.
+ */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
+---
+
+<BaseLayout
+  title={`${profile.name} — ${profile.role}`}
+  description={profile.positioning}
+>
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href={posterLightAvif}
+    type="image/avif"
+    fetchpriority="high"
+  />
+  <AxisGutter slot="axis" items={axisHomeItems} mode="scroll" />
+
+  <Hero />
+  <About />
+  <Projects limit={3} />
+  <Experience limit={2} />
+  <Skills limit={4} />
+  <Certifications limit={3} />
+  <Contact />
+</BaseLayout>

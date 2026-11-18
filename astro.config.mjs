@@ -13,6 +13,14 @@ export default defineConfig({
   // genuinely interactive island ever appears.
   integrations: [],
 
+  // English at the root, Italian under /it/. The default locale has no prefix,
+  // so the English URLs that already exist never change.
+  i18n: {
+    locales: ['en', 'it'],
+    defaultLocale: 'en',
+    routing: { prefixDefaultLocale: false },
+  },
+
   build: {
     // Small stylesheets get inlined into the HTML, saving a round trip on a
     // site whose CSS budget is ~12kB gzip.

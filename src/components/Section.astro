@@ -1,4 +1,6 @@
 ---
+import { toLocale, useTranslations } from '../i18n';
+
 /**
  * Semantic wrapper for a page section.
  *
@@ -19,9 +21,12 @@ interface Props {
   viewAll?: { href: string; text: string };
   /** Heading level. Dedicated pages use h1 for their subject. */
   as?: 'h1' | 'h2';
+  /** Some entries are the English fallback for an untranslated locale. */
+  fallback?: boolean;
 }
 
-const { id, label, title, viewAll, as: Heading = 'h2' } = Astro.props;
+const { id, label, title, viewAll, as: Heading = 'h2', fallback = false } = Astro.props;
+const t = useTranslations(toLocale(Astro.currentLocale));
 const headingId = `${id}-heading`;
 ---
 
@@ -41,6 +46,7 @@ const headingId = `${id}-heading`;
         )
       }
     </div>
+    {fallback && <p class="section__fallback">{t.fallback}</p>}
   </header>
 
   <slot />
@@ -76,6 +82,11 @@ const headingId = `${id}-heading`;
 
   .section__title {
     margin: 0;
+  }
+
+  .section__fallback {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
   }
 
   .section__view-all {

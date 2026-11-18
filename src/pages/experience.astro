@@ -1,24 +1,5 @@
 ---
-import AxisGutter from '../components/AxisGutter.astro';
-import { axisSiteItems } from '../data/nav';
-import { profile } from '../data/profile';
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Experience from '../sections/04-Experience.astro';
-import Contact from '../sections/07-Contact.astro';
-
-/**
- * Work history and education together, which is why the route is /experience
- * rather than /work — education appears here as a subheading rather than
- * getting a page nobody would visit.
- */
+import Experience from '../views/Experience.astro';
 ---
 
-<BaseLayout
-  title={`Experience — ${profile.name}`}
-  description={`Work history and education for ${profile.name}, ${profile.role}.`}
->
-  <AxisGutter slot="axis" items={axisSiteItems} mode="site" current="/experience" />
-
-  <Experience as="h1" showEducation />
-  <Contact />
-</BaseLayout>
+<Experience />

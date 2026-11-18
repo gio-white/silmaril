@@ -1,0 +1,30 @@
+---
+import AxisGutter from '../components/AxisGutter.astro';
+import { axisSiteItems } from '../data/nav';
+import { getProfile } from '../data/profile';
+import { toLocale, useTranslations } from '../i18n';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Skills from '../sections/05-Skills.astro';
+import Certifications from '../sections/06-Certifications.astro';
+import Contact from '../sections/07-Contact.astro';
+
+/**
+ * Stack and certifications on one page. The merge is conceptual rather than a
+ * space saving: certifications read naturally as evidence *of* skills, so
+ * splitting them would leave two thin pages instead of one useful one.
+ */
+const locale = toLocale(Astro.currentLocale);
+const t = useTranslations(locale);
+const profile = getProfile(locale);
+---
+
+<BaseLayout
+  title={`${t.pages.skills.title} — ${profile.name}`}
+  description={t.pages.skills.description(profile.name, profile.role)}
+>
+  <AxisGutter slot="axis" items={axisSiteItems} mode="site" current="/skills" />
+
+  <Skills as="h1" />
+  <Certifications standalone />
+  <Contact />
+</BaseLayout>
